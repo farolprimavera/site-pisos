@@ -10,7 +10,7 @@ const SUPER_OFERTA = 0.3;
 const App = {
   dados: null,   // catálogo inteiro ({ atualizado, locais, ambientes, pisos })
   estado: {
-    onde: "",          // chip "onde usar"
+    cat: "",           // chip de ambiente ("sala", "quintal-piscina"...) ou "parede"
     busca: "",
     marca: "",
     estilo: "",

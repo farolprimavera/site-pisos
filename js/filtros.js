@@ -8,15 +8,17 @@ const Filtros = {
     const opcoes = (campo, rotulo) =>
       `<option value="">${rotulo}</option>` + valores(campo).map((v) => `<option>${App.esc(v)}</option>`).join("");
 
-    const chips = [{ id: "", nome: "Todos" }, ...App.dados.locais]
-      .map((l) => `<button type="button" class="chip" data-onde="${l.id}" aria-pressed="${l.id === ""}">${App.esc(Filtros.rotuloCurto(l))}</button>`)
+    // Categorias = os ambientes das simulações + "Parede" (revestimentos)
+    const cats = [{ id: "", nome: "Todos" }, ...App.dados.ambientes, { id: "parede", nome: "Parede" }];
+    const chips = cats
+      .map((c) => `<button type="button" class="chip" data-cat="${c.id}" aria-pressed="${c.id === ""}">${App.esc(c.nome)}</button>`)
       .join("");
 
     const el = document.getElementById("filtros");
     el.innerHTML = `
       <div class="filtros-conteudo">
         <div class="filtros-linha">
-          <div class="chips" role="group" aria-label="Onde usar">${chips}</div>
+          <div class="chips" role="group" aria-label="Ambiente">${chips}</div>
           <input type="search" id="f-busca" class="busca" placeholder="Buscar por nome ou código" aria-label="Buscar">
           <button type="button" id="f-mais" class="botao-mais" aria-expanded="false" aria-controls="f-extra">Mais filtros</button>
         </div>
@@ -37,8 +39,11 @@ const Filtros = {
 
     const e = App.estado;
     el.querySelectorAll(".chip").forEach((b) => b.addEventListener("click", () => {
-      e.onde = b.dataset.onde;
+      e.cat = b.dataset.cat;
+      // as miniaturas da grade passam a mostrar o ambiente escolhido
+      if (e.cat && e.cat !== "parede") e.ambiente = e.cat;
       el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c === b));
+      b.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
       App.atualizar();
     }));
     let t;
@@ -65,17 +70,13 @@ const Filtros = {
     el.querySelector("#f-limpar").addEventListener("click", Filtros.limpar);
   },
 
-  rotuloCurto(l) {
-    return { "": "Todos", quarto: "Quarto e sala", cozinha: "Cozinha e banheiro", coberta: "Área coberta", externa: "Área externa", parede: "Parede" }[l.id] || l.nome;
-  },
-
   limpar() {
-    Object.assign(App.estado, { onde: "", busca: "", marca: "", estilo: "", acabamento: "", formato: "", ordem: "desconto", superOferta: false });
+    Object.assign(App.estado, { cat: "", busca: "", marca: "", estilo: "", acabamento: "", formato: "", ordem: "desconto", superOferta: false });
     const el = document.getElementById("filtros");
     el.querySelectorAll("select").forEach((s) => (s.selectedIndex = 0));
     el.querySelector("#f-busca").value = "";
     el.querySelector("#f-super").checked = false;
-    el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c.dataset.onde === ""));
+    el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c.dataset.cat === ""));
     App.atualizar();
   },
 
@@ -83,7 +84,7 @@ const Filtros = {
     const e = App.estado;
     const termos = App.normalizar(e.busca).split(/\s+/).filter(Boolean);
     const lista = pisos.filter((p) =>
-      (!e.onde || p.onde.includes(e.onde)) &&
+      (!e.cat || (e.cat === "parede" ? p.onde.includes("parede") : p.ambientes.includes(e.cat))) &&
       (!e.marca || p.fabricante === e.marca) &&
       (!e.estilo || p.estilo === e.estilo) &&
       (!e.acabamento || p.acabamento === e.acabamento) &&

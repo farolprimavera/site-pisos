@@ -1,6 +1,6 @@
 /* Vitrine: carrossel de ambientes com pisos sorteados. Clicar no slide abre a página do piso. */
 
-const SLIDES = 8;          // quantas fotos no carrossel
+const SLIDES = 11;         // quantas fotos no carrossel (uma por ambiente)
 const INTERVALO = 10000;   // troca sozinho depois de 10 s sem interação
 
 const Vitrine = {

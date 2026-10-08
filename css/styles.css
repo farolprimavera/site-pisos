@@ -1017,8 +1017,7 @@ h1, h2, h3 {
 
 @media (min-width: 720px) {
   .chips {
-    width: auto;
-    flex: none;
+    flex-wrap: wrap;
   }
 
   .busca {
