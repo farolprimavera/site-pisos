@@ -17,8 +17,7 @@ const App = {
     formato: "",
     ordem: "desconto",
     superOferta: false,
-    ambiente: "sala",  // ambiente mostrado na vitrine e nas miniaturas
-    pisoId: null,      // piso da vitrine
+    ambiente: "sala",  // ambiente preferido nas miniaturas da grade
   },
 
   // Lê window.PISOS (dados/pisos.js); fetch do .json só como plano B.
@@ -43,6 +42,7 @@ const App = {
       document.getElementById("atualizado").textContent = `Preços atualizados em ${App.dados.atualizado}.`;
     }
 
+    Vitrine.montar();
     Filtros.montar();
     App.atualizar();
     Detalhe.iniciar();
@@ -52,13 +52,7 @@ const App = {
 
   // Redesenha tudo o que depende dos filtros.
   atualizar() {
-    const lista = Filtros.aplicar(App.dados.pisos);
-    const pisos = lista.filter((p) => p.ambientes.length);
-    if (!pisos.some((p) => p.id === App.estado.pisoId)) {
-      App.estado.pisoId = pisos[0] ? pisos[0].id : null;
-    }
-    Vitrine.desenhar();
-    Cards.desenhar(lista);
+    Cards.desenhar(Filtros.aplicar(App.dados.pisos));
   },
 
   piso(id) {

@@ -14,10 +14,7 @@ const Cards = {
     const grade = document.getElementById(gradeId);
     document.getElementById(contId).textContent = itens.length === 1 ? "1 item" : `${itens.length} itens`;
     grade.innerHTML = itens.length ? itens.map(fn).join("") : `<p class="vazio">Nada encontrado com esses filtros.</p>`;
-    grade.querySelectorAll("[data-id]").forEach((c) => c.addEventListener("click", (ev) => {
-      if (ev.target.closest(".card-ver")) Vitrine.mostrar(c.dataset.id);
-      else Detalhe.abrir(c.dataset.id);
-    }));
+    grade.querySelectorAll("[data-id]").forEach((c) => c.addEventListener("click", () => Detalhe.abrir(c.dataset.id)));
   },
 
   preco(p) {
@@ -39,7 +36,6 @@ const Cards = {
         <img class="card-amb" src="${App.img.mini(amb, p.id)}" data-amb="${amb}" alt="${App.esc(p.nome)} em ${App.esc(App.nomeAmbiente[amb])}" loading="lazy" width="520" height="347">
         <img class="peca-mini" src="${App.img.peca(p.id)}" alt="" loading="lazy">
         ${Cards.selo(p)}
-        <button type="button" class="card-ver" title="Ver em destaque" aria-label="Ver ${App.esc(p.nome)} em destaque">⤢</button>
       </div>
       <div class="card-texto">
         <h3>${App.esc(p.nome)}</h3>
@@ -61,20 +57,6 @@ const Cards = {
         <p class="card-precos">${Cards.preco(p)}</p>
       </div>
     </article>`;
-  },
-
-  // Troca só a miniatura de ambiente (sem redesenhar a grade inteira).
-  trocarAmbiente() {
-    document.querySelectorAll("#grade-pisos .card").forEach((c) => {
-      const p = App.piso(c.dataset.id);
-      const amb = App.ambienteDo(p);
-      const img = c.querySelector(".card-amb");
-      if (img.dataset.amb !== amb) {
-        img.dataset.amb = amb;
-        img.src = App.img.mini(amb, p.id);
-        img.alt = `${p.nome} em ${App.nomeAmbiente[amb]}`;
-      }
-    });
   },
 };
 
