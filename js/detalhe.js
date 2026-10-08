@@ -12,6 +12,70 @@ const Detalhe = {
     });
   },
 
+  // Carrossel de ambientes que desliza para o lado (setas, abas, teclado e arrastar com o dedo).
+  carrossel(dlg, inicio) {
+    const caixa = dlg.querySelector(".amb-carrossel");
+    const trilho = caixa.querySelector(".amb-trilho");
+    const figs = [...trilho.children];
+    const abas = [...dlg.querySelectorAll(".abas-detalhe .aba")];
+    const n = figs.length;
+    let atual = 0;
+
+    const ir = (i, animar = true) => {
+      atual = Math.min(Math.max(i, 0), n - 1);
+      trilho.style.transition = animar ? "" : "none";
+      trilho.style.transform = `translateX(${-atual * 100}%)`;
+      // carrega a foto atual e as vizinhas
+      figs.forEach((f, k) => {
+        const img = f.querySelector("img");
+        if (!img.src && Math.abs(k - atual) <= 1) img.src = img.dataset.src;
+        f.setAttribute("aria-hidden", k !== atual);
+      });
+      abas.forEach((a, k) => a.setAttribute("aria-selected", k === atual));
+      if (abas[atual]) abas[atual].scrollIntoView({ block: "nearest", inline: "nearest" });
+      caixa.classList.toggle("na-peca", atual === 0);
+      const conta = caixa.querySelector(".amb-conta");
+      if (conta) conta.textContent = `${atual + 1} / ${n}`;
+      const ant = caixa.querySelector(".seta-ant"), prox = caixa.querySelector(".seta-prox");
+      if (ant) ant.disabled = atual === 0;
+      if (prox) prox.disabled = atual === n - 1;
+    };
+
+    abas.forEach((a) => a.addEventListener("click", () => ir(+a.dataset.i)));
+    const ant = caixa.querySelector(".seta-ant"), prox = caixa.querySelector(".seta-prox");
+    if (ant) ant.addEventListener("click", () => ir(atual - 1));
+    if (prox) prox.addEventListener("click", () => ir(atual + 1));
+    dlg.onkeydown = (ev) => {
+      if (ev.target.closest("input")) return;
+      if (ev.key === "ArrowLeft") ir(atual - 1);
+      if (ev.key === "ArrowRight") ir(atual + 1);
+    };
+
+    // arrastar: a foto acompanha o dedo e solta na mais próxima
+    let x0 = null, dx = 0;
+    trilho.addEventListener("pointerdown", (ev) => {
+      if (n < 2) return;
+      x0 = ev.clientX; dx = 0;
+      trilho.setPointerCapture(ev.pointerId);
+      trilho.style.transition = "none";
+    });
+    trilho.addEventListener("pointermove", (ev) => {
+      if (x0 === null) return;
+      dx = ev.clientX - x0;
+      trilho.style.transform = `translateX(calc(${-atual * 100}% + ${dx}px))`;
+    });
+    const soltar = () => {
+      if (x0 === null) return;
+      x0 = null;
+      const limite = trilho.clientWidth * 0.15;
+      ir(dx < -limite ? atual + 1 : dx > limite ? atual - 1 : atual);
+    };
+    trilho.addEventListener("pointerup", soltar);
+    trilho.addEventListener("pointercancel", soltar);
+
+    ir(inicio, false);
+  },
+
   abrir(id) {
     const p = App.piso(id);
     if (!p) return;
@@ -19,18 +83,35 @@ const Detalhe = {
     let amb = App.ambienteDo(p);
     const lugares = p.onde.map((o) => App.nomeLocal[o] || o);
 
-    const abas = p.ambientes.map((a) =>
-      `<button type="button" class="aba" data-amb="${a}" aria-selected="${a === amb}">${App.esc(App.nomeAmbiente[a])}</button>`).join("");
+    // 1º slide: a peça; depois, um slide por ambiente em que ela se aplica
+    const abas = `<button type="button" class="aba" data-i="0" aria-selected="true">Peça</button>` +
+      p.ambientes.map((a, i) =>
+        `<button type="button" class="aba" data-i="${i + 1}" aria-selected="false">${App.esc(App.nomeAmbiente[a])}</button>`).join("");
+    const slides = `
+      <figure class="amb-slide slide-peca">
+        <img data-src="${App.img.peca(p.id)}" alt="Peça ${App.esc(p.nome)}" draggable="false">
+      </figure>` + p.ambientes.map((a) => `
+      <figure class="amb-slide">
+        <img data-src="${App.img.grande(a, p.id)}" alt="${App.esc(p.nome)} em ${App.esc(App.nomeAmbiente[a])}" width="1280" height="853" draggable="false">
+        <figcaption>${App.esc(App.nomeAmbiente[a])}</figcaption>
+      </figure>`).join("");
+    const varios = p.ambientes.length > 1;
 
     dlg.innerHTML = `
       <div class="detalhe-conteudo">
         <button type="button" class="fechar" aria-label="Fechar">×</button>
         <div class="detalhe-fotos">
           ${amb
-            ? `<img id="detalhe-img" src="${App.img.grande(amb, p.id)}" alt="${App.esc(p.nome)} em ${App.esc(App.nomeAmbiente[amb])}" width="1280" height="853">
+            ? `<div class="amb-carrossel" aria-roledescription="carrossel" aria-label="Ambientes onde ${App.esc(p.nome)} se aplica">
+                 <div class="amb-trilho">${slides}</div>
+                 <button type="button" class="seta seta-ant" aria-label="Foto anterior">‹</button>
+                 <button type="button" class="seta seta-prox" aria-label="Próxima foto">›</button>
+                 <span class="amb-conta"></span>
+                 <span class="amb-dica">Veja nos ambientes ›</span>
+               </div>
+               <p class="amb-titulo">Aplica-se em ${p.ambientes.length} ambiente${varios ? "s" : ""}</p>
                <div class="abas abas-detalhe">${abas}</div>`
-            : ""}
-          <img class="detalhe-peca ${amb ? "" : "sozinha"}" src="${App.img.peca(p.id)}" alt="Peça ${App.esc(p.nome)}">
+            : `<img class="detalhe-peca sozinha" src="${App.img.peca(p.id)}" alt="Peça ${App.esc(p.nome)}">`}
         </div>
         <div class="detalhe-info">
           <p class="vitrine-marca">${App.esc(p.fabricante)} · ${App.esc(p.tipo)}</p>
@@ -66,11 +147,7 @@ const Detalhe = {
       </div>`;
 
     dlg.querySelector(".fechar").addEventListener("click", () => dlg.close());
-    dlg.querySelectorAll(".abas-detalhe .aba").forEach((b) => b.addEventListener("click", () => {
-      amb = b.dataset.amb;
-      dlg.querySelector("#detalhe-img").src = App.img.grande(amb, p.id);
-      dlg.querySelectorAll(".abas-detalhe .aba").forEach((x) => x.setAttribute("aria-selected", x === b));
-    }));
+    if (amb) Detalhe.carrossel(dlg, 0);
 
     const link = location.href.split("#")[0] + "#" + encodeURIComponent(p.id);
     let m2Pedido = null;

@@ -709,34 +709,122 @@ h1, h2, h3 {
   background: #f0f2f1;
 }
 
-#detalhe-img {
+.amb-carrossel {
+  position: relative;
+  overflow: hidden;
+  background: #e8ebe9;
+}
+
+.amb-trilho {
+  display: flex;
+  transition: transform 0.45s ease;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.amb-trilho:active {
+  cursor: grabbing;
+}
+
+.amb-slide {
+  position: relative;
+  flex: 0 0 100%;
+  margin: 0;
+}
+
+.amb-slide img {
   width: 100%;
   height: auto;
   aspect-ratio: 3 / 2;
   object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.amb-slide figcaption {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 2.5rem 1rem 0.8rem;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  color: var(--branco);
+  font-weight: 700;
+  font-size: 1.1rem;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  pointer-events: none;
+}
+
+.amb-conta {
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  background: rgba(0, 0, 0, 0.5);
+  color: var(--branco);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-radius: 999px;
+  padding: 0.15rem 0.6rem;
+}
+
+/* 1º slide: a peça inteira, sem cortar, sobre fundo neutro */
+.slide-peca {
+  background: #f0f2f1;
+}
+
+.slide-peca img {
+  object-fit: contain;
+  padding: 1.25rem 1.25rem 3rem;
+}
+
+.amb-dica {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0.7rem;
+  white-space: nowrap;
+  background: var(--verde);
+  color: var(--branco);
+  font-size: 0.82rem;
+  font-weight: 700;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  opacity: 0;
+  transition: opacity 0.3s;
+  pointer-events: none;
+}
+
+.amb-carrossel.na-peca .amb-dica {
+  opacity: 1;
+}
+
+.amb-carrossel .seta:disabled {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.amb-titulo {
+  margin: 0;
+  padding: 0.7rem 0.75rem 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--verde);
 }
 
 .abas-detalhe {
-  padding: 0.5rem 0.75rem;
+  padding: 0.4rem 0.75rem 0.75rem;
+  scrollbar-width: none;
 }
 
-.detalhe-peca {
-  width: 30%;
-  max-width: 160px;
-  aspect-ratio: 1;
-  object-fit: cover;
-  margin: 0 0.75rem 0.75rem;
-  border-radius: 6px;
-  box-shadow: var(--sombra);
+.abas-detalhe::-webkit-scrollbar {
+  display: none;
 }
 
 .detalhe-peca.sozinha {
   width: 100%;
-  max-width: none;
-  aspect-ratio: auto;
-  margin: 0;
-  border-radius: 0;
-  box-shadow: none;
+  display: block;
 }
 
 .detalhe-info {
@@ -947,6 +1035,10 @@ h1, h2, h3 {
 
   .filtros-extra select {
     flex: 0 1 auto;
+  }
+
+  .abas-detalhe {
+    flex-wrap: wrap;
   }
 
   .detalhe {
