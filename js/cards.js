@@ -1,20 +1,56 @@
 /* Grade de produtos (pisos e revestimentos). */
 
+const POR_PAGINA = 12;   // cards por página (3 fileiras de 4 no computador)
+
 const Cards = {
+  listas: {},   // itens filtrados de cada seção
+  paginas: {},  // página atual de cada seção
+
+  // Chamado a cada mudança de filtro: volta para a página 1.
   desenhar(lista) {
     const pisos = lista.filter((p) => p.ambientes.length);
     const revest = lista.filter((p) => !p.ambientes.length);
-    Cards.preencher("grade-pisos", "contagem-pisos", pisos, Cards.cardPiso);
-    Cards.preencher("grade-revestimentos", "contagem-revestimentos", revest, Cards.cardRevest);
+    Cards.listas = { pisos, revestimentos: revest };
+    Cards.paginas = { pisos: 1, revestimentos: 1 };
+    Cards.pagina("pisos");
+    Cards.pagina("revestimentos");
     document.getElementById("revestimentos").hidden = !revest.length;
     document.getElementById("pisos").hidden = !pisos.length && revest.length > 0;
   },
 
-  preencher(gradeId, contId, itens, fn) {
-    const grade = document.getElementById(gradeId);
-    document.getElementById(contId).textContent = itens.length === 1 ? "1 item" : `${itens.length} itens`;
-    grade.innerHTML = itens.length ? itens.map(fn).join("") : `<p class="vazio">Nada encontrado com esses filtros.</p>`;
+  // Desenha a página atual de uma seção ("pisos" ou "revestimentos").
+  pagina(secao) {
+    const itens = Cards.listas[secao];
+    const total = Math.max(1, Math.ceil(itens.length / POR_PAGINA));
+    const n = Math.min(Math.max(Cards.paginas[secao], 1), total);
+    Cards.paginas[secao] = n;
+    const fatia = itens.slice((n - 1) * POR_PAGINA, n * POR_PAGINA);
+    const fn = secao === "pisos" ? Cards.cardPiso : Cards.cardRevest;
+
+    document.getElementById(`contagem-${secao}`).textContent = itens.length === 1 ? "1 item" : `${itens.length} itens`;
+    const grade = document.getElementById(`grade-${secao}`);
+    grade.innerHTML = fatia.length ? fatia.map(fn).join("") : `<p class="vazio">Nada encontrado com esses filtros.</p>`;
     grade.querySelectorAll("[data-id]").forEach((c) => c.addEventListener("click", () => Detalhe.abrir(c.dataset.id)));
+
+    const nav = document.getElementById(`paginas-${secao}`);
+    nav.innerHTML = total > 1 ? Cards.botoes(n, total) : "";
+    nav.querySelectorAll("[data-pag]").forEach((b) => b.addEventListener("click", () => {
+      Cards.paginas[secao] = +b.dataset.pag;
+      Cards.pagina(secao);
+      document.getElementById(secao).scrollIntoView({ behavior: "smooth", block: "start" });
+    }));
+  },
+
+  // ‹ Anterior  1 … 4 5 6 … 12  Próxima ›
+  botoes(n, total) {
+    const nums = [...new Set([1, n - 1, n, n + 1, total])].filter((k) => k >= 1 && k <= total).sort((a, b) => a - b);
+    let html = `<button type="button" class="pag pag-seta" data-pag="${n - 1}" ${n === 1 ? "disabled" : ""} aria-label="Página anterior">‹ <span>Anterior</span></button>`;
+    nums.forEach((k, i) => {
+      if (i && k - nums[i - 1] > 1) html += `<span class="pag-reti">…</span>`;
+      html += `<button type="button" class="pag" data-pag="${k}" ${k === n ? 'aria-current="page"' : ""} aria-label="Página ${k}">${k}</button>`;
+    });
+    html += `<button type="button" class="pag pag-seta" data-pag="${n + 1}" ${n === total ? "disabled" : ""} aria-label="Próxima página"><span>Próxima</span> ›</button>`;
+    return html;
   },
 
   preco(p) {

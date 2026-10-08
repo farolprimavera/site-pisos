@@ -510,6 +510,63 @@ h1, h2, h3 {
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr));
 }
 
+/* rolar até a seção sem ficar escondido atrás da barra de filtros */
+#pisos,
+#revestimentos {
+  scroll-margin-top: 7.5rem;
+}
+
+.paginas {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.paginas:empty {
+  display: none;
+}
+
+.pag {
+  min-width: 2.5rem;
+  height: 2.5rem;
+  padding: 0 0.7rem;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--branco);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.pag:hover:not(:disabled) {
+  border-color: var(--verde);
+  color: var(--verde);
+}
+
+.pag[aria-current="page"] {
+  background: var(--verde);
+  border-color: var(--verde);
+  color: var(--branco);
+}
+
+.pag:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.pag-reti {
+  color: var(--suave);
+  padding: 0 0.15rem;
+}
+
+@media (max-width: 480px) {
+  .pag-seta span {
+    display: none;
+  }
+}
+
 .vazio {
   color: var(--suave);
 }
@@ -768,16 +825,104 @@ h1, h2, h3 {
 /* ---------- Rodapé ---------- */
 
 .rodape {
-  margin-top: 2rem;
-  padding: 1.5rem 1rem 2rem;
-  font-size: 0.85rem;
-  text-align: center;
-  color: var(--suave);
-  border-top: 1px solid var(--linha);
+  margin-top: 2.5rem;
+  background: var(--verde);
+  color: var(--branco);
+  border-top: 3px solid var(--verde-linha);
 }
 
-.rodape p {
-  margin: 0.25rem 0;
+.rodape-conteudo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr));
+  gap: 1.5rem;
+}
+
+.rodape h2 {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--verde-linha);
+  margin-bottom: 0.4rem;
+}
+
+.rodape-bloco p {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.rodape a {
+  color: var(--branco);
+}
+
+.rodape svg {
+  width: 1.5rem;
+  height: 1.5rem;
+  fill: currentColor;
+  flex: none;
+}
+
+.rodape-whats {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.rodape-whats span {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
+.rodape-whats small {
+  font-weight: 500;
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+
+.rodape-whats:hover small {
+  text-decoration: underline;
+}
+
+.redes {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 0.6rem;
+}
+
+.redes a {
+  display: grid;
+  place-items: center;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  transition: background 0.15s;
+}
+
+.redes a:hover,
+.redes a:focus-visible {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+.rodape-avisos {
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 1rem 1rem 1.5rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.rodape-avisos p {
+  margin: 0.2rem 0;
 }
 
 /* ---------- Telas maiores ---------- */

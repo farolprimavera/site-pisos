@@ -298,7 +298,7 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
 - Faltam fotos de 8 produtos:
   - Cedasa: HD 1743 57x57, Luxor Blanc, Lyon Brilho e RTGC0115.
   - Rocha: HD 70442, 70622, 70861 e 70952.
-- Preencher o número do WhatsApp.
+- ~~Preencher o número do WhatsApp~~ (feito: 55 21 2776-3391, em `js/app.js` e no rodapé).
 
 ---
 

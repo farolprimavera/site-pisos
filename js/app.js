@@ -1,7 +1,8 @@
 /* Inicialização, estado e leitura de dados. */
 
-// Número do WhatsApp para "Pedir orçamento" (ex.: "5585999999999"). Vazio = botão escondido.
-const WHATSAPP = "";
+// Número do WhatsApp para "Pedir orçamento" (55 + DDD + número). Vazio = botão escondido.
+// O mesmo número está no link do rodapé (index.html).
+const WHATSAPP = "552127763391";
 
 // Desconto mínimo (sobre o preço a prazo) para virar "super oferta".
 const SUPER_OFERTA = 0.3;

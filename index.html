@@ -34,6 +34,7 @@
         <span class="contagem" id="contagem-pisos"></span>
       </div>
       <div id="grade-pisos" class="grade"></div>
+      <nav class="paginas" id="paginas-pisos" aria-label="Páginas de pisos"></nav>
     </section>
 
     <!-- 3b. Revestimentos de parede: só foto da peça (js/cards.js) -->
@@ -43,6 +44,7 @@
         <span class="contagem" id="contagem-revestimentos"></span>
       </div>
       <div id="grade-revestimentos" class="grade grade-revest"></div>
+      <nav class="paginas" id="paginas-revestimentos" aria-label="Páginas de revestimentos"></nav>
     </section>
   </main>
 
@@ -50,9 +52,40 @@
   <dialog id="detalhe" class="detalhe"></dialog>
 
   <footer class="rodape">
-    <p>Preços por m², sujeitos a alteração sem aviso prévio e válidos enquanto durar o estoque.</p>
-    <p>As simulações são ilustrativas; cores e tonalidades podem variar conforme a tela e o lote.</p>
-    <p id="atualizado"></p>
+    <div class="rodape-conteudo">
+      <div class="rodape-bloco">
+        <h2>Endereço</h2>
+        <p>Av. Jornalista Moacir Padilha, 351</p>
+      </div>
+      <div class="rodape-bloco">
+        <h2>Horário</h2>
+        <p>Segunda a sábado, das 8h às 18h</p>
+      </div>
+      <div class="rodape-bloco">
+        <h2>Atendimento</h2>
+        <!-- mesmo número de WHATSAPP em js/app.js -->
+        <a class="rodape-whats" href="https://wa.me/552127763391" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 0 0-8.6 15.1L2 22l5-1.3A10 10 0 1 0 12 2zm0 18.2c-1.6 0-3.1-.4-4.4-1.2l-.3-.2-3 .8.8-2.9-.2-.3A8.2 8.2 0 1 1 12 20.2zm4.5-6.1c-.2-.1-1.5-.7-1.7-.8-.2-.1-.4-.1-.6.1l-.8 1c-.1.2-.3.2-.5.1a6.7 6.7 0 0 1-3.3-2.9c-.3-.4.2-.4.7-1.3.1-.2 0-.3 0-.4l-.8-1.8c-.2-.5-.4-.4-.6-.4h-.5c-.2 0-.4.1-.7.3-.2.2-.9.9-.9 2.2s.9 2.6 1.1 2.7c.1.2 1.8 2.8 4.4 3.9 1.6.7 2.3.8 3.1.6.5-.1 1.5-.6 1.7-1.2.2-.6.2-1.1.1-1.2l-.7-.3z"/></svg>
+          <span>(21) 2776-3391<small>Chamar no WhatsApp</small></span>
+        </a>
+      </div>
+      <div class="rodape-bloco">
+        <h2>Redes sociais</h2>
+        <ul class="redes">
+          <li><a href="https://www.instagram.com/faroldaprimavera/" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.3" cy="6.7" r="1.2"/></svg></a></li>
+          <li><a href="https://www.facebook.com/FarolDaPrimavera/" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-8.2h2.8l.4-3.2h-3.2V8.5c0-.9.3-1.6 1.6-1.6h1.7V4.1c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.3v3.2h2.8V22h3.4z"/></svg></a></li>
+          <li><a href="https://www.tiktok.com/@faroldaprimavera" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16.6 5.8A4.3 4.3 0 0 1 15.5 3h-3.3v12.4a2.6 2.6 0 1 1-2.6-2.6c.3 0 .5 0 .8.1V9.5a6 6 0 1 0 5.1 5.9V9.1a7.4 7.4 0 0 0 4.3 1.4V7.2c-1 0-2.5-.5-3.2-1.4z"/></svg></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="rodape-avisos">
+      <p>Preços por m², sujeitos a alteração sem aviso prévio e válidos enquanto durar o estoque.</p>
+      <p>As simulações são ilustrativas; cores e tonalidades podem variar conforme a tela e o lote.</p>
+      <p id="atualizado"></p>
+    </div>
   </footer>
 
   <!-- Ordem importa. Sem type="module" para abrir via file:// -->
