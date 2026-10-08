@@ -39,8 +39,6 @@ const App = {
     App.nomeAmbiente = Object.fromEntries((App.dados.ambientes || []).map((a) => [a.id, a.nome]));
     App.nomeLocal = Object.fromEntries((App.dados.locais || []).map((l) => [l.id, l.nome]));
 
-    const total = App.dados.pisos.length;
-    document.getElementById("topo-info").textContent = `${total} produtos em estoque`;
     if (App.dados.atualizado) {
       document.getElementById("atualizado").textContent = `Preços atualizados em ${App.dados.atualizado}.`;
     }

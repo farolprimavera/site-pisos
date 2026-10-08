@@ -66,7 +66,7 @@ h1, h2, h3 {
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: 0.9rem;
+  justify-content: center;
 }
 
 .marca {
@@ -79,37 +79,9 @@ h1, h2, h3 {
   width: auto;
 }
 
-.topo-titulo {
-  display: flex;
-  flex-direction: column;
-  border-left: 2px solid var(--linha);
-  padding-left: 0.9rem;
-  min-width: 0;
-}
-
-.marca-sub {
-  color: var(--verde);
-  font-weight: 800;
-  font-size: 1.05rem;
-  line-height: 1.15;
-}
-
-.topo-info {
-  font-size: 0.82rem;
-  color: var(--suave);
-}
-
 @media (min-width: 720px) {
   .marca img {
     height: 72px;
-  }
-
-  .marca-sub {
-    font-size: 1.35rem;
-  }
-
-  .topo-info {
-    font-size: 0.9rem;
   }
 }
 
