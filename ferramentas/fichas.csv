@@ -1,0 +1,182 @@
+chave;local_uso;externo;parede;acabamento;estilo;fonte
+ALFAGRES|3001|31x60;LC;0;1;Brilhante;Liso;site Alfagrês (1 e 3)
+ALFAGRES|3006|31x60;LC;0;1;Acetinado;Liso;site Alfagrês (1 e 3)
+ALFAGRES|45403|45x45;LC;0;0;Brilhante;Madeira;site Alfagrês (3)
+ALFAGRES|45405|45x45;LC;0;1;Brilhante;Madeira;site Alfagrês (3)
+ALFAGRES|45414|45x45;LC;0;1;Brilhante;Madeira;site Alfagrês (3)
+ALFAGRES|45416|45x45;LC;0;1;Brilhante;Madeira;site Alfagrês (3)
+ALFAGRES|45418|45x45;LD;0;1;Brilhante;Madeira;site Alfagrês (4)
+ALFAGRES|45500|45x45;LD;1;0;Brilhante;Liso;site Alfagrês (5, int/ext)
+ALFAGRES|45501|45x45;LD;1;0;Brilhante;Liso;site Alfagrês (5, int/ext)
+ALFAGRES|45502|45x45;LD;1;0;Brilhante;Liso;site Alfagrês (5, int/ext)
+ALFAGRES|45700|45x45;LD;1;0;Rústico;Pedra;site Alfagrês (4, externo)
+ALFAGRES|45801|45x45;LD;1;0;Acetinado;Liso;site Alfagrês (4, int/ext)
+ALFAGRES|45805|45x45;LD;1;0;Acetinado;Pedra;site Alfagrês (4, int/ext)
+ALFAGRES|45901|45x45;LD;0;0;Brilhante;Liso;site Alfagrês (4)
+ALFAGRES|45902|45x45;LB;0;1;Brilhante;Liso;site Alfagrês (2)
+ALFAGRES|45903|45x45;LD;0;1;Brilhante;Liso;site Alfagrês (4)
+ALFAGRES|45920|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|501|31x31;LD;1;1;Brilhante;Liso;site Alfagrês (5, int/ext)
+ALFAGRES|AFRESCO NUDE|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|AFRESCO TEA|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|ANGELIN NOCE ARBE|15x60;LC;0;1;Acetinado;Madeira;site Alfagrês (1 e 3)
+ALFAGRES|APUANO|45x45;LD;0;0;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|AVENTURINA|45x45;LD;0;0;Brilhante;Mármore;SUPOSTO (linha marmorizada 45x45 = 4)
+ALFAGRES|BRECCIA|45x45;LD;0;0;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|CALACATA GOLD|31x60;LC;0;1;Brilhante;Mármore;site Alfagrês (1 e 3)
+ALFAGRES|CALACATA GOLD|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|CALACATA GRIS|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|CALCARIO GRIS|31x60;LA;0;1;Relevo;Pedra;site Alfagrês (1)
+ALFAGRES|CALCARIO|31x60;LA;0;1;Relevo;Pedra;site Alfagrês (1, Calcário Beige)
+ALFAGRES|CALCIS BLACK|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|CALCIS BROWN|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|CALCIS GREEN|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|CALCIS WHITE|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|CALCIS|31x60;LA;0;1;Relevo;Decorado;SUPOSTO (linha Cálcis = 1)
+ALFAGRES|CAPEL BIANCO|15x60;LC;0;1;Relevo;Madeira;site Alfagrês (1 e 3)
+ALFAGRES|CLASSIC 3080|31x60;LC;0;1;Brilhante;Mármore;site Alfagrês (Classic, 1 e 3)
+ALFAGRES|CLASSIC ARBE|31x60;LC;0;1;Brilhante;Mármore;site Alfagrês (Classic, 1 e 3)
+ALFAGRES|CRISTAL|56x56;LD;1;1;Acetinado;Mármore;site Alfagrês (4, int/ext)
+ALFAGRES|DAYANO CHIARO|56x56;LD;0;0;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|DUNAS BEIGE|31x60;LC;0;1;Brilhante;Mármore;site Alfagrês (1 e 3)
+ALFAGRES|DUNAS|31x60;LC;0;1;Brilhante;Mármore;site Alfagrês (1 e 3)
+ALFAGRES|HD ARIZON SAND|56x56;LD;1;0;Rústico;Pedra;site Alfagrês (5, int/ext)
+ALFAGRES|HD ARIZONA BROWN|56x56;LD;1;0;Rústico;Pedra;site Alfagrês (Arizon Brown 4, externo)
+ALFAGRES|IPE BROWN|15x60;LC;0;1;Acetinado;Madeira;SUPOSTO (linha 15x60 = 1 e 3)
+ALFAGRES|KILAUEA|45x45;LD;1;1;Acetinado;Mármore;site Alfagrês (4, int/ext)
+ALFAGRES|LARCH PATINA|15x60;LC;0;1;Acetinado;Madeira;site Alfagrês (1 e 3)
+ALFAGRES|LITHOS|45x45;LD;1;0;Rústico;Pedra;site Alfagrês (5, int/ext)
+ALFAGRES|MAGNOLIA WHITE|45x45;LD;0;1;Brilhante;Madeira;site Alfagrês (4)
+ALFAGRES|MARFIL ARBE|56x56;LD;0;0;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|MARFIL|31x60;LC;0;1;Brilhante;Mármore;site Alfagrês (3)
+ALFAGRES|MARMO GREY|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|MOCACCINO|45x45;LD;1;1;Acetinado;Mármore;site Alfagrês (4, int/ext)
+ALFAGRES|MURUS GRIS|31x60;LC;0;1;Acetinado;Decorado;site Alfagrês (1 e 3)
+ALFAGRES|MURUS|31x60;LC;0;1;Acetinado;Decorado;site Alfagrês (1 e 3)
+ALFAGRES|NATIVE|15x60;LC;0;1;Acetinado;Madeira;site Alfagrês (1 e 3)
+ALFAGRES|NAVONA BEIGE|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|NAVONA GRIGIO|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|ONIX BIANCO|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|OREGON NOCE|15x60;LC;0;1;Acetinado;Madeira;SUPOSTO (linha 15x60 = 1 e 3)
+ALFAGRES|PALAZZO BEIGE|31x60;LC;0;1;Brilhante;Mármore;site Alfagrês (1 e 3)
+ALFAGRES|PENEDO|45x45;LD;1;0;Rústico;Pedra;site Alfagrês (5, externo)
+ALFAGRES|PINUS BEIGE ARBE|15x60;LC;0;1;Acetinado;Madeira;SUPOSTO (linha 15x60 = 1 e 3)
+ALFAGRES|PULPIS BRONZE|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|PULPIS GRIS|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+ALFAGRES|SAO TOME|45x45;LD;1;0;Rústico;Pedra;site Alfagrês (4, externo)
+ALFAGRES|SONORA ARBE|45x45;LD;1;1;Acetinado;Pedra;site Alfagrês (4, int/ext)
+ALFAGRES|TIMBRE BLUE|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|TIMBRE ICE|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|TIMBRE IRON|31x60;LA;0;1;Relevo;Decorado;site Alfagrês (1)
+ALFAGRES|VENATO BEIGE|45x45;LD;0;1;Brilhante;Mármore;site Alfagrês (4)
+CEDASA|2099|32x57;LA;0;1;Relevo;Decorado;SUPOSTO (revestimento 31,5x57)
+CEDASA|380 007|38x74;LC;0;0;Brilhante;Madeira;SUPOSTO
+CEDASA|ALAMEDA PECAN|76x76;LD;0;0;Acetinado;Madeira;SUPOSTO (linha 75,5 acetinado = LD)
+CEDASA|ATHENAS CINZA RUSTICO|76x76;LD;0;0;Rústico;Pedra;catálogo Cedasa
+CEDASA|BELIZE|39x76;LA;0;1;Relevo;Decorado;SUPOSTO (revestimento 3D)
+CEDASA|BELLASTONE POLIDO|74x74;LC;0;0;Polido;Cimento;SUPOSTO (linha polido 74,5 = LC)
+CEDASA|BLUE BELLE POLIDO|56x113;LC;0;0;Polido;Mármore;catálogo Cedasa
+CEDASA|CALACATA GOLD MATTE|76x76;LD;0;0;Acetinado;Mármore;site Cedasa
+CEDASA|CALACATA MATTE|76x76;LD;0;0;Acetinado;Mármore;site Cedasa
+CEDASA|CALACATA ORO POLIDO|56x56;LC;0;0;Polido;Mármore;site Cedasa
+CEDASA|CANJIQUINHA|32x58;LA;0;1;Rústico;Pedra;site Cedasa
+CEDASA|CARRARA POLIDO|56x56;LC;0;0;Polido;Mármore;SUPOSTO (linha polido 56,2 = LC)
+CEDASA|CARVALHO SLIM|18x113;LD;0;0;Acetinado;Madeira;SUPOSTO
+CEDASA|CARVALHO SLIM|18x114;LD;0;0;Acetinado;Madeira;SUPOSTO
+CEDASA|CHIARO POLIDO|74x74;LC;0;0;Polido;Madeira;site Cedasa
+CEDASA|CHIARO|75x75;LD;0;0;Acetinado;Madeira;site Cedasa
+CEDASA|CIMENTO BRILHO|56x56;LC;0;0;Brilhante;Cimento;site Cedasa
+CEDASA|CIMENTO BRILHO|57x57;LC;0;0;Brilhante;Cimento;site Cedasa
+CEDASA|CITTA MATTE|76x76;LD;0;0;Acetinado;Cimento;catálogo Cedasa
+CEDASA|COTTO|76x76;LD;0;0;Acetinado;Liso;SUPOSTO (linha 75,5 acetinado = LD)
+CEDASA|CUMARU SOFT|56x113;LA;0;1;Acetinado;Madeira;catálogo Cedasa
+CEDASA|EVEREST BIZOTE|32x58;LA;0;1;Brilhante;Liso;site Cedasa
+CEDASA|FILETADO BEGE|39x76;LA;0;1;Rústico;Pedra;site Cedasa
+CEDASA|FIORELLA|32x58;LA;0;1;Brilhante;Decorado;catálogo Cedasa
+CEDASA|HD 1701|58x58;LD;0;0;Acetinado;Madeira;catálogo Cedasa
+CEDASA|HD 1720|58x58;LE;1;0;Rústico;Madeira;catálogo Cedasa
+CEDASA|HD 1729|58x58;LB;0;0;Brilhante;Mármore;catálogo Cedasa
+CEDASA|HD 1732|58x58;LB;0;0;Brilhante;Pedra;catálogo Cedasa
+CEDASA|HD 1743|56x56;LD;0;0;Acetinado;Cimento;catálogo Cedasa (RT 1743)
+CEDASA|HD 1743|57x57;LD;0;0;Acetinado;Cimento;catálogo Cedasa (RT 1743)
+CEDASA|HD 1743|58x58;LD;0;0;Acetinado;Cimento;catálogo Cedasa
+CEDASA|HD 1749|58x58;LE;1;0;Rústico;Pedra;catálogo Cedasa
+CEDASA|HD 1753|58x58;LB;0;0;Brilhante;Mármore;catálogo Cedasa
+CEDASA|HD 1761|58x58;LC;0;0;Brilhante;Decorado;SUPOSTO
+CEDASA|HD 1765|58x58;LD;0;0;Acetinado;Cimento;catálogo Cedasa
+CEDASA|HD 1769|58x58;LC;0;0;Brilhante;Mármore;catálogo Cedasa
+CEDASA|HD 1778|58x58;LD;0;0;Acetinado;Pedra;catálogo Cedasa (gotejado)
+CEDASA|HD 1791|58x58;LC;0;0;Brilhante;Pedra;SUPOSTO
+CEDASA|HD 1793|57x57;LE;1;0;Rústico;Pedra;catálogo Cedasa
+CEDASA|HD 1799|58x58;LE;1;0;Rústico;Pedra;catálogo Cedasa
+CEDASA|HD 1826|57x57;LD;0;0;Acetinado;Cimento;catálogo Cedasa
+CEDASA|HD 2023|32x58;LA;0;1;Brilhante;Decorado;SUPOSTO (revestimento HD 20xx)
+CEDASA|HD 2119|32x58;LA;0;1;Brilhante;Decorado;SUPOSTO (revestimento HD 21xx)
+CEDASA|HD ARIA MATTE|76x76;LD;0;0;Acetinado;Mármore;site Cedasa
+CEDASA|HD CEPPO GRIGIO RUSTI|76x76;LD;0;0;Rústico;Pedra;SUPOSTO (rústico 75,5 = LD)
+CEDASA|HD NAVONA MATTE|76x76;LD;0;0;Acetinado;Madeira;site Cedasa
+CEDASA|HD SIVEC GRIGIO MATTE|75x75;LD;0;0;Acetinado;Mármore;site Cedasa
+CEDASA|ICE POLIDO|38x74;LC;0;0;Polido;Liso;site Cedasa
+CEDASA|ICE|39x76;LC;0;0;Brilhante;Liso;site Cedasa
+CEDASA|IMENT CARRARA BRANCO|32x58;LA;0;1;Brilhante;Mármore;site Cedasa (Carrara Branco)
+CEDASA|LIVERPOOL MATTE|76x76;LD;0;0;Acetinado;Mármore;site Cedasa
+CEDASA|LUSTRA POLIDO|56x113;LC;0;0;Polido;Mármore;catálogo Cedasa
+CEDASA|LUXOR BLACK|32x58;LA;0;1;Brilhante;Decorado;catálogo Cedasa
+CEDASA|LUXOR BLANC|32x57;LA;0;1;Brilhante;Decorado;catálogo Cedasa
+CEDASA|LUXOR DECOR|32x58;LA;0;1;Brilhante;Decorado;catálogo Cedasa
+CEDASA|LYON BRILHO|39x76;LA;0;1;Brilhante;Decorado;SUPOSTO
+CEDASA|MATTONE|39x76;LA;0;1;Rústico;Pedra;site Cedasa
+CEDASA|NERO POLIDO|74x74;LC;0;0;Polido;Mármore;site Cedasa
+CEDASA|OLIMPO POLIDO|56x113;LC;0;0;Polido;Mármore;catálogo Cedasa
+CEDASA|PALAZZO POLIDO|74x74;LC;0;0;Polido;Liso;catálogo Cedasa (Palazzo 74,5 = LC)
+CEDASA|PIEMONTE POLIDO|74x74;LC;0;0;Polido;Liso;catálogo Cedasa
+CEDASA|PULPIS BEGE POLIDO|56x56;LC;0;0;Polido;Mármore;SUPOSTO (linha polido 56,2 = LC)
+CEDASA|REALCE CINZA POLIDO|74x74;LC;0;0;Polido;Mármore;catálogo Cedasa
+CEDASA|ROYAL BEGE MATTE|76x76;LD;0;0;Acetinado;Mármore;SUPOSTO (linha 75,5 acetinado = LD)
+CEDASA|RTGC0115|31x56;LA;0;1;Brilhante;Decorado;SUPOSTO
+CEDASA|SILVER ROOTS|56x113;LA;0;1;Relevo;Decorado;catálogo Cedasa
+CEDASA|SOFT CREMA MATTE|75x75;LD;0;0;Acetinado;Mármore;SUPOSTO (linha 75,5 acetinado = LD)
+CEDASA|SOFT CREMA MATTE|76x76;LD;0;0;Acetinado;Mármore;SUPOSTO (linha 75,5 acetinado = LD)
+CEDASA|SOLO POLIDO|56x56;LC;0;0;Polido;Cimento;SUPOSTO (linha polido 56,2 = LC)
+CEDASA|STYLO MATTE|39x76;LA;0;1;Relevo;Decorado;SUPOSTO (revestimento 3D)
+CEDASA|VIA LACTEA POLIDO|56x113;LC;0;0;Polido;Mármore;catálogo Cedasa
+CEDASA|WOOD CUBE|39x76;LA;0;1;Brilhante;Decorado;SUPOSTO
+CEDASA|ZALLA BEGE|76x76;LD;0;0;Rústico;Pedra;site Cedasa
+CEDASA|ZALLA CINZA|76x76;LD;0;0;Rústico;Pedra;site Cedasa
+ROCHAFORTE|40012|40x75;LA;0;1;Relevo;Decorado;site Rocha (linha R40 decorados = LA)
+ROCHAFORTE|40042|40x75;LA;0;1;Relevo;Decorado;site Rocha (linha R40 decorados = LA)
+ROCHAFORTE|40372|38x74;LA;0;1;Relevo;Decorado;site Rocha (R4037)
+ROCHAFORTE|40622|38x74;LA;0;1;Relevo;Decorado;site Rocha (R4062)
+ROCHAFORTE|40632|38x74;LA;0;1;Relevo;Decorado;SUPOSTO (linha R40 decorados = LA)
+ROCHAFORTE|40642|38x74;LA;0;1;Relevo;Decorado;SUPOSTO (linha R40 decorados = LA)
+ROCHAFORTE|40652|38x74;LA;0;1;Relevo;Decorado;SUPOSTO (linha R40 decorados = LA)
+ROCHAFORTE|BIANCO SUPREME|82x82;LC;0;0;Polido;Mármore;site Rocha
+ROCHAFORTE|CINZA URBANO|70x70;LE;1;0;Rústico;Pedra;site Rocha (Safe Step, uso externo)
+ROCHAFORTE|HD 70011|70x70;LD;0;0;Brilhante;Liso;site Rocha (R7001)
+ROCHAFORTE|HD 70012|70x70;LD;0;0;Brilhante;Liso;site Rocha (R7001)
+ROCHAFORTE|HD 70022|70x70;LC;0;0;Brilhante;Mármore;SUPOSTO
+ROCHAFORTE|HD 70072|70x70;LE;1;0;Rústico;Pedra;site Rocha (R7007)
+ROCHAFORTE|HD 70082|70x70;LE;1;0;Rústico;Pedra;site Rocha (R7008)
+ROCHAFORTE|HD 70092|70x70;LC;0;0;Acetinado;Madeira;site Rocha (R7009)
+ROCHAFORTE|HD 70132|70x70;LE;1;0;Rústico;Pedra;site Rocha (R7013)
+ROCHAFORTE|HD 70141|70x70;LD;0;0;Brilhante;Mármore;site Rocha (R7014)
+ROCHAFORTE|HD 70182|70x70;LE;1;0;Rústico;Madeira;site Rocha (R7018, Safe Step)
+ROCHAFORTE|HD 70312|70x70;LC;0;0;Polido;Mármore;site Rocha (PR7031)
+ROCHAFORTE|HD 70372|70x70;LD;0;0;Brilhante;Mármore;site Rocha (R7037)
+ROCHAFORTE|HD 70412|70x70;LE;1;0;Rústico;Pedra;site Rocha (R7041)
+ROCHAFORTE|HD 70442|70x70;LC;0;0;Brilhante;Mármore;site Rocha (R7044)
+ROCHAFORTE|HD 70482|70x70;LC;0;0;Brilhante;Mármore;SUPOSTO
+ROCHAFORTE|HD 70502|70x70;LD;0;0;Brilhante;Pedra;site Rocha (R7050)
+ROCHAFORTE|HD 70602|70x70;LD;0;0;Acetinado;Cimento;site Rocha (R7060)
+ROCHAFORTE|HD 70622|70x70;LD;0;0;Brilhante;Mármore;site Rocha (R7062)
+ROCHAFORTE|HD 70632|70x70;LD;0;0;Acetinado;Mármore;site Rocha (R7063)
+ROCHAFORTE|HD 70742|70x70;LD;0;0;Acetinado;Mármore;site Rocha (R7074)
+ROCHAFORTE|HD 70752|70x70;LD;0;0;Acetinado;Mármore;site Rocha (R7075)
+ROCHAFORTE|HD 70792|70x70;LC;0;0;Brilhante;Pedra;SUPOSTO
+ROCHAFORTE|HD 70821|70x70;LC;0;0;Brilhante;Mármore;SUPOSTO
+ROCHAFORTE|HD 70861|70x70;LC;0;0;Brilhante;Liso;SUPOSTO
+ROCHAFORTE|HD 70892|70x70;LE;1;0;Rústico;Pedra;site Rocha (R7089)
+ROCHAFORTE|HD 70922|70x70;LD;0;0;Acetinado;Cimento;site Rocha (R7092)
+ROCHAFORTE|HD 70952|70x70;LC;0;0;Polido;Mármore;SUPOSTO (PR7095)
+ROCHAFORTE|HD ORO REALLE|82x82;LC;0;0;Polido;Mármore;site Rocha
+ROCHAFORTE|TERRA FIRME|70x70;LE;1;0;Rústico;Pedra;site Rocha (Safe Step, uso externo)

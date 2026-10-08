@@ -1,0 +1,850 @@
+{
+ "sala": {
+  "id": "sala",
+  "nome": "Sala",
+  "camera": {
+   "pf": [
+    818,
+    355
+   ],
+   "altura_cm": 105,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LB",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Rústico"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     520
+    ],
+    [
+     1536,
+     520
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    434.7,
+    578.0
+   ],
+   [
+    1201.3,
+    578.0
+   ],
+   [
+    1968.0,
+    1024.0
+   ],
+   [
+    -332.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 361.0,
+  "profundidade_cm": 361.0
+ },
+ "quarto": {
+  "id": "quarto",
+  "nome": "Quarto",
+  "camera": {
+   "pf": [
+    594,
+    240
+   ],
+   "altura_cm": 122,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LB",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Rústico"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     490
+    ],
+    [
+     1536,
+     490
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [
+    [
+     [
+      1000,
+      470
+     ],
+     [
+      1105,
+      470
+     ],
+     [
+      1134,
+      600
+     ],
+     [
+      1120,
+      662
+     ],
+     [
+      1050,
+      642
+     ],
+     [
+      1000,
+      620
+     ]
+    ]
+   ],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    210.7,
+    501.3
+   ],
+   [
+    977.3,
+    501.3
+   ],
+   [
+    1744.0,
+    1024.0
+   ],
+   [
+    -556.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 357.9,
+  "profundidade_cm": 357.9
+ },
+ "escritorio": {
+  "id": "escritorio",
+  "nome": "Escritório",
+  "camera": {
+   "pf": [
+    680,
+    305
+   ],
+   "altura_cm": 96,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LB",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Rústico"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     485
+    ],
+    [
+     1536,
+     485
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    296.7,
+    544.7
+   ],
+   [
+    1063.3,
+    544.7
+   ],
+   [
+    1830.0,
+    1024.0
+   ],
+   [
+    -470.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 307.1,
+  "profundidade_cm": 307.1
+ },
+ "cozinha": {
+  "id": "cozinha",
+  "nome": "Cozinha",
+  "camera": {
+   "pf": [
+    752,
+    233
+   ],
+   "altura_cm": 115,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LC",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Rústico"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     460
+    ],
+    [
+     1536,
+     460
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    368.7,
+    496.7
+   ],
+   [
+    1135.3,
+    496.7
+   ],
+   [
+    1902.0,
+    1024.0
+   ],
+   [
+    -398.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 334.4,
+  "profundidade_cm": 334.4
+ },
+ "banheiro": {
+  "id": "banheiro",
+  "nome": "Banheiro",
+  "camera": {
+   "pf": [
+    800,
+    290
+   ],
+   "altura_cm": 115,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LC",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Rústico",
+    "Polido"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     490
+    ],
+    [
+     1536,
+     490
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": [
+    [
+     [
+      0,
+      782
+     ],
+     [
+      352,
+      562
+     ],
+     [
+      420,
+      562
+     ],
+     [
+      420,
+      1024
+     ],
+     [
+      0,
+      1024
+     ]
+    ]
+   ]
+  },
+  "pontos": [
+   [
+    416.7,
+    534.7
+   ],
+   [
+    1183.3,
+    534.7
+   ],
+   [
+    1950.0,
+    1024.0
+   ],
+   [
+    -350.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 360.4,
+  "profundidade_cm": 360.4
+ },
+ "lavanderia": {
+  "id": "lavanderia",
+  "nome": "Lavanderia",
+  "camera": {
+   "pf": [
+    808,
+    176
+   ],
+   "altura_cm": 110,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LD",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Polido"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     480
+    ],
+    [
+     1536,
+     480
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    424.7,
+    458.7
+   ],
+   [
+    1191.3,
+    458.7
+   ],
+   [
+    1958.0,
+    1024.0
+   ],
+   [
+    -342.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 298.3,
+  "profundidade_cm": 298.3
+ },
+ "varanda": {
+  "id": "varanda",
+  "nome": "Varanda gourmet",
+  "camera": {
+   "pf": [
+    773,
+    288
+   ],
+   "altura_cm": 124,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LD",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Polido"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     490
+    ],
+    [
+     1536,
+     490
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    389.7,
+    533.3
+   ],
+   [
+    1156.3,
+    533.3
+   ],
+   [
+    1923.0,
+    1024.0
+   ],
+   [
+    -377.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 387.5,
+  "profundidade_cm": 387.5
+ },
+ "loja": {
+  "id": "loja",
+  "nome": "Loja",
+  "camera": {
+   "pf": [
+    700,
+    200
+   ],
+   "altura_cm": 140,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LD",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Rústico"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     370
+    ],
+    [
+     1536,
+     370
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    316.7,
+    474.7
+   ],
+   [
+    1083.3,
+    474.7
+   ],
+   [
+    1850.0,
+    1024.0
+   ],
+   [
+    -450.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 390.8,
+  "profundidade_cm": 390.8
+ },
+ "garagem": {
+  "id": "garagem",
+  "nome": "Garagem",
+  "camera": {
+   "pf": [
+    600,
+    235
+   ],
+   "altura_cm": 150,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LD",
+   "so_externo": false,
+   "sem_acabamento": [
+    "Polido",
+    "Brilhante"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     420
+    ],
+    [
+     1536,
+     420
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    216.7,
+    498.0
+   ],
+   [
+    983.3,
+    498.0
+   ],
+   [
+    1750.0,
+    1024.0
+   ],
+   [
+    -550.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 437.3,
+  "profundidade_cm": 437.3
+ },
+ "calcada": {
+  "id": "calcada",
+  "nome": "Calçada e entrada",
+  "camera": {
+   "pf": [
+    737,
+    120
+   ],
+   "altura_cm": 115,
+   "f": 1150
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LD",
+   "so_externo": true,
+   "sem_acabamento": [
+    "Polido",
+    "Brilhante"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     455
+    ],
+    [
+     1536,
+     455
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [],
+   "incluir": []
+  },
+  "pontos": [
+   [
+    353.7,
+    421.3
+   ],
+   [
+    1120.3,
+    421.3
+   ],
+   [
+    1887.0,
+    1024.0
+   ],
+   [
+    -413.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 292.6,
+  "profundidade_cm": 292.6
+ },
+ "quintal-piscina": {
+  "id": "quintal-piscina",
+  "nome": "Quintal e piscina",
+  "camera": {
+   "pf": [
+    667,
+    244
+   ],
+   "altura_cm": 155,
+   "f": 1100
+  },
+  "ppc": 6,
+  "regra": {
+   "minimo": "LD",
+   "so_externo": true,
+   "sem_acabamento": [
+    "Polido",
+    "Brilhante"
+   ],
+   "sem_estilo": []
+  },
+  "mascara": {
+   "poligono": [
+    [
+     0,
+     345
+    ],
+    [
+     1536,
+     345
+    ],
+    [
+     1536,
+     1024
+    ],
+    [
+     0,
+     1024
+    ]
+   ],
+   "excluir": [
+    [
+     [
+      235,
+      358
+     ],
+     [
+      1140,
+      358
+     ],
+     [
+      1140,
+      412
+     ],
+     [
+      235,
+      412
+     ]
+    ]
+   ],
+   "incluir": [],
+   "sementes": [
+    [
+     40,
+     1016
+    ],
+    [
+     160,
+     1016
+    ],
+    [
+     280,
+     1016
+    ],
+    [
+     400,
+     1016
+    ],
+    [
+     520,
+     1016
+    ],
+    [
+     640,
+     1016
+    ],
+    [
+     760,
+     1016
+    ],
+    [
+     880,
+     1016
+    ],
+    [
+     1000,
+     1016
+    ],
+    [
+     1120,
+     1016
+    ],
+    [
+     1240,
+     1016
+    ],
+    [
+     1360,
+     1016
+    ],
+    [
+     1480,
+     1016
+    ],
+    [
+     700,
+     460
+    ],
+    [
+     400,
+     470
+    ],
+    [
+     1000,
+     440
+    ],
+    [
+     1150,
+     480
+    ],
+    [
+     290,
+     395
+    ],
+    [
+     1160,
+     395
+    ],
+    [
+     1200,
+     370
+    ]
+   ]
+  },
+  "pontos": [
+   [
+    300.3,
+    504.0
+   ],
+   [
+    1033.7,
+    504.0
+   ],
+   [
+    1767.0,
+    1024.0
+   ],
+   [
+    -433.0,
+    1024.0
+   ]
+  ],
+  "largura_cm": 437.2,
+  "profundidade_cm": 437.2
+ }
+}

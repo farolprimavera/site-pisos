@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Pisos e Revestimentos · Farol da Primavera</title>
+  <meta name="description" content="Catálogo de pisos e revestimentos em estoque, com simulações em ambientes e preços.">
+  <meta name="theme-color" content="#0e5a3a">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&display=swap">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <header class="topo">
+    <div class="topo-conteudo">
+      <a class="marca" href="#">Farol da Primavera</a>
+      <span class="marca-sub">Pisos e Revestimentos</span>
+      <span class="topo-info" id="topo-info"></span>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. Vitrine: simulação grande + abas de ambiente + bloco de preço (js/vitrine.js) -->
+    <section id="vitrine" class="vitrine" aria-label="Piso em destaque"></section>
+
+    <!-- 2. Barra de filtros fixa (js/filtros.js) -->
+    <section id="filtros" class="filtros" aria-label="Filtros"></section>
+
+    <!-- 3. Grade de pisos (js/cards.js) -->
+    <section id="pisos" class="secao" aria-labelledby="titulo-pisos">
+      <div class="secao-topo">
+        <h2 id="titulo-pisos">Pisos</h2>
+        <span class="contagem" id="contagem-pisos"></span>
+      </div>
+      <div id="grade-pisos" class="grade"></div>
+    </section>
+
+    <!-- 3b. Revestimentos de parede: só foto da peça (js/cards.js) -->
+    <section id="revestimentos" class="secao" aria-labelledby="titulo-revestimentos">
+      <div class="secao-topo">
+        <h2 id="titulo-revestimentos">Revestimentos de parede</h2>
+        <span class="contagem" id="contagem-revestimentos"></span>
+      </div>
+      <div id="grade-revestimentos" class="grade grade-revest"></div>
+    </section>
+  </main>
+
+  <!-- 4. Modal de detalhe + calculadora + WhatsApp (js/detalhe.js) -->
+  <dialog id="detalhe" class="detalhe"></dialog>
+
+  <footer class="rodape">
+    <p>Preços por m², sujeitos a alteração sem aviso prévio e válidos enquanto durar o estoque.</p>
+    <p>As simulações são ilustrativas; cores e tonalidades podem variar conforme a tela e o lote.</p>
+    <p id="atualizado"></p>
+  </footer>
+
+  <!-- Ordem importa. Sem type="module" para abrir via file:// -->
+  <script src="dados/pisos.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/filtros.js"></script>
+  <script src="js/vitrine.js"></script>
+  <script src="js/cards.js"></script>
+  <script src="js/detalhe.js"></script>
+</body>
+</html>
