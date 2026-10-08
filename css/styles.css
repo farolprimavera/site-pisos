@@ -4,6 +4,7 @@
   --verde: #0e5a3a;
   --verde-escuro: #0a4229;
   --verde-claro: #e3efe8;
+  --verde-linha: #8ccaa3;
   --amarelo: #f2c230;
   --vermelho: #c8302b;
   --fundo: #f3f5f4;
@@ -54,36 +55,62 @@ h1, h2, h3 {
 /* ---------- Topo ---------- */
 
 .topo {
-  background: var(--verde);
-  color: var(--branco);
-  padding: 0.8rem 1rem;
+  background: var(--branco);
+  color: var(--texto);
+  padding: 0.5rem 1rem;
+  border-bottom: 3px solid var(--verde-linha);
 }
 
 .topo-conteudo {
   max-width: 1200px;
   margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: 0.25rem 0.6rem;
+  align-items: center;
+  gap: 0.9rem;
 }
 
 .marca {
-  font-weight: 800;
-  font-size: 1.2rem;
-  color: inherit;
-  text-decoration: none;
+  flex: none;
+  display: block;
+}
+
+.marca img {
+  height: 56px;
+  width: auto;
+}
+
+.topo-titulo {
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid var(--linha);
+  padding-left: 0.9rem;
+  min-width: 0;
 }
 
 .marca-sub {
-  color: var(--amarelo);
-  font-weight: 600;
+  color: var(--verde);
+  font-weight: 800;
+  font-size: 1.05rem;
+  line-height: 1.15;
 }
 
 .topo-info {
-  margin-left: auto;
-  font-size: 0.85rem;
-  opacity: 0.8;
+  font-size: 0.82rem;
+  color: var(--suave);
+}
+
+@media (min-width: 720px) {
+  .marca img {
+    height: 72px;
+  }
+
+  .marca-sub {
+    font-size: 1.35rem;
+  }
+
+  .topo-info {
+    font-size: 0.9rem;
+  }
 }
 
 /* ---------- Vitrine ---------- */

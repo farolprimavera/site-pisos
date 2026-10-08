@@ -52,6 +52,9 @@ site-pisos/                    ← pasta de trabalho (NÃO vai pro GitHub)
     │   ├── <ambiente>/mini/<id>.webp   miniatura da grade (520 px)
     │   ├── pecas/<id>.webp             foto da peça (até 600 px)
     │   └── controle.json               assinaturas para gerar só o que mudou
+    ├── marca/                 identidade visual da loja
+    │   ├── logo-farol.png         logo original (fundo transparente)
+    │   └── logo-farol-web.png     versão recortada e leve para o site (160 px de altura)
     ├── ambientes/             fotos-base dos ambientes + máscaras + perspectiva (ver §6)
     ├── ferramentas/           scripts Python (não pesam no site)
     │   ├── comum.py
