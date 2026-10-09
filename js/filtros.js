@@ -8,17 +8,15 @@ const Filtros = {
     const opcoes = (campo, rotulo) =>
       `<option value="">${rotulo}</option>` + valores(campo).map((v) => `<option>${App.esc(v)}</option>`).join("");
 
-    // Categorias = os ambientes das simulações + "Parede" (revestimentos)
-    const cats = [{ id: "", nome: "Todos" }, ...App.dados.ambientes, { id: "parede", nome: "Parede" }];
-    const chips = cats
-      .map((c) => `<button type="button" class="chip" data-cat="${c.id}" aria-pressed="${c.id === ""}">${App.esc(c.nome)}</button>`)
-      .join("");
-
     const el = document.getElementById("filtros");
     el.innerHTML = `
       <div class="filtros-conteudo">
+        <div class="secoes" role="tablist" aria-label="Tipo de produto">
+          <button type="button" class="secao-aba" role="tab" data-secao="pisos" aria-selected="true">Pisos</button>
+          <button type="button" class="secao-aba" role="tab" data-secao="revestimentos" aria-selected="false">Revestimentos</button>
+        </div>
         <div class="filtros-linha">
-          <div class="chips" role="group" aria-label="Ambiente">${chips}</div>
+          <div class="chips" role="group" aria-label="Ambiente"></div>
           <input type="search" id="f-busca" class="busca" placeholder="Buscar por nome ou código" aria-label="Buscar">
           <button type="button" id="f-mais" class="botao-mais" aria-expanded="false" aria-controls="f-extra">Mais filtros</button>
         </div>
@@ -38,14 +36,8 @@ const Filtros = {
       </div>`;
 
     const e = App.estado;
-    el.querySelectorAll(".chip").forEach((b) => b.addEventListener("click", () => {
-      e.cat = b.dataset.cat;
-      // as miniaturas da grade passam a mostrar o ambiente escolhido
-      if (e.cat && e.cat !== "parede") e.ambiente = e.cat;
-      el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c === b));
-      b.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
-      App.atualizar();
-    }));
+    el.querySelectorAll(".secao-aba").forEach((b) => b.addEventListener("click", () => Filtros.secao(b.dataset.secao)));
+    Filtros.chips();
     let t;
     el.querySelector("#f-busca").addEventListener("input", (ev) => {
       clearTimeout(t);
@@ -70,6 +62,37 @@ const Filtros = {
     el.querySelector("#f-limpar").addEventListener("click", Filtros.limpar);
   },
 
+  // Chips de ambiente da aba atual: os ambientes de chão (Pisos) ou as paredes (Revestimentos).
+  chips() {
+    const e = App.estado;
+    const lista = e.secao === "revestimentos" ? App.dados.paredes : App.dados.ambientes;
+    const box = document.querySelector("#filtros .chips");
+    box.innerHTML = [{ id: "", nome: "Todos" }, ...lista]
+      .map((c) => `<button type="button" class="chip" data-cat="${c.id}" aria-pressed="${c.id === e.cat}">${App.esc(c.nome)}</button>`)
+      .join("");
+    box.querySelectorAll(".chip").forEach((b) => b.addEventListener("click", () => {
+      e.cat = b.dataset.cat;
+      // as miniaturas da grade passam a mostrar o ambiente (ou a parede) escolhido
+      if (e.cat) e[e.secao === "revestimentos" ? "parede" : "ambiente"] = e.cat;
+      box.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c === b));
+      b.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
+      App.atualizar();
+    }));
+  },
+
+  // Troca a aba do topo (Pisos | Revestimentos).
+  secao(s) {
+    const e = App.estado;
+    if (e.secao !== s) {
+      e.secao = s;
+      e.cat = "";
+      document.querySelectorAll("#filtros .secao-aba").forEach((b) => b.setAttribute("aria-selected", b.dataset.secao === s));
+      Filtros.chips();
+      App.atualizar();
+    }
+    document.getElementById(s).scrollIntoView({ behavior: "smooth", block: "start" });
+  },
+
   limpar() {
     Object.assign(App.estado, { cat: "", busca: "", marca: "", estilo: "", acabamento: "", formato: "", ordem: "desconto", superOferta: false });
     const el = document.getElementById("filtros");
@@ -83,8 +106,10 @@ const Filtros = {
   aplicar(pisos) {
     const e = App.estado;
     const termos = App.normalizar(e.busca).split(/\s+/).filter(Boolean);
+    const revest = e.secao === "revestimentos";
     const lista = pisos.filter((p) =>
-      (!e.cat || (e.cat === "parede" ? p.onde.includes("parede") : p.ambientes.includes(e.cat))) &&
+      (revest ? p.revest : p.ambientes.length > 0) &&
+      (!e.cat || (revest ? p.paredes : p.ambientes).includes(e.cat)) &&
       (!e.marca || p.fabricante === e.marca) &&
       (!e.estilo || p.estilo === e.estilo) &&
       (!e.acabamento || p.acabamento === e.acabamento) &&

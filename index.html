@@ -35,7 +35,7 @@
     <!-- 1. Vitrine: simulação grande + abas de ambiente + bloco de preço (js/vitrine.js) -->
     <section id="vitrine" class="vitrine" aria-label="Piso em destaque"></section>
 
-    <!-- 2. Barra de filtros fixa (js/filtros.js) -->
+    <!-- 2. Barra fixa: abas Pisos | Revestimentos + filtros (js/filtros.js) -->
     <section id="filtros" class="filtros" aria-label="Filtros"></section>
 
     <!-- 3. Grade de pisos (js/cards.js) -->
@@ -48,13 +48,13 @@
       <nav class="paginas" id="paginas-pisos" aria-label="Páginas de pisos"></nav>
     </section>
 
-    <!-- 3b. Revestimentos de parede: só foto da peça (js/cards.js) -->
-    <section id="revestimentos" class="secao" aria-labelledby="titulo-revestimentos">
+    <!-- 3b. Revestimentos: aplicados na parede (aba "Revestimentos" da barra de filtros; js/cards.js) -->
+    <section id="revestimentos" class="secao" aria-labelledby="titulo-revestimentos" hidden>
       <div class="secao-topo">
-        <h2 id="titulo-revestimentos">Revestimentos de parede</h2>
+        <h2 id="titulo-revestimentos">Revestimentos</h2>
         <span class="contagem" id="contagem-revestimentos"></span>
       </div>
-      <div id="grade-revestimentos" class="grade grade-revest"></div>
+      <div id="grade-revestimentos" class="grade"></div>
       <nav class="paginas" id="paginas-revestimentos" aria-label="Páginas de revestimentos"></nav>
     </section>
   </main>

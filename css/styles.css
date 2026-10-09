@@ -485,6 +485,34 @@ h1, h2, h3 {
   padding: 0.6rem 1rem;
 }
 
+/* abas Pisos | Revestimentos */
+.secoes {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 0.55rem;
+  padding: 0.2rem;
+  border-radius: 10px;
+  background: var(--linha);
+  width: fit-content;
+  max-width: 100%;
+}
+
+.secao-aba {
+  border: 0;
+  background: none;
+  border-radius: 8px;
+  padding: 0.4rem 1.1rem;
+  font-weight: 700;
+  color: var(--suave);
+  cursor: pointer;
+}
+
+.secao-aba[aria-selected="true"] {
+  background: var(--superficie);
+  color: var(--verde-texto);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
 .filtros-linha {
   display: flex;
   flex-wrap: wrap;
@@ -605,10 +633,6 @@ h1, h2, h3 {
   gap: 1rem;
 }
 
-.grade-revest {
-  grid-template-columns: repeat(auto-fill, minmax(min(100%, 170px), 1fr));
-}
-
 /* rolar até a seção sem ficar escondido atrás da barra de filtros */
 #pisos,
 #revestimentos {
@@ -697,6 +721,11 @@ h1, h2, h3 {
   height: 100%;
   object-fit: cover;
   object-position: 50% 100%;
+}
+
+/* a miniatura de parede já vem recortada em volta da parede */
+.card-foto .card-parede {
+  object-position: 50% 50%;
 }
 
 .peca-mini {
@@ -915,6 +944,18 @@ h1, h2, h3 {
   color: var(--verde-texto);
 }
 
+/* rótulo "No chão" / "Na parede" entre as abas do detalhe */
+.aba-grupo {
+  flex: none;
+  align-self: center;
+  padding-left: 0.4rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--suave);
+}
+
 .abas-detalhe {
   padding: 0.4rem 0.75rem 0.75rem;
   scrollbar-width: none;
@@ -999,6 +1040,16 @@ h1, h2, h3 {
   padding: 0.45rem 0.6rem;
   max-width: 10rem;
   background: var(--superficie);
+}
+
+.calc-dims {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.calc-dims input {
+  max-width: 8rem;
 }
 
 .calc-res {

@@ -36,6 +36,9 @@ LOCAIS = [
 #   sem_acabamento  acabamentos que não combinam (ex.: Polido no banheiro, Rústico na sala)
 #   sem_estilo      estilos que não combinam
 AMBIENTES = json.loads((SITE / "ambientes" / "ambientes.json").read_text(encoding="utf-8"))
+# Paredes com simulação de revestimento (ambientes/paredes.json). Recebem todo produto que vai na parede
+# (revestimento LA ou piso com parede = 1); as marcadas "so_externo" (fachada), só os liberados para área externa.
+PAREDES = json.loads((SITE / "ambientes" / "paredes.json").read_text(encoding="utf-8"))
 
 
 def ambientes_do_piso(lu, externo, acabamento, estilo):
@@ -145,6 +148,8 @@ def main():
             local_uso=lu, onde=onde, acabamento=f["acabamento"], estilo=f["estilo"], retificado=retificado,
             foto=com_foto[0]["codigo"], codigos=[x["codigo"] for x in lotes],
             ambientes=ambientes,
+            paredes=[par["ambiente"] for par in PAREDES.values()
+                     if parede and (externo or not par.get("so_externo"))],
         ))
 
     itens.sort(key=lambda x: (x["fabricante"], x["nome"]))
@@ -157,7 +162,8 @@ def main():
     datas = sorted((d for d in datas if d), key=lambda d: d[6:] + d[3:5] + d[:2])
     saida = dict(atualizado=datas[0] if datas else datetime.date.today().strftime("%d/%m/%Y"),
                  locais=[dict(id=c, nome=n) for c, n, _ in LOCAIS],
-                 ambientes=[dict(id=a, nome=v["nome"]) for a, v in AMBIENTES.items()], pisos=itens)
+                 ambientes=[dict(id=a, nome=v["nome"]) for a, v in AMBIENTES.items()],
+                 paredes=[dict(id=par["ambiente"], nome=par["nome"]) for par in PAREDES.values()], pisos=itens)
     (SITE / "dados").mkdir(exist_ok=True)
     txt = json.dumps(saida, ensure_ascii=False, separators=(",", ":"))
     (SITE / "dados" / "pisos.json").write_text(txt, encoding="utf-8")

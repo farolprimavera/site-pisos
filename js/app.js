@@ -10,7 +10,8 @@ const SUPER_OFERTA = 0.3;
 const App = {
   dados: null,   // catálogo inteiro ({ atualizado, locais, ambientes, pisos })
   estado: {
-    cat: "",           // chip de ambiente ("sala", "quintal-piscina"...) ou "parede"
+    secao: "pisos",    // aba do topo: "pisos" ou "revestimentos"
+    cat: "",           // chip de ambiente ("sala", "quintal-piscina"...; em revestimentos, "banheiro"...)
     busca: "",
     marca: "",
     estilo: "",
@@ -19,6 +20,7 @@ const App = {
     ordem: "desconto",
     superOferta: false,
     ambiente: "sala",  // ambiente preferido nas miniaturas da grade
+    parede: "banheiro", // parede preferida nas miniaturas de revestimento
   },
 
   // Lê window.PISOS (dados/pisos.js); fetch do .json só como plano B.
@@ -35,8 +37,13 @@ const App = {
       p.desconto = p.oferta && p.prazo ? 1 - p.oferta / p.prazo : 0;
       p.superOferta = p.desconto >= SUPER_OFERTA;
       p.busca = App.normalizar([p.nome, p.fabricante, p.estilo, p.acabamento, p.formato, ...p.codigos].join(" "));
+      p.paredes = p.paredes || [];
+      // revestimento = vai na parede (LA ou piso que também é parede); fica na aba Revestimentos
+      p.revest = p.paredes.length > 0 || !p.ambientes.length;
     });
+    App.dados.paredes = App.dados.paredes || [];
     App.nomeAmbiente = Object.fromEntries((App.dados.ambientes || []).map((a) => [a.id, a.nome]));
+    App.nomeParede = Object.fromEntries(App.dados.paredes.map((a) => [a.id, a.nome]));
     App.nomeLocal = Object.fromEntries((App.dados.locais || []).map((l) => [l.id, l.nome]));
 
     if (App.dados.atualizado) {
@@ -67,9 +74,17 @@ const App = {
     return p.ambientes.includes(App.estado.ambiente) ? App.estado.ambiente : p.ambientes[0];
   },
 
+  // O mesmo para a parede: a escolhida, se o produto for para ela; senão a primeira.
+  paredeDo(p) {
+    if (!p.paredes.length) return null;
+    return p.paredes.includes(App.estado.parede) ? App.estado.parede : p.paredes[0];
+  },
+
   img: {
     grande: (amb, id) => `imagens/${amb}/${id}.webp`,
     mini: (amb, id) => `imagens/${amb}/mini/${id}.webp`,
+    parede: (amb, id) => `imagens/${amb}/parede/${id}.webp`,
+    paredeMini: (amb, id) => `imagens/${amb}/parede/mini/${id}.webp`,
     peca: (id) => `imagens/pecas/${id}.webp`,
   },
 
@@ -100,6 +115,7 @@ const App = {
   // index.html#<id> abre direto o detalhe daquele piso.
   abrirHash() {
     const id = decodeURIComponent(location.hash.slice(1));
+    if (id === "pisos" || id === "revestimentos") return Filtros.secao(id);
     if (id && App.piso(id)) Detalhe.abrir(id);
   },
 };

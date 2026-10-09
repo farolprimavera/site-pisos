@@ -3,6 +3,8 @@ Gera as imagens do site a partir de dados/pisos.json:
   imagens/<ambiente>/<id>.webp        simulação grande (1280 px)
   imagens/<ambiente>/mini/<id>.webp   miniatura da grade (520 px)
   imagens/pecas/<id>.webp             foto da peça
+  imagens/<ambiente>/parede/<id>.webp        revestimento na parede (1280 px)
+  imagens/<ambiente>/parede/mini/<id>.webp   miniatura recortada em volta da parede (520 px)
 
 Só gera o que falta ou mudou (guarda uma "impressão digital" em imagens/controle.json).
 Rodar depois do montar_dados.py:   python3 ferramentas/gerar_imagens.py
@@ -18,6 +20,7 @@ FOTOS = SITE.parent / "fotos"
 AMB = SITE / "ambientes"
 OUT = SITE / "imagens"
 VERSAO = "5"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)
+VERSAO_PAREDE = "1"   # o mesmo, só para as paredes (não regera os chãos)
 sys.path.insert(0, str(AQUI))
 import render as R
 
@@ -44,6 +47,9 @@ def main():
     # muda a assinatura se a foto, a máscara ou a perspectiva do ambiente mudar
     assin_amb = {a: hashlib.md5(R.arquivo_foto(AMB, a).read_bytes() + (AMB / f"{a}-mask.png").read_bytes()
                                 + json.dumps(v, sort_keys=True).encode()).hexdigest() for a, v in ambientes.items()}
+    paredes = {par["ambiente"]: par for par in json.loads((AMB / "paredes.json").read_text(encoding="utf-8")).values()}
+    assin_par = {a: hashlib.md5(R.arquivo_foto(AMB, a).read_bytes() + (AMB / f"{par['id']}-mask.png").read_bytes()
+                                + json.dumps(par, sort_keys=True).encode()).hexdigest() for a, par in paredes.items()}
     ctrl_arq = OUT / "controle.json"
     ctrl = {} if tudo or not ctrl_arq.exists() else json.loads(ctrl_arq.read_text())
     feitos = 0
@@ -73,11 +79,26 @@ def main():
             salvar_webp(out, OUT / a / "mini" / f"{p['id']}.webp", 520, 76)
             ctrl[chave] = assin
             feitos += 1
+        # paredes (revestimentos e pisos que também vão na parede)
+        par_p = R.parametros_parede(p)
+        for a in p.get("paredes", []):
+            par = paredes[a]
+            chave = f"{a}/parede/{p['id']}"; validos.add(chave)
+            assin = f"{VERSAO_PAREDE}|{h_foto}|{p['medida_cm']}|{par_p}|{assin_par[a]}"
+            if ctrl.get(chave) == assin and (OUT / f"{chave}.webp").exists():
+                continue
+            out = R.renderizar_parede(par, AMB, img, p["medida_cm"], **par_p)
+            salvar_webp(out, OUT / f"{chave}.webp", 1280, 80)
+            x0, y0, x1, y1 = par["recorte"]                # miniatura: só em volta da parede
+            salvar_webp(out[y0:y1, x0:x1], OUT / a / "parede" / "mini" / f"{p['id']}.webp", 520, 76)
+            ctrl[chave] = assin
+            feitos += 1
         print(f"\r  {i + 1}/{len(dados['pisos'])}  ({feitos} imagens novas)", end="", flush=True)
-    # apaga imagens de pisos que saíram do site
+    # apaga imagens de pisos que saíram do site (ou de um ambiente/parede)
     for k in list(ctrl):
         if k not in validos:
-            for f in (OUT / f"{k}.webp", OUT / k.split("/")[0] / "mini" / f"{k.split('/')[1]}.webp"):
+            grande = OUT / f"{k}.webp"
+            for f in (grande, grande.parent / "mini" / grande.name):
                 f.unlink(missing_ok=True)
             del ctrl[k]
     OUT.mkdir(exist_ok=True)

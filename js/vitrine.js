@@ -1,6 +1,7 @@
-/* Vitrine: carrossel de ambientes com pisos sorteados. Clicar no slide abre a página do piso. */
+/* Vitrine: carrossel de ambientes com pisos (e paredes com revestimentos) sorteados.
+   Clicar no slide abre a página do produto. */
 
-const SLIDES = 11;         // quantas fotos no carrossel (uma por ambiente)
+const SLIDES = 14;         // quantas fotos no carrossel (uma por ambiente e uma por parede)
 const INTERVALO = 10000;   // troca sozinho depois de 10 s sem interação
 
 const Vitrine = {
@@ -19,12 +20,19 @@ const Vitrine = {
     };
     const usados = new Set();
     const out = [];
-    for (const amb of embaralhar([...App.dados.ambientes])) {
-      const opcoes = App.dados.pisos.filter((p) => p.ambientes.includes(amb.id) && !usados.has(p.id));
+    const lugares = [
+      ...App.dados.ambientes.map((a) => ({ amb: a.id, parede: false })),
+      ...App.dados.paredes.map((a) => ({ amb: a.id, parede: true })),
+    ];
+    for (const { amb, parede } of embaralhar(lugares)) {
+      // na parede, de preferência um revestimento de verdade (não um piso que também vai na parede)
+      const servem = (p) => (parede ? p.paredes : p.ambientes).includes(amb) && !usados.has(p.id);
+      let opcoes = App.dados.pisos.filter((p) => servem(p) && (!parede || !p.ambientes.length));
+      if (!opcoes.length) opcoes = App.dados.pisos.filter(servem);
       if (!opcoes.length) continue;
       const p = opcoes[Math.floor(Math.random() * opcoes.length)];
       usados.add(p.id);
-      out.push({ amb: amb.id, piso: p });
+      out.push({ amb, parede, piso: p });
       if (out.length === SLIDES) break;
     }
     return out;
@@ -38,16 +46,20 @@ const Vitrine = {
       return;
     }
 
-    const slides = Vitrine.slides.map(({ amb, piso: p }, i) => `
+    const slides = Vitrine.slides.map(({ amb, parede, piso: p }, i) => {
+      const lugar = parede ? `${App.nomeParede[amb]} · parede` : App.nomeAmbiente[amb];
+      const ver = p.tipo === "Revestimento" ? "Ver revestimento" : "Ver piso";
+      return `
       <a class="slide" href="#${encodeURIComponent(p.id)}" data-i="${i}" aria-hidden="${i !== 0}" tabindex="${i === 0 ? 0 : -1}"
-         aria-label="${App.esc(p.nome)} em ${App.esc(App.nomeAmbiente[amb])} — ver piso">
-        <img data-src="${App.img.grande(amb, p.id)}" alt="${App.esc(p.nome)} aplicado em ${App.esc(App.nomeAmbiente[amb])}" width="1280" height="853">
+         aria-label="${App.esc(p.nome)} em ${App.esc(lugar)} — ${ver.toLowerCase()}">
+        <img data-src="${parede ? App.img.parede(amb, p.id) : App.img.grande(amb, p.id)}" alt="${App.esc(p.nome)} aplicado em ${App.esc(lugar)}" width="1280" height="853">
         <span class="slide-legenda">
-          <span class="slide-amb">${App.esc(App.nomeAmbiente[amb])}</span>
+          <span class="slide-amb">${App.esc(lugar)}</span>
           <strong class="slide-nome">${App.esc(p.nome)}</strong>
-          <span class="slide-ver">${App.esc(p.fabricante)} · ${App.esc(p.medida)} · Ver piso →</span>
+          <span class="slide-ver">${App.esc(p.fabricante)} · ${App.esc(p.medida)} · ${ver} →</span>
         </span>
-      </a>`).join("");
+      </a>`;
+    }).join("");
     const pontos = Vitrine.slides.map((_, i) =>
       `<button type="button" class="ponto" data-i="${i}" aria-label="Foto ${i + 1}" aria-current="${i === 0}"></button>`).join("");
 

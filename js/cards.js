@@ -6,16 +6,14 @@ const Cards = {
   listas: {},   // itens filtrados de cada seção
   paginas: {},  // página atual de cada seção
 
-  // Chamado a cada mudança de filtro: volta para a página 1.
+  // Chamado a cada mudança de filtro: mostra só a seção da aba atual, na página 1.
   desenhar(lista) {
-    const pisos = lista.filter((p) => p.ambientes.length);
-    const revest = lista.filter((p) => !p.ambientes.length);
-    Cards.listas = { pisos, revestimentos: revest };
-    Cards.paginas = { pisos: 1, revestimentos: 1 };
-    Cards.pagina("pisos");
-    Cards.pagina("revestimentos");
-    document.getElementById("revestimentos").hidden = !revest.length;
-    document.getElementById("pisos").hidden = !pisos.length && revest.length > 0;
+    const secao = App.estado.secao;
+    Cards.listas[secao] = lista;
+    Cards.paginas[secao] = 1;
+    Cards.pagina(secao);
+    document.getElementById("pisos").hidden = secao !== "pisos";
+    document.getElementById("revestimentos").hidden = secao !== "revestimentos";
   },
 
   // Desenha a página atual de uma seção ("pisos" ou "revestimentos").
@@ -81,12 +79,21 @@ const Cards = {
     </article>`;
   },
 
+  // Revestimento: a parede com ele aplicado e a peça no canto (sem parede simulada, só a peça).
   cardRevest(p) {
+    const par = App.paredeDo(p);
+    const foto = par
+      ? `<div class="card-foto">
+          <img class="card-amb card-parede" src="${App.img.paredeMini(par, p.id)}" alt="${App.esc(p.nome)} na parede: ${App.esc(App.nomeParede[par])}" loading="lazy" width="520" height="416">
+          <img class="peca-mini" src="${App.img.peca(p.id)}" alt="" loading="lazy">
+          ${Cards.selo(p)}
+        </div>`
+      : `<div class="card-foto foto-peca">
+          <img src="${App.img.peca(p.id)}" alt="${App.esc(p.nome)}" loading="lazy">
+          ${Cards.selo(p)}
+        </div>`;
     return `<article class="card card-revest" data-id="${p.id}" tabindex="0">
-      <div class="card-foto foto-peca">
-        <img src="${App.img.peca(p.id)}" alt="${App.esc(p.nome)}" loading="lazy">
-        ${Cards.selo(p)}
-      </div>
+      ${foto}
       <div class="card-texto">
         <h3>${App.esc(p.nome)}</h3>
         <p class="card-sub">${App.esc(p.fabricante)} · ${App.esc(p.medida)}</p>

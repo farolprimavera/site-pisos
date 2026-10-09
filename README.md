@@ -50,6 +50,8 @@ site-pisos/                    ← pasta de trabalho (NÃO vai pro GitHub)
     ├── imagens/
     │   ├── <ambiente>/<id>.webp        simulação grande (1280 px de largura)
     │   ├── <ambiente>/mini/<id>.webp   miniatura da grade (520 px)
+    │   ├── <ambiente>/parede/<id>.webp         revestimento na parede (1280 px)
+    │   ├── <ambiente>/parede/mini/<id>.webp    miniatura recortada em volta da parede (520 px)
     │   ├── pecas/<id>.webp             foto da peça (até 600 px)
     │   └── controle.json               assinaturas para gerar só o que mudou
     ├── marca/                 identidade visual da loja
@@ -59,8 +61,9 @@ site-pisos/                    ← pasta de trabalho (NÃO vai pro GitHub)
     ├── ferramentas/           scripts Python (não pesam no site)
     │   ├── comum.py
     │   ├── montar_dados.py
-    │   ├── render.py
+    │   ├── render.py              chão e parede
     │   ├── gerar_imagens.py
+    │   ├── mascara.py / mascara_parede.py / perspectiva.py / ver_perspectiva.py / testar_parede.py
     │   ├── fichas.csv
     │   └── relatorio.txt      gerado: o que ficou fora do site e por quê
     ├── .gitignore             __pycache__/  *.pyc  build/  *.zip
@@ -141,7 +144,9 @@ Ambientes onde o piso é renderizado (regra em `ambientes/ambientes.json` → `"
 | garagem | LD | Polido, Brilhante |
 | calçada/entrada, quintal com piscina | LD **e** liberado para área externa | Polido, Brilhante |
 
-- revestimento de parede (LA): só foto da peça, numa seção própria "Revestimentos"
+- revestimento de parede (LA) e piso com `parede = 1`: simulados nas paredes de `ambientes/paredes.json`
+  (banheiro, lavanderia, varanda gourmet; a fachada da entrada só recebe os liberados para área externa).
+  Ficam no campo `"paredes"` do `pisos.json`, ao lado de `"ambientes"` (que é só chão). Ver §6.1.
 
 ### 3.5 Formato do `pisos.json`
 ```json
@@ -188,11 +193,12 @@ Seções:
    - ordenação: maior desconto (padrão), menor preço, nome;
    - "Só super ofertas".
    - No celular, os selects ficam atrás de um botão **"Mais filtros"**.
-3. **Grade de cards:**
+3. **Grade de cards**, com abas **Pisos | Revestimentos** no topo da barra de filtros:
    - a miniatura do ambiente atual (proporção 5/4, `object-position: 50% 100%` para mostrar o chão) com a foto da peça
-     pequena no canto;
+     pequena no canto; em Revestimentos, a miniatura da parede;
    - nome, marca, medida e preço por m², com selo de oferta.
-   - Os revestimentos ficam numa seção separada.
+   - Piso que também vai na parede aparece nas duas abas; no detalhe, as fotos vêm em "No chão" e "Na parede".
+   - Para revestimento, a calculadora pede largura × altura da parede.
 4. **Modal de detalhe (`<dialog>`):**
    - preços e "onde usar";
    - ficha (acabamento, estilo, retificado, m²/caixa);
@@ -266,6 +272,28 @@ O David vai trazer **novas fotos de ambiente** e talvez mais ambientes. Para cad
   (tapete, mesa) e de inclusão, e depois ser **retocada à mão**. É o passo que mais afeta a qualidade.
 - Se o David gerar as fotos com IA, peça o chão **liso, claro e sem tapete**, com câmera na altura dos olhos.
   Assim a máscara e a sombra ficam muito melhores.
+
+### 6.1 Paredes (revestimentos)
+
+Cada parede é uma entrada em `ambientes/paredes.json` (separado do `ambientes.json`, que é só chão):
+- `pontos`: retângulo da parede na foto (sup-esq, sup-dir, inf-dir, inf-esq) e `largura_cm`/`altura_cm` reais.
+  Para parede de frente, a escala é `(y da base da parede − y do ponto de fuga) / altura da câmera` em px/cm
+  (dados de câmera do `ambientes.json`).
+- `mascara`: polígono da parede + caixas de `objetos` na frente dela + polígonos `excluir`.
+  `"metodo": "grabcut"` recorta cada caixa com GrabCut (melhor com objeto branco ou luz variando);
+  `{"caixa": [...], "planta": true}` para caixas só com planta. Objeto que reflete a parede (torneira cromada,
+  vaso claro) vai melhor como polígono em `excluir`.
+- `recorte`: região 5:4 em volta da parede para a miniatura do card. `so_externo`: só produtos externos.
+
+```bash
+python ferramentas/mascara_parede.py [parede]        # gera ambientes/<parede>-mask.png
+python ferramentas/ver_perspectiva.py <parede>       # grade de 10 cm + peça 60x30 em ferramentas/build/
+python ferramentas/testar_parede.py <parede> <id>... # render de teste em ferramentas/build/
+```
+O `gerar_imagens.py` gera as paredes junto com os chãos (`VERSAO_PAREDE` regera só as paredes).
+Regras do render: peça deitada, 1ª fiada inteira no chão e colunas centralizadas; filetado/tijolinho em meia peça,
+réguas (≥ 3:1) em 1/3; rejunte 2 mm (retificado) ou 3 mm, no tom da peça; giro de 180° só em liso/mármore;
+reflexo suave só em brilhante/polido; luz tirada só dos pixels de parede, por canal de cor (o LED quente aparece).
 
 ---
 

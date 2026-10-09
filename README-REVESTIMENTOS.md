@@ -4,6 +4,20 @@
 > Aqui está como simular **revestimentos de parede**, e não só piso, nas fotos que já estão em `ambientes/`.
 > Responda em português. Na dúvida sobre uma medida ou um ponto, **pergunte ao David** e não invente.
 
+## Situação (feito em 09/10/2026)
+
+Passos 1 a 5 feitos, e a fachada da entrada (opcional). O como-usar está no `README.md` §6.1.
+- **Nomes dos ambientes:** ficaram os já usados no site (`varanda` = área gourmet, `calcada` = entrada,
+  `quintal-piscina` = piscina). Ids das paredes: `banheiro-parede`, `lavanderia-parede`, `varanda-parede`, `calcada-parede`.
+- **Paredes ficam em `ambientes/paredes.json`**, não no `ambientes.json` (os scripts de chão percorrem esse arquivo todo).
+- **Medidas:** banheiro 346 × 275 cm; lavanderia 209 × 129 cm (só abaixo da prateleira); varanda, backsplash A,
+  363 × 86 cm; fachada 240 × 151 cm (dos dois lados da porta, só produtos externos).
+- **Réguas de madeira (≥ 3:1)** vão em 1/3 de peça, não a prumo (a prumo ficava artificial).
+- **Cozinha não foi feita:** parede em ângulo forte, faixa estreita e cheia de objetos; a faixa de frente, sob a janela,
+  tem ~20 cm (só peças cortadas). Não compensava.
+- **Pendências:** as fotos de 4 peças têm só 100×100 px (Alfagrês Angelin Noce, Marfil, Native e Pinus Beige), o que
+  deixa a simulação borrada no chão e na parede. Uma foto maior resolve nos dois.
+
 ---
 
 ## 1. Objetivo

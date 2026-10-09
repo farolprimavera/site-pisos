@@ -80,28 +80,38 @@ const Detalhe = {
     const p = App.piso(id);
     if (!p) return;
     const dlg = document.getElementById("detalhe");
-    let amb = App.ambienteDo(p);
     const lugares = p.onde.map((o) => App.nomeLocal[o] || o);
 
-    // 1º slide: a peça; depois, um slide por ambiente em que ela se aplica
+    // 1º slide: a peça; depois, um slide por ambiente no chão e um por parede
+    const fotos = [
+      ...p.ambientes.map((a) => ({ src: App.img.grande(a, p.id), nome: App.nomeAmbiente[a], grupo: "chao" })),
+      ...p.paredes.map((a) => ({ src: App.img.parede(a, p.id), nome: App.nomeParede[a], grupo: "parede" })),
+    ];
+    const dois = p.ambientes.length > 0 && p.paredes.length > 0;
+    const rotulo = { chao: "No chão", parede: "Na parede" };
     const abas = `<button type="button" class="aba" data-i="0" aria-selected="true">Peça</button>` +
-      p.ambientes.map((a, i) =>
-        `<button type="button" class="aba" data-i="${i + 1}" aria-selected="false">${App.esc(App.nomeAmbiente[a])}</button>`).join("");
+      fotos.map((f, i) =>
+        (dois && (i === 0 || fotos[i - 1].grupo !== f.grupo) ? `<span class="aba-grupo">${rotulo[f.grupo]}</span>` : "") +
+        `<button type="button" class="aba" data-i="${i + 1}" aria-selected="false">${App.esc(f.nome)}</button>`).join("");
     const slides = `
       <figure class="amb-slide slide-peca">
         <img data-src="${App.img.peca(p.id)}" alt="Peça ${App.esc(p.nome)}" draggable="false">
-      </figure>` + p.ambientes.map((a) => `
+      </figure>` + fotos.map((f) => `
       <figure class="amb-slide">
-        <img data-src="${App.img.grande(a, p.id)}" alt="${App.esc(p.nome)} em ${App.esc(App.nomeAmbiente[a])}" width="1280" height="853" draggable="false">
-        <figcaption>${App.esc(App.nomeAmbiente[a])}</figcaption>
+        <img data-src="${f.src}" alt="${App.esc(p.nome)} ${f.grupo === "parede" ? "na parede" : "no chão"}: ${App.esc(f.nome)}" width="1280" height="853" draggable="false">
+        <figcaption>${App.esc(f.nome)}${dois ? ` · ${rotulo[f.grupo].toLowerCase()}` : ""}</figcaption>
       </figure>`).join("");
-    const varios = p.ambientes.length > 1;
+    const titulo = dois ? "No chão e na parede"
+      : p.paredes.length ? `Aplicado em ${p.paredes.length} parede${p.paredes.length > 1 ? "s" : ""}`
+      : `Aplica-se em ${p.ambientes.length} ambiente${p.ambientes.length > 1 ? "s" : ""}`;
+    // revestimento só de parede: a calculadora pede largura x altura da parede
+    const parede = !p.ambientes.length;
 
     dlg.innerHTML = `
       <div class="detalhe-conteudo">
         <button type="button" class="fechar" aria-label="Fechar">×</button>
         <div class="detalhe-fotos">
-          ${amb
+          ${fotos.length
             ? `<div class="amb-carrossel" aria-roledescription="carrossel" aria-label="Ambientes onde ${App.esc(p.nome)} se aplica">
                  <div class="amb-trilho">${slides}</div>
                  <button type="button" class="seta seta-ant" aria-label="Foto anterior">‹</button>
@@ -109,7 +119,7 @@ const Detalhe = {
                  <span class="amb-conta"></span>
                  <span class="amb-dica">Veja nos ambientes ›</span>
                </div>
-               <p class="amb-titulo">Aplica-se em ${p.ambientes.length} ambiente${varios ? "s" : ""}</p>
+               <p class="amb-titulo">${titulo}</p>
                <div class="abas abas-detalhe">${abas}</div>`
             : `<img class="detalhe-peca sozinha" src="${App.img.peca(p.id)}" alt="Peça ${App.esc(p.nome)}">`}
         </div>
@@ -133,10 +143,19 @@ const Detalhe = {
 
           <h3>Quanto preciso?</h3>
           <div class="calc">
-            <label>Área do ambiente (m²)
-              <input type="number" id="calc-m2" min="0" step="0.5" inputmode="decimal" placeholder="Ex.: 12">
-            </label>
-            <p id="calc-res" class="calc-res">Informe a área para calcular, já com ${PERDA * 100}% de perda.</p>
+            ${parede
+              ? `<div class="calc-dims">
+                   <label>Largura da parede (m)
+                     <input type="number" class="calc-in" id="calc-larg" min="0" step="0.1" inputmode="decimal" placeholder="Ex.: 2,5">
+                   </label>
+                   <label>Altura (m)
+                     <input type="number" class="calc-in" id="calc-alt" min="0" step="0.1" inputmode="decimal" placeholder="Ex.: 2,6">
+                   </label>
+                 </div>`
+              : `<label>Área do ambiente (m²)
+                   <input type="number" class="calc-in" id="calc-m2" min="0" step="0.5" inputmode="decimal" placeholder="Ex.: 12">
+                 </label>`}
+            <p id="calc-res" class="calc-res">Informe ${parede ? "largura e altura da parede" : "a área"} para calcular, já com ${PERDA * 100}% de perda.</p>
           </div>
 
           <div class="acoes">
@@ -147,24 +166,28 @@ const Detalhe = {
       </div>`;
 
     dlg.querySelector(".fechar").addEventListener("click", () => dlg.close());
-    if (amb) Detalhe.carrossel(dlg, 0);
+    if (fotos.length) Detalhe.carrossel(dlg, 0);
 
     const link = location.href.split("#")[0] + "#" + encodeURIComponent(p.id);
     let m2Pedido = null;
     const atualizarWhats = () => {
       const w = dlg.querySelector("#det-whats");
       if (!w) return;
-      let msg = `Olá! Tenho interesse no piso ${p.nome} (${p.fabricante}, ${p.medida}, cód. ${p.codigos[0]}).`;
+      const oque = p.tipo === "Revestimento" ? "no revestimento" : "no piso";
+      let msg = `Olá! Tenho interesse ${oque} ${p.nome} (${p.fabricante}, ${p.medida}, cód. ${p.codigos[0]}).`;
       if (m2Pedido) msg += ` Preciso de cerca de ${m2Pedido}.`;
       w.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg + " " + link)}`;
     };
     atualizarWhats();
 
-    dlg.querySelector("#calc-m2").addEventListener("input", (ev) => {
-      const area = parseFloat(String(ev.target.value).replace(",", "."));
+    const num = (sel) => parseFloat(String(dlg.querySelector(sel).value).replace(",", "."));
+    const calcular = () => {
+      const area = parede ? num("#calc-larg") * num("#calc-alt") : num("#calc-m2");
       const res = dlg.querySelector("#calc-res");
       if (!(area > 0)) {
-        res.textContent = `Informe a área para calcular, já com ${PERDA * 100}% de perda.`;
+        res.textContent = parede
+          ? `Informe largura e altura da parede para calcular, já com ${PERDA * 100}% de perda.`
+          : `Informe a área para calcular, já com ${PERDA * 100}% de perda.`;
         m2Pedido = null;
       } else {
         const comPerda = area * (1 + PERDA);
@@ -181,7 +204,8 @@ const Detalhe = {
         }
       }
       atualizarWhats();
-    });
+    };
+    dlg.querySelectorAll(".calc-in").forEach((i) => i.addEventListener("input", calcular));
 
     dlg.querySelector("#det-link").addEventListener("click", async (ev) => {
       const b = ev.currentTarget;
