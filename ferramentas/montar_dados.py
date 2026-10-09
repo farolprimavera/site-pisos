@@ -101,7 +101,7 @@ def main():
         g = grupos.setdefault(k, {"lotes": [], "produto": l["Produto"], "obs": l.get("Observação")})
         g["lotes"].append(dict(codigo=cod, **pr, foto=(fotos / f"{cod}.jpg").exists()))
 
-    itens, sem_ficha, sem_foto, supostos = [], [], [], []
+    itens, sem_ficha, sem_foto, supostos, revest_no_chao = [], [], [], [], []
     for k, g in grupos.items():
         lotes = g["lotes"]
         est = sum(max(x["estoque"] or 0, 0) for x in lotes)
@@ -122,6 +122,9 @@ def main():
         m = C.medida(g["produto"])
         m2, pcs = C.caixa(g["obs"])
         lu = f["local_uso"]
+        # a loja cadastra revestimento como "REVEST..."; se a ficha disser que vai no chão, algo está errado
+        if str(g["produto"]).upper().startswith("REVEST") and lu != "LA":
+            revest_no_chao.append(k)
         externo = f["externo"] == "1"
         parede = f["parede"] == "1" or lu == "LA"
         onde = [c for c, _, mn in LOCAIS if mn and lu_ok(lu, mn)]
@@ -164,7 +167,9 @@ def main():
            f"{sum(1 for i in itens if i['tipo']!='Piso')} revestimentos de parede)",
            f"Fora do site por falta de foto ({len(sem_foto)}): " + ", ".join(sem_foto),
            f"Fora do site por falta de ficha técnica em fichas.csv ({len(sem_ficha)}): " + ", ".join(sem_ficha),
-           f"Local de uso SUPOSTO, conferir ({len(supostos)}): " + ", ".join(supostos)]
+           f"Local de uso SUPOSTO, conferir ({len(supostos)}): " + ", ".join(supostos),
+           f"Cadastrado como REVEST. na loja, mas a ficha não é LA, conferir ({len(revest_no_chao)}): "
+           + ", ".join(revest_no_chao)]
     (SITE / "ferramentas" / "relatorio.txt").write_text("\n\n".join(rel), encoding="utf-8")
     print("\n\n".join(rel))
 

@@ -113,7 +113,11 @@ Colunas: `chave;local_uso;externo;parede;acabamento;estilo;fonte`.
 
 Conversões:
 - **Alfagrês** usa uma escala de 1 a 5, convertida assim: 1→LA, 2→LB, 3→LC, 4→LD, 5→LD + externo.
-  O campo "Interno/Externo" liga o `externo`. "1 e 3" significa LC + parede. **Confirmar com o David.**
+  O campo "Interno/Externo" liga o `externo`. "1 e 3" significa LC + parede.
+- **O nome no sistema da loja manda:** produto cadastrado como `REVEST...` é revestimento (LA, só parede), mesmo que o
+  site da marca diga "1 e 3" (ex.: Palazzo Beige, Dunas e 3001 em 31×60). O `montar_dados.py` avisa no `relatorio.txt`
+  quando um `REVEST...` está com ficha diferente de LA. Já o contrário não vale: os decorados Rocha 400xx e os Cedasa
+  Cumaru Soft/Silver Roots estão cadastrados como `PISO`, mas são revestimento (confirmado pelo David).
 - **Rocha**: o código da loja `HD 70082` corresponde ao produto `R7008` no site da marca (o último dígito é sufixo).
   Os itens `40xx2` são revestimentos de parede (LA).
 - A coluna `fonte` diz de onde veio a informação. Linhas que começam com `SUPOSTO` são palpites e **precisam de confirmação**.
@@ -294,7 +298,7 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
 ## 9. Pendências conhecidas
 
 - Confirmar os itens marcados `SUPOSTO` no `fichas.csv`.
-- Confirmar a conversão da escala 1–5 da Alfagrês.
+- Confirmar a conversão da escala 1–5 da Alfagrês (o caso "1 e 3" já foi resolvido pelo nome na loja).
 - Faltam fotos de 8 produtos:
   - Cedasa: HD 1743 57x57, Luxor Blanc, Lyon Brilho e RTGC0115.
   - Rocha: HD 70442, 70622, 70861 e 70952.
