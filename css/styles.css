@@ -12,8 +12,55 @@
   --suave: #5b6660;
   --linha: #d9dfdb;
   --branco: #fff;
+  --tinta: #1d2420; /* texto sobre branco/amarelo, igual nos dois temas */
+  /* tons que mudam no modo escuro */
+  --superficie: #fff;
+  --foto-fundo: #e8ebe9;
+  --peca-fundo: #f0f2f1;
+  --filtros-fundo: rgba(243, 245, 244, 0.96);
+  --verde-texto: var(--verde);
+  --vermelho-texto: var(--vermelho);
+  --desconto-fundo: #fbeceb;
   --raio: 10px;
   --sombra: 0 1px 3px rgba(0, 0, 0, 0.08), 0 4px 14px rgba(0, 0, 0, 0.06);
+  color-scheme: light;
+}
+
+/* Modo escuro: segue o sistema, a menos que o botão do topo tenha escolhido outro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) {
+    --verde-claro: #1d3a2b;
+    --fundo: #121614;
+    --texto: #e4e9e6;
+    --suave: #9aa59f;
+    --linha: #2f3833;
+    --superficie: #1b211e;
+    --foto-fundo: #232a26;
+    --peca-fundo: #1f2622;
+    --filtros-fundo: rgba(18, 22, 20, 0.94);
+    --verde-texto: #6fcb94;
+    --vermelho-texto: #f07a74;
+    --desconto-fundo: #3a1f1e;
+    --sombra: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.3);
+    color-scheme: dark;
+  }
+}
+
+:root[data-tema="escuro"] {
+  --verde-claro: #1d3a2b;
+  --fundo: #121614;
+  --texto: #e4e9e6;
+  --suave: #9aa59f;
+  --linha: #2f3833;
+  --superficie: #1b211e;
+  --foto-fundo: #232a26;
+  --peca-fundo: #1f2622;
+  --filtros-fundo: rgba(18, 22, 20, 0.94);
+  --verde-texto: #6fcb94;
+  --vermelho-texto: #f07a74;
+  --desconto-fundo: #3a1f1e;
+  --sombra: 0 1px 3px rgba(0, 0, 0, 0.4), 0 4px 14px rgba(0, 0, 0, 0.3);
+  color-scheme: dark;
 }
 
 *,
@@ -55,7 +102,7 @@ h1, h2, h3 {
 /* ---------- Topo ---------- */
 
 .topo {
-  background: var(--branco);
+  background: var(--superficie);
   color: var(--texto);
   padding: 0.5rem 1rem;
   border-bottom: 3px solid var(--verde-linha);
@@ -67,11 +114,62 @@ h1, h2, h3 {
   display: flex;
   align-items: center;
   justify-content: center;
+  position: relative;
 }
 
+/* a logo tem letras escuras sobre fundo transparente: placa clara nos dois temas */
 .marca {
   flex: none;
   display: block;
+  background: var(--branco);
+  border-radius: 8px;
+  padding: 0.15rem 0.35rem;
+}
+
+.tema {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid var(--linha);
+  border-radius: 50%;
+  background: var(--superficie);
+  color: var(--texto);
+  cursor: pointer;
+}
+
+.tema:hover {
+  border-color: var(--verde-texto);
+  color: var(--verde-texto);
+}
+
+.tema svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+/* mostra a lua no tema claro e o sol no escuro */
+.tema .sol,
+:root[data-tema="escuro"] .tema .lua {
+  display: none;
+}
+
+:root[data-tema="escuro"] .tema .sol {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-tema="claro"]) .tema .lua {
+    display: none;
+  }
+
+  :root:not([data-tema="claro"]) .tema .sol {
+    display: block;
+  }
 }
 
 .marca img {
@@ -96,7 +194,7 @@ h1, h2, h3 {
   max-width: 1200px;
   margin: 0 auto;
   overflow: hidden;
-  background: #e8ebe9;
+  background: var(--foto-fundo);
 }
 
 .slides {
@@ -177,7 +275,7 @@ h1, h2, h3 {
   border-radius: 50%;
   border: 0;
   background: rgba(255, 255, 255, 0.85);
-  color: var(--texto);
+  color: var(--tinta);
   font-size: 1.9rem;
   line-height: 1;
   padding-bottom: 0.2rem;
@@ -222,7 +320,7 @@ h1, h2, h3 {
 
 .ponto[aria-current="true"] {
   width: 1.6rem;
-  background: var(--branco);
+  background: var(--superficie);
 }
 
 /* abas de ambiente (usadas no detalhe do piso) */
@@ -239,7 +337,7 @@ h1, h2, h3 {
 .aba {
   flex: none;
   border: 1px solid var(--linha);
-  background: var(--branco);
+  background: var(--superficie);
   border-radius: 999px;
   padding: 0.35rem 0.85rem;
   font-size: 0.9rem;
@@ -256,7 +354,7 @@ h1, h2, h3 {
 
 .vitrine-marca {
   margin: 0;
-  color: var(--verde);
+  color: var(--verde-texto);
   font-weight: 600;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -268,7 +366,7 @@ h1, h2, h3 {
 }
 
 .preco-oferta {
-  color: var(--vermelho);
+  color: var(--vermelho-texto);
   font-size: 1.9rem;
   font-weight: 800;
 }
@@ -288,7 +386,7 @@ h1, h2, h3 {
 .preco-principal {
   font-size: 1.6rem;
   font-weight: 800;
-  color: var(--verde);
+  color: var(--verde-texto);
 }
 
 .preco-riscado {
@@ -308,8 +406,8 @@ h1, h2, h3 {
 .desconto {
   display: inline-block;
   margin-top: 0.35rem !important;
-  background: #fbeceb;
-  color: var(--vermelho);
+  background: var(--desconto-fundo);
+  color: var(--vermelho-texto);
   font-weight: 600;
   font-size: 0.85rem;
   border-radius: 4px;
@@ -335,8 +433,8 @@ h1, h2, h3 {
 }
 
 .botao-sec {
-  background: var(--branco);
-  color: var(--verde);
+  background: var(--superficie);
+  color: var(--verde-texto);
   border: 2px solid var(--verde);
 }
 
@@ -366,7 +464,7 @@ h1, h2, h3 {
 
 .selo-leve {
   background: var(--amarelo);
-  color: var(--texto);
+  color: var(--tinta);
 }
 
 
@@ -376,7 +474,7 @@ h1, h2, h3 {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(243, 245, 244, 0.96);
+  background: var(--filtros-fundo);
   backdrop-filter: blur(6px);
   border-bottom: 1px solid var(--linha);
 }
@@ -406,7 +504,7 @@ h1, h2, h3 {
 .chip {
   flex: none;
   border: 1px solid var(--linha);
-  background: var(--branco);
+  background: var(--superficie);
   border-radius: 999px;
   padding: 0.3rem 0.75rem;
   font-size: 0.88rem;
@@ -416,6 +514,7 @@ h1, h2, h3 {
 .chip[aria-pressed="true"] {
   background: var(--amarelo);
   border-color: var(--amarelo);
+  color: var(--tinta);
   font-weight: 700;
 }
 
@@ -425,13 +524,13 @@ h1, h2, h3 {
   border: 1px solid var(--linha);
   border-radius: 8px;
   padding: 0.45rem 0.7rem;
-  background: var(--branco);
+  background: var(--superficie);
 }
 
 .botao-mais {
   border: 1px solid var(--verde);
-  color: var(--verde);
-  background: var(--branco);
+  color: var(--verde-texto);
+  background: var(--superficie);
   border-radius: 8px;
   padding: 0.45rem 0.7rem;
   font-weight: 600;
@@ -456,7 +555,7 @@ h1, h2, h3 {
   border: 1px solid var(--linha);
   border-radius: 8px;
   padding: 0.4rem 0.5rem;
-  background: var(--branco);
+  background: var(--superficie);
 }
 
 .check {
@@ -535,14 +634,14 @@ h1, h2, h3 {
   padding: 0 0.7rem;
   border: 1px solid var(--linha);
   border-radius: 8px;
-  background: var(--branco);
+  background: var(--superficie);
   font-weight: 600;
   cursor: pointer;
 }
 
 .pag:hover:not(:disabled) {
   border-color: var(--verde);
-  color: var(--verde);
+  color: var(--verde-texto);
 }
 
 .pag[aria-current="page"] {
@@ -572,7 +671,7 @@ h1, h2, h3 {
 }
 
 .card {
-  background: var(--branco);
+  background: var(--superficie);
   border-radius: var(--raio);
   overflow: hidden;
   box-shadow: var(--sombra);
@@ -590,7 +689,7 @@ h1, h2, h3 {
 .card-foto {
   position: relative;
   aspect-ratio: 5 / 4;
-  background: #e8ebe9;
+  background: var(--foto-fundo);
 }
 
 .card-foto .card-amb {
@@ -648,11 +747,11 @@ h1, h2, h3 {
 .card-preco {
   font-weight: 800;
   font-size: 1.15rem;
-  color: var(--verde);
+  color: var(--verde-texto);
 }
 
 .card-preco.oferta {
-  color: var(--vermelho);
+  color: var(--vermelho-texto);
 }
 
 .card-preco small {
@@ -676,6 +775,8 @@ h1, h2, h3 {
   border: 0;
   border-radius: 0;
   overflow-y: auto;
+  background: var(--superficie);
+  color: var(--texto);
 }
 
 .detalhe::backdrop {
@@ -698,6 +799,7 @@ h1, h2, h3 {
   border-radius: 50%;
   border: 0;
   background: rgba(255, 255, 255, 0.92);
+  color: var(--tinta);
   font-size: 1.6rem;
   line-height: 1;
   cursor: pointer;
@@ -706,13 +808,13 @@ h1, h2, h3 {
 
 .detalhe-fotos {
   position: relative;
-  background: #f0f2f1;
+  background: var(--peca-fundo);
 }
 
 .amb-carrossel {
   position: relative;
   overflow: hidden;
-  background: #e8ebe9;
+  background: var(--foto-fundo);
 }
 
 .amb-trilho {
@@ -769,7 +871,7 @@ h1, h2, h3 {
 
 /* 1º slide: a peça inteira, sem cortar, sobre fundo neutro */
 .slide-peca {
-  background: #f0f2f1;
+  background: var(--peca-fundo);
 }
 
 .slide-peca img {
@@ -810,7 +912,7 @@ h1, h2, h3 {
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  color: var(--verde);
+  color: var(--verde-texto);
 }
 
 .abas-detalhe {
@@ -841,7 +943,7 @@ h1, h2, h3 {
   font-size: 1rem;
   font-weight: 700;
   margin: 1.2rem 0 0.4rem;
-  color: var(--verde);
+  color: var(--verde-texto);
 }
 
 .onde {
@@ -855,7 +957,7 @@ h1, h2, h3 {
 
 .onde li {
   background: var(--verde-claro);
-  color: var(--verde-escuro);
+  color: var(--verde-texto);
   border-radius: 999px;
   padding: 0.2rem 0.65rem;
   font-size: 0.85rem;
@@ -896,7 +998,7 @@ h1, h2, h3 {
   border-radius: 6px;
   padding: 0.45rem 0.6rem;
   max-width: 10rem;
-  background: var(--branco);
+  background: var(--superficie);
 }
 
 .calc-res {

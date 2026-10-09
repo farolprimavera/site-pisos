@@ -47,6 +47,7 @@ const App = {
     Filtros.montar();
     App.atualizar();
     Detalhe.iniciar();
+    document.getElementById("tema").addEventListener("click", App.trocarTema);
     window.addEventListener("hashchange", App.abrirHash);
     App.abrirHash();
   },
@@ -82,6 +83,18 @@ const App = {
 
   esc(s) {
     return String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c]);
+  },
+
+  // Alterna claro/escuro. Sem escolha salva, o tema segue o do sistema (ver index.html).
+  trocarTema() {
+    const raiz = document.documentElement;
+    const escuroAgora = raiz.dataset.tema
+      ? raiz.dataset.tema === "escuro"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    raiz.dataset.tema = escuroAgora ? "claro" : "escuro";
+    try {
+      localStorage.setItem("tema", raiz.dataset.tema);
+    } catch (e) {}
   },
 
   // index.html#<id> abre direto o detalhe daquele piso.
