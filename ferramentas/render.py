@@ -170,12 +170,19 @@ def renderizar_parede(par, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, layou
     rev = cv2.resize(big, (Ww, Hh), interpolation=cv2.INTER_AREA)
     # luz e sombra: luminância da própria parede (média só dos pixels de parede, para a planta e outros
     # objetos não "mancharem" o revestimento em volta deles); desfoque maior e efeito menor que no chão
+    # Por canal de cor: a luz quente de um LED continua amarelando o revestimento embaixo dela.
     a = mask.astype(np.float32) / 255
-    g = cv2.cvtColor(foto, cv2.COLOR_BGR2GRAY).astype(np.float32)
+    f = foto.astype(np.float32)
     sig = par.get("desfoque", 14)
-    gb = cv2.GaussianBlur(g * a, (0, 0), sig) / np.maximum(cv2.GaussianBlur(a, (0, 0), sig), 1e-3)
-    ref = np.percentile(gb[a > 0.5], 60)
-    s = np.clip(1 + (gb / ref - 1) * sombra, 0.5, 1.2)[..., None]
+    peso = np.maximum(cv2.GaussianBlur(a, (0, 0), sig), 1e-3)[..., None]
+    gb = cv2.GaussianBlur(f * a[..., None], (0, 0), sig) / peso
+    sel = a > 0.5
+    lum = gb.mean(-1)
+    ref = np.percentile(lum[sel], 60)
+    # referência = cor típica da parede no brilho de referência: o tom geral da foto não tinge a peça,
+    # só o que for diferente dele (sombra, luz quente localizada)
+    base = np.median(gb[sel], axis=0) * ref / np.median(gb[sel], axis=0).mean()
+    s = np.clip(1 + (gb / base - 1) * sombra, 0.5, 1.25)
     expo = float(np.clip(ref / 225, 0.6, 1.0))           # peça branca fica do branco da parede da foto
     rev = rev * expo * s
     if brilho:
