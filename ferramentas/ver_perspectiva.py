@@ -3,9 +3,11 @@ Desenha a grade de 50 x 50 cm (e a máscara do chão, em vermelho) por cima da f
 para conferir a perspectiva antes de gerar tudo.  As linhas da grade devem "correr" junto com os
 rodapés e a base dos móveis.
 
-Rodar:  python ferramentas/ver_perspectiva.py [ambiente ...]      ->  ferramentas/build/grade-<ambiente>.jpg
+Paredes (ambientes/paredes.json): grade de 10 cm e a silhueta de uma peça 60 x 30 apoiada no chão.
+
+Rodar:  python ferramentas/ver_perspectiva.py [ambiente ou parede ...]   ->  ferramentas/build/grade-<nome>.jpg
 """
-import sys
+import json, sys
 from pathlib import Path
 import cv2
 import numpy as np
@@ -52,12 +54,44 @@ def grade(amb, passo=50, alcance=1200):
     return out
 
 
+def grade_parede(par, passo=10, peca=(60, 30)):
+    """Parede: grade de 10 cm (mais forte a cada 50) e a silhueta de uma peça (60 x 30 deitada) apoiada no chão,
+    centralizada, que é como a primeira fiada vai ser assentada."""
+    foto = R.ler_foto(AMB, par["ambiente"])
+    out = foto.copy()
+    mask = cv2.imread(str(AMB / f"{par['id']}-mask.png"), cv2.IMREAD_GRAYSCALE)
+    if mask is not None:
+        a = (mask.astype(np.float32) / 255 * 0.35)[..., None]
+        out = (out * (1 - a) + np.array([0, 0, 255]) * a).astype(np.uint8)
+    H = R.homografia(par)
+    L, A = par["largura_cm"], par["altura_cm"]
+
+    def px(pts_cm):
+        p = cv2.perspectiveTransform(np.float32(pts_cm).reshape(-1, 1, 2), H)
+        return p.reshape(-1, 2).round().astype(np.int32)
+
+    for x in np.arange(0, L + 0.1, passo):
+        forte = x % 50 == 0
+        cv2.polylines(out, [px([(x, 0), (x, A)])], False, (0, 200, 0), 2 if forte else 1, cv2.LINE_AA)
+    for y in np.arange(0, A + 0.1, passo):
+        forte = y % 50 == 0
+        cv2.polylines(out, [px([(0, y), (L, y)])], False, (0, 200, 0), 2 if forte else 1, cv2.LINE_AA)
+        if forte:
+            cv2.putText(out, f"{int(y)}", tuple(px([(0, y)])[0] + (4, -4)), cv2.FONT_HERSHEY_SIMPLEX, 0.5,
+                        (0, 120, 0), 1, cv2.LINE_AA)
+    pw, ph = peca
+    x0 = (L - pw) / 2
+    cv2.polylines(out, [px([(x0, 0), (x0 + pw, 0), (x0 + pw, ph), (x0, ph)])], True, (0, 220, 255), 3, cv2.LINE_AA)
+    return out
+
+
 def main():
     ambientes = R.carregar_ambientes(AMB)
-    nomes = sys.argv[1:] or list(ambientes)
+    paredes = json.loads((AMB / "paredes.json").read_text(encoding="utf-8")) if (AMB / "paredes.json").exists() else {}
+    nomes = sys.argv[1:] or list(ambientes) + list(paredes)
     (AQUI / "build").mkdir(exist_ok=True)
     for n in nomes:
-        img = grade(ambientes[n])
+        img = grade_parede(paredes[n]) if n in paredes else grade(ambientes[n])
         cv2.imwrite(str(AQUI / "build" / f"grade-{n}.jpg"), img, [cv2.IMWRITE_JPEG_QUALITY, 85])
         print("ok", n)
 

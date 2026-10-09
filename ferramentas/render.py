@@ -30,8 +30,9 @@ def carregar_ambientes(pasta):
 
 
 def homografia(amb):
-    L, P = amb["largura_cm"], amb["profundidade_cm"]
-    # pontos: fundo-esq, fundo-dir, frente-dir, frente-esq  <->  (0,P) (L,P) (L,0) (0,0)
+    L, P = amb["largura_cm"], amb.get("profundidade_cm", amb.get("altura_cm"))
+    # chão:   fundo-esq, fundo-dir, frente-dir, frente-esq      <->  (0,P) (L,P) (L,0) (0,0)
+    # parede: sup-esq, sup-dir, inf-dir, inf-esq (P = altura)   <->  o mesmo; y em cm sobe a partir do chão
     src = np.float32([[0, P], [L, P], [L, 0], [0, 0]])
     dst = np.float32(amb["pontos"])
     return cv2.getPerspectiveTransform(src, dst)       # cm -> px

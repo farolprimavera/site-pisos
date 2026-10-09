@@ -1,0 +1,18 @@
+{
+  "banheiro-parede": {
+    "id": "banheiro-parede",
+    "ambiente": "banheiro",
+    "superficie": "parede",
+    "nome": "Banheiro",
+    "pontos": [[605, 0], [1234, 0], [1234, 499], [605, 499]],
+    "largura_cm": 346,
+    "altura_cm": 275,
+    "ppc": 6,
+    "inicio": "baixo",
+    "mascara": {
+      "poligono": [[605, 0], [1234, 0], [1234, 499], [605, 499]],
+      "objetos": [[1120, 220, 1240, 500]],
+      "excluir": [[[1194, 441], [1205, 437], [1234, 435], [1234, 500], [1196, 500]]]
+    }
+  }
+}
