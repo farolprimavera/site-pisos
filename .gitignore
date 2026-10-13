@@ -2,3 +2,6 @@ __pycache__/
 *.pyc
 build/
 *.zip
+
+# documentação local (READMEs e instruções)
+*.md
