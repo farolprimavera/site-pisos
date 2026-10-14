@@ -3,12 +3,17 @@ Monta dados/pisos.json — o catálogo que o site lê.
 
 Lê da pasta de cima (a pasta de trabalho, fora do git):
   pisos.xlsx                      Código | Produto | Observação (caixa)
-  <fabricante>/<fabricante>.pdf   tabela de preço do sistema (alfagres/alfagres.pdf, cedasa/cedasa.pdf, rochaforte/rochaforte.pdf)
+  pisos.pdf                       tabela de preço do sistema com todos os fabricantes (também vale dentro de site-pisos/)
+  <fabricante>/<fabricante>.pdf   formato antigo, um PDF por fabricante (alfagres/alfagres.pdf, cedasa/cedasa.pdf, ...)
   fotos/<código>.jpg              foto da peça
 e daqui:
   ferramentas/fichas.csv          local de uso, acabamento e estilo de cada piso (preenchido a partir dos folders/sites)
 
-Só entra no site o que tem estoque e foto.  Rodar:  python3 ferramentas/montar_dados.py
+Os preços lidos do pisos.pdf ficam guardados em ferramentas/precos.json, então o PDF pode ser apagado depois.
+Vale a fonte com a data mais recente (pisos.pdf > precos.json > PDFs por fabricante).
+
+Só entra no site o que tem estoque e foto. Lote de ponta ('(P)' no fim do nome) fica de fora.
+Rodar:  python3 ferramentas/montar_dados.py
 """
 import csv, json, re, sys, datetime
 from pathlib import Path
@@ -84,25 +89,53 @@ def lu_ok(lu, minimo):
     return lu in ORDEM_LU and ORDEM_LU.index(lu) >= ORDEM_LU.index(minimo) and lu != "LA"
 
 
+def data_iso(d):
+    return d[6:] + d[3:5] + d[:2] if d else ""
+
+
+def carregar_precos():
+    """Preços da fonte mais recente.  O pisos.pdf (todos os fabricantes) é guardado em ferramentas/precos.json."""
+    cache = AQUI / "precos.json"
+    for pdf in (SITE / "pisos.pdf", TRABALHO / "pisos.pdf"):
+        if pdf.exists():
+            d = dict(data=C.data_pdf(pdf), precos=C.ler_pdf_geral(pdf))
+            cache.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+            print(f"Preços lidos de {pdf} ({d['data']}) e guardados em {cache.name}")
+            break
+    else:
+        d = json.loads(cache.read_text(encoding="utf-8")) if cache.exists() else dict(data=None, precos={})
+    # formato antigo, um PDF por fabricante: só vale se for mais novo que o pisos.pdf
+    pdfs = [TRABALHO / p / f"{p}.pdf" for p in ("alfagres", "cedasa", "rochaforte")]
+    pdfs = [p for p in pdfs if p.exists()]
+    datas = [x for x in (C.data_pdf(p) for p in pdfs) if x]
+    if datas and data_iso(min(datas, key=data_iso)) > data_iso(d["data"]):
+        precos = {}
+        for p in pdfs:
+            precos.update(C.ler_pdf_precos(p, p.stem.upper()))
+        return precos, min(datas, key=data_iso)
+    return d["precos"], d["data"]
+
+
 def main():
     fichas = {r["chave"]: r for r in csv.DictReader(open(AQUI / "fichas.csv", encoding="utf-8"), delimiter=";")}
-    precos = {}
-    for pasta in ("alfagres", "cedasa", "rochaforte"):
-        pdf = TRABALHO / pasta / f"{pasta}.pdf"
-        if pdf.exists():
-            precos.update(C.ler_pdf_precos(pdf, pasta.upper()))
-    planilha = C.ler_planilha(TRABALHO / "pisos.xlsx")
+    precos, data_precos = carregar_precos()
+    planilha = {str(l["Código"]).strip(): l for l in C.ler_planilha(TRABALHO / "pisos.xlsx")}
     fotos = TRABALHO / "fotos"
 
     grupos = {}
-    for l in planilha:
-        cod = str(l["Código"]).strip()
+    # lote novo que ainda não está na planilha entra com o nome do PDF (a caixa vem dos outros lotes do grupo)
+    for cod in list(planilha) + [c for c in precos if c not in planilha]:
         pr = precos.get(cod)
-        if not pr:
+        if not pr or pr["fabricante"] not in FABRICANTES:
             continue
+        l = planilha.get(cod) or {"Produto": pr["produto"]}
+        if pr.get("ponta") or C.RE_PONTA.search(str(pr.get("produto") or l["Produto"])):
+            continue                                   # ponta de estoque: não vai para o site
         k = C.chave(l["Produto"], pr["fabricante"])
-        g = grupos.setdefault(k, {"lotes": [], "produto": l["Produto"], "obs": l.get("Observação")})
-        g["lotes"].append(dict(codigo=cod, **pr, foto=(fotos / f"{cod}.jpg").exists()))
+        g = grupos.setdefault(k, {"lotes": [], "produto": l["Produto"], "obs": None})
+        g["obs"] = g["obs"] or l.get("Observação")
+        g["lotes"].append(dict(codigo=cod, estoque=pr["estoque"], vista=pr["vista"], prazo=pr["prazo"],
+                               oferta=pr["oferta"], foto=(fotos / f"{cod}.jpg").exists()))
 
     itens, sem_ficha, sem_foto, supostos, revest_no_chao = [], [], [], [], []
     for k, g in grupos.items():
@@ -146,7 +179,8 @@ def main():
             prazo=principal["prazo"] if principal else None,
             oferta=min(ofertas) if ofertas else None,
             local_uso=lu, onde=onde, acabamento=f["acabamento"], estilo=f["estilo"], retificado=retificado,
-            foto=com_foto[0]["codigo"], codigos=[x["codigo"] for x in lotes],
+            foto=com_foto[0]["codigo"], codigos=[x["codigo"] for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0))
+                                                   if (x["estoque"] or 0) > 0],
             ambientes=ambientes,
             paredes=[par["ambiente"] for par in PAREDES.values()
                      if parede and (externo or not par.get("so_externo"))],
@@ -157,10 +191,7 @@ def main():
     for it in itens:                               # ids únicos
         n = ids.get(it["id"], 0); ids[it["id"]] = n + 1
         if n: it["id"] += f"-{n + 1}"
-    datas = [C.data_pdf(TRABALHO / p / f"{p}.pdf") for p in ("alfagres", "cedasa", "rochaforte")
-             if (TRABALHO / p / f"{p}.pdf").exists()]
-    datas = sorted((d for d in datas if d), key=lambda d: d[6:] + d[3:5] + d[:2])
-    saida = dict(atualizado=datas[0] if datas else datetime.date.today().strftime("%d/%m/%Y"),
+    saida = dict(atualizado=data_precos or datetime.date.today().strftime("%d/%m/%Y"),
                  locais=[dict(id=c, nome=n) for c, n, _ in LOCAIS],
                  ambientes=[dict(id=a, nome=v["nome"]) for a, v in AMBIENTES.items()],
                  paredes=[dict(id=par["ambiente"], nome=par["nome"]) for par in PAREDES.values()], pisos=itens)

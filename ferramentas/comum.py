@@ -49,6 +49,60 @@ def ler_pdf_precos(pdf, fabricante):
     return precos
 
 
+FAB_PDF = {"ALFAGRES": "ALFAGRES", "CEDASA": "CEDASA", "CEDSA": "CEDASA", "ROCHAFORTE": "ROCHAFORTE",
+           "DIVERSOS": "DIVERSOS"}
+RE_PONTA = re.compile(r"\(P\)\.?\s*$")
+
+
+def _celulas(chars):
+    """Junta os caracteres de uma linha em células, na ordem em que o PDF desenha: cada célula é um trecho
+    contínuo; o nome do produto que vaza por cima da coluna Fabricante não se mistura com ela."""
+    cels, atual, ant = [], [], None
+    for c in chars:
+        if ant and (c["x0"] < ant["x1"] - 1 or c["x0"] > ant["x1"] + 6):
+            cels.append(atual); atual = []
+        atual.append(c); ant = c
+    if atual:
+        cels.append(atual)
+    return [("".join(c["text"] for c in cel).strip(), cel[0]["x0"], cel[-1]["x1"]) for cel in cels]
+
+
+def ler_pdf_geral(pdf):
+    """Tabela de preço do sistema (Pontual) com todos os fabricantes num PDF só (coluna Fabricante).
+    Devolve {código: {fabricante, produto, estoque, vista, prazo, oferta, ponta}}.  ponta = '(P)' no fim do nome."""
+    precos = {}
+    with pdfplumber.open(pdf) as doc:
+        for pag in doc.pages:
+            linhas = {}
+            for c in pag.chars:
+                linhas.setdefault(round(c["top"]), []).append(c)
+            cab = None
+            for top in sorted(linhas):
+                cels = _celulas(linhas[top])
+                txt = [t for t, _, _ in cels]
+                if "CdProd" in txt:     # cabeçalho: posição de cada coluna
+                    cab = {t: (x0, x1) for t, x0, x1 in cels}
+                    continue
+                if not cab or not cels or not re.fullmatch(r"\d{4,7}", txt[0]) or len(cels) < 2:
+                    continue
+                cod, produto = txt[0], txt[1]
+                d = dict(fabricante=None, produto=produto, estoque=0.0, vista=None, prazo=None, oferta=None,
+                         ponta=bool(RE_PONTA.search(produto)))
+                for t, x0, x1 in cels[2:]:
+                    if t in FAB_PDF:
+                        d["fabricante"] = FAB_PDF[t]
+                    elif t.startswith("R$"):
+                        meio = (x0 + x1) / 2
+                        col = min(("A VISTA", "A PRAZO", "SUP.OFERTA"),
+                                  key=lambda k: abs((cab[k][0] + cab[k][1]) / 2 - meio))
+                        d[{"A VISTA": "vista", "A PRAZO": "prazo", "SUP.OFERTA": "oferta"}[col]] = num_br(t)
+                    else:
+                        q = num_br(t) or 0.0
+                        d["estoque"] = round(q, 2) if abs(q) > 0.005 else 0.0
+                precos[cod] = d
+    return precos
+
+
 RE_MEDIDA = re.compile(r"(\d+(?:[.,]\d+)?)\s*,?\s*[xX]\s*(\d+(?:[.,]\d+)?)")
 
 
