@@ -312,6 +312,11 @@ Piso novo:
 
 GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)`.
 
+> **Aplicativo instalável (PWA): aumente `VERSAO` no `sw.js` a cada publicação** que mexa em HTML, CSS, JS ou nas
+> imagens (`pisos-v1` → `pisos-v2`…). Só preço (`dados/*`) não precisa: o service worker sempre busca os dados na rede
+> primeiro. Imagem regerada mantém o mesmo nome, e o cache de imagens do celular do cliente só é limpo quando a versão
+> muda. Com versão nova, quem tem o app vê o aviso "Nova versão disponível. Atualizar". Detalhes em `APP-INSTALAVEL.md`.
+
 ---
 
 ## 8. Lições aprendidas (não repetir)

@@ -1,0 +1,19 @@
+{
+  "name": "Pisos e Revestimentos · Farol da Primavera",
+  "short_name": "Pisos Farol",
+  "description": "Veja os pisos da loja aplicados em ambientes, com preço por m².",
+  "lang": "pt-BR",
+  "dir": "ltr",
+  "start_url": "./index.html",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#ffffff",
+  "theme_color": "#0a4fbf",
+  "icons": [
+    { "src": "icones/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icones/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
