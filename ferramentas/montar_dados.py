@@ -13,6 +13,8 @@ Os preços lidos do pisos.pdf ficam guardados em ferramentas/precos.json, então
 Vale a fonte com a data mais recente (pisos.pdf > precos.json > PDFs por fabricante).
 
 Só entra no site o que tem estoque e foto. Lote de ponta ('(P)' no fim do nome) fica de fora.
+Lote em queima (preço à vista ou oferta igual a um dos PRECOS_QUEIMA, hoje R$ 9,90) também fica de fora;
+se todos os lotes de um piso estão em queima, o piso some do site.
 Rodar:  python3 ferramentas/montar_dados.py
 """
 import csv, json, re, sys, datetime
@@ -26,6 +28,13 @@ import comum as C
 
 FABRICANTES = {"ALFAGRES": "Alfagrês", "CEDASA": "Cedasa", "ROCHAFORTE": "Rocha"}
 ORDEM_LU = ["LA", "LB", "LC", "LD", "LE", "LF"]
+# Preços de queima: lote com preço à vista ou oferta igual a um destes não vai para o site.
+# (A foto do lote, como a das pontas, ainda pode ser usada pelos outros lotes do mesmo piso.)  Para desligar: PRECOS_QUEIMA = []
+PRECOS_QUEIMA = [9.90]
+
+
+def em_queima(pr):
+    return any(v is not None and abs(v - q) < 0.005 for q in PRECOS_QUEIMA for v in (pr.get("vista"), pr.get("oferta")))
 
 # Onde usar (filtro do site).  Cada local pede um local de uso mínimo.
 LOCAIS = [
@@ -122,30 +131,41 @@ def main():
     planilha = {str(l["Código"]).strip(): l for l in C.ler_planilha(TRABALHO / "pisos.xlsx")}
     fotos = TRABALHO / "fotos"
 
-    grupos = {}
+    grupos, queima = {}, set()
     # lote novo que ainda não está na planilha entra com o nome do PDF (a caixa vem dos outros lotes do grupo)
     for cod in list(planilha) + [c for c in precos if c not in planilha]:
         pr = precos.get(cod)
         if not pr or pr["fabricante"] not in FABRICANTES:
             continue
         l = planilha.get(cod) or {"Produto": pr["produto"]}
-        if pr.get("ponta") or C.RE_PONTA.search(str(pr.get("produto") or l["Produto"])):
-            continue                                   # ponta de estoque: não vai para o site
         k = C.chave(l["Produto"], pr["fabricante"])
-        g = grupos.setdefault(k, {"lotes": [], "produto": l["Produto"], "obs": None})
+        g = grupos.setdefault(k, {"lotes": [], "fotos_extra": [], "produto": l["Produto"], "obs": None})
         g["obs"] = g["obs"] or l.get("Observação")
+        ponta = pr.get("ponta") or C.RE_PONTA.search(str(pr.get("produto") or l["Produto"]))
+        if ponta or em_queima(pr):
+            # ponta de estoque ou queima (R$ 9,90): não vai para o site, mas empresta a foto
+            # para os outros lotes do mesmo piso (lote novo costuma chegar sem foto)
+            if not ponta:
+                queima.add(k)
+            if (fotos / f"{cod}.jpg").exists():
+                g["fotos_extra"].append((pr["estoque"] or 0, cod))
+            continue
         g["lotes"].append(dict(codigo=cod, estoque=pr["estoque"], vista=pr["vista"], prazo=pr["prazo"],
                                oferta=pr["oferta"], foto=(fotos / f"{cod}.jpg").exists()))
 
     itens, sem_ficha, sem_foto, supostos, revest_no_chao = [], [], [], [], []
+    so_queima = []
     for k, g in grupos.items():
         lotes = g["lotes"]
         est = sum(max(x["estoque"] or 0, 0) for x in lotes)
         if est <= 0:
+            if k in queima:
+                so_queima.append(k)
             continue
         fab, base, _ = k.split("|")
         f = fichas.get(k)
-        com_foto = [x for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0)) if x["foto"]]
+        com_foto = [x["codigo"] for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0)) if x["foto"]] \
+            + [c for _, c in sorted(g["fotos_extra"], key=lambda t: -t[0])]
         if not com_foto:
             sem_foto.append(k); continue
         if not f:
@@ -179,7 +199,7 @@ def main():
             prazo=principal["prazo"] if principal else None,
             oferta=min(ofertas) if ofertas else None,
             local_uso=lu, onde=onde, acabamento=f["acabamento"], estilo=f["estilo"], retificado=retificado,
-            foto=com_foto[0]["codigo"], codigos=[x["codigo"] for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0))
+            foto=com_foto[0], codigos=[x["codigo"] for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0))
                                                    if (x["estoque"] or 0) > 0],
             ambientes=ambientes,
             paredes=[par["ambiente"] for par in PAREDES.values()
@@ -205,6 +225,8 @@ def main():
            f"Fora do site por falta de foto ({len(sem_foto)}): " + ", ".join(sem_foto),
            f"Fora do site por falta de ficha técnica em fichas.csv ({len(sem_ficha)}): " + ", ".join(sem_ficha),
            f"Local de uso SUPOSTO, conferir ({len(supostos)}): " + ", ".join(supostos),
+           f"Fora do site por estar só com lote em queima (R$ {', '.join(f'{q:.2f}'.replace('.', ',') for q in PRECOS_QUEIMA)}) "
+           f"({len(so_queima)}): " + ", ".join(sorted(so_queima)),
            f"Cadastrado como REVEST. na loja, mas a ficha não é LA, conferir ({len(revest_no_chao)}): "
            + ", ".join(revest_no_chao)]
     (SITE / "ferramentas" / "relatorio.txt").write_text("\n\n".join(rel), encoding="utf-8")
