@@ -63,6 +63,13 @@ const Cards = {
     return "";
   },
 
+  // Botão "Comparar" no canto da foto (js/comparar.js trata o clique).
+  botaoComparar(p) {
+    const on = Comparar.tem(p.id);
+    return `<button type="button" class="comparar-btn" data-comparar="${p.id}" aria-pressed="${on}"
+      aria-label="Comparar ${App.esc(p.nome)}"><span class="comparar-ico" aria-hidden="true"></span><span class="comparar-txt">${on ? "Comparando" : "Comparar"}</span></button>`;
+  },
+
   cardPiso(p) {
     const amb = App.ambienteDo(p);
     return `<article class="card" data-id="${p.id}" tabindex="0">
@@ -70,6 +77,7 @@ const Cards = {
         <img class="card-amb" src="${App.img.mini(amb, p.id)}" data-amb="${amb}" alt="${App.esc(p.nome)} em ${App.esc(App.nomeAmbiente[amb])}" loading="lazy" width="520" height="347">
         <img class="peca-mini" src="${App.img.peca(p.id)}" alt="" loading="lazy">
         ${Cards.selo(p)}
+        ${Cards.botaoComparar(p)}
       </div>
       <div class="card-texto">
         <h3>${App.esc(p.nome)}</h3>
@@ -87,10 +95,12 @@ const Cards = {
           <img class="card-amb card-parede" src="${App.img.paredeMini(par, p.id)}" alt="${App.esc(p.nome)} na parede: ${App.esc(App.nomeParede[par])}" loading="lazy" width="520" height="416">
           <img class="peca-mini" src="${App.img.peca(p.id)}" alt="" loading="lazy">
           ${Cards.selo(p)}
+          ${Cards.botaoComparar(p)}
         </div>`
       : `<div class="card-foto foto-peca">
           <img src="${App.img.peca(p.id)}" alt="${App.esc(p.nome)}" loading="lazy">
           ${Cards.selo(p)}
+          ${Cards.botaoComparar(p)}
         </div>`;
     return `<article class="card card-revest" data-id="${p.id}" tabindex="0">
       ${foto}

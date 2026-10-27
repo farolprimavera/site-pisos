@@ -1,5 +1,16 @@
 /* Filtros, busca e ordenação. */
 
+// Locais de uso (LU) da ficha técnica. LS não é um local_uso do site: vale para todo piso de uso externo.
+const LOCAIS_USO = [
+  { id: "LA", nome: "Sem tráfego", dica: "só parede" },
+  { id: "LB", nome: "Pouco tráfego", dica: "quarto e sala" },
+  { id: "LC", nome: "Médio tráfego", dica: "+ cozinha e banheiro" },
+  { id: "LD", nome: "Alto tráfego", dica: "+ áreas cobertas e comércio leve" },
+  { id: "LE", nome: "Altíssimo tráfego", dica: "comércio e tráfego intenso" },
+  { id: "LS", nome: "Uso externo", dica: "quintal, calçada, piscina" },
+];
+const temLU = (p, lu) => (lu === "LS" ? (p.onde || []).includes("externa") : p.local_uso === lu || (lu === "LE" && p.local_uso === "LF"));
+
 const Filtros = {
   montar() {
     const pisos = App.dados.pisos;
@@ -25,6 +36,13 @@ const Filtros = {
           <select id="f-estilo" aria-label="Estilo">${opcoes("estilo", "Todos os estilos")}</select>
           <select id="f-acabamento" aria-label="Acabamento">${opcoes("acabamento", "Todos os acabamentos")}</select>
           <select id="f-formato" aria-label="Formato">${opcoes("formato", "Todos os formatos")}</select>
+          <details class="multi" id="f-lu">
+            <summary>Locais de uso (LU) <span class="multi-qtd" hidden></span></summary>
+            <div class="multi-lista" role="group" aria-label="Locais de uso">${LOCAIS_USO.map((l) => `
+              <label class="multi-op" title="${App.esc(l.dica)}"><input type="checkbox" value="${l.id}">
+                <span><b>${l.id}</b> - ${App.esc(l.nome)}</span> <span class="multi-n" data-lu="${l.id}"></span></label>`).join("")}
+            </div>
+          </details>
           <select id="f-ordem" aria-label="Ordenar">
             <option value="desconto">Maior desconto</option>
             <option value="preco">Menor preço</option>
@@ -54,6 +72,16 @@ const Filtros = {
     ligar("#f-ordem", "ordem");
     ligar("#f-super", "superOferta");
 
+    // Locais de uso: vários de uma vez (mostra o piso que tiver qualquer um dos marcados)
+    const lu = el.querySelector("#f-lu");
+    lu.querySelectorAll("input").forEach((c) => c.addEventListener("change", () => {
+      e.lu = [...lu.querySelectorAll("input:checked")].map((x) => x.value);
+      Filtros.qtdLU();
+      App.atualizar();
+    }));
+    document.addEventListener("click", (ev) => { if (lu.open && !lu.contains(ev.target)) lu.open = false; });
+    document.addEventListener("keydown", (ev) => { if (ev.key === "Escape" && lu.open) { lu.open = false; lu.querySelector("summary").focus(); } });
+
     const mais = el.querySelector("#f-mais");
     mais.addEventListener("click", () => {
       const aberto = el.classList.toggle("aberto");
@@ -62,9 +90,30 @@ const Filtros = {
     el.querySelector("#f-limpar").addEventListener("click", Filtros.limpar);
   },
 
+  // Quantos produtos da aba atual há em cada local de uso (o número cinza ao lado de cada opção).
+  contarLU() {
+    const revest = App.estado.secao === "revestimentos";
+    const daAba = App.dados.pisos.filter((p) => (revest ? p.revest : p.ambientes.length > 0));
+    document.querySelectorAll("#f-lu .multi-n").forEach((s) => {
+      const n = daAba.filter((p) => temLU(p, s.dataset.lu)).length;
+      s.textContent = `(${n})`;
+      // sem nenhum produto nesta aba (ex.: LA em Pisos): fica apagado, a não ser que já esteja marcado
+      const c = s.parentElement.querySelector("input");
+      c.disabled = !n && !c.checked;
+      s.parentElement.classList.toggle("multi-vazio", c.disabled);
+    });
+  },
+
+  qtdLU() {
+    const n = (App.estado.lu || []).length, q = document.querySelector("#f-lu .multi-qtd");
+    q.hidden = !n;
+    q.textContent = n;
+  },
+
   // Chips de ambiente da aba atual: os ambientes de chão (Pisos) ou as paredes (Revestimentos).
   chips() {
     const e = App.estado;
+    Filtros.contarLU();
     const lista = e.secao === "revestimentos" ? App.dados.paredes : App.dados.ambientes;
     const box = document.querySelector("#filtros .chips");
     box.innerHTML = [{ id: "", nome: "Todos" }, ...lista]
@@ -94,11 +143,13 @@ const Filtros = {
   },
 
   limpar() {
-    Object.assign(App.estado, { cat: "", busca: "", marca: "", estilo: "", acabamento: "", formato: "", ordem: "desconto", superOferta: false });
+    Object.assign(App.estado, { cat: "", busca: "", marca: "", estilo: "", acabamento: "", formato: "", lu: [], ordem: "desconto", superOferta: false });
     const el = document.getElementById("filtros");
     el.querySelectorAll("select").forEach((s) => (s.selectedIndex = 0));
     el.querySelector("#f-busca").value = "";
     el.querySelector("#f-super").checked = false;
+    el.querySelectorAll("#f-lu input").forEach((c) => (c.checked = false));
+    Filtros.qtdLU();
     el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c.dataset.cat === ""));
     App.atualizar();
   },
@@ -114,6 +165,7 @@ const Filtros = {
       (!e.estilo || p.estilo === e.estilo) &&
       (!e.acabamento || p.acabamento === e.acabamento) &&
       (!e.formato || p.formato === e.formato) &&
+      (!(e.lu || []).length || e.lu.some((lu) => temLU(p, lu))) &&
       (!e.superOferta || p.superOferta) &&
       termos.every((t) => p.busca.includes(t)));
     const porNome = (a, b) => a.nome.localeCompare(b.nome, "pt-BR", { numeric: true });

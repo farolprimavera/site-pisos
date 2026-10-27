@@ -27,7 +27,7 @@
    Com versão nova, o site mostra "Nova versão disponível. Atualizar".
    ========================================================================== */
 
-const VERSAO = "pisos-v1";
+const VERSAO = "pisos-v2";
 const CASCA = `${VERSAO}-casca`;
 const IMAGENS = `${VERSAO}-imagens`;
 const MAX_IMAGENS = 300;
@@ -39,11 +39,14 @@ const ARQUIVOS_CASCA = [
   "./css/styles.css",
   "./dados/pisos.js",
   "./dados/pisos.json",
+  "./dados/materiais.js",
   "./js/app.js",
   "./js/filtros.js",
   "./js/vitrine.js",
   "./js/cards.js",
+  "./js/materiais.js",
   "./js/detalhe.js",
+  "./js/comparar.js",
   "./js/pwa.js",
   "./marca/logo-farol-web.png",
   "./icones/favicon.ico",

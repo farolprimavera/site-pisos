@@ -7,7 +7,7 @@ Lê da pasta de cima (a pasta de trabalho, fora do git):
   <fabricante>/<fabricante>.pdf   formato antigo, um PDF por fabricante (alfagres/alfagres.pdf, cedasa/cedasa.pdf, ...)
   fotos/<código>.jpg              foto da peça
 e daqui:
-  ferramentas/fichas.csv          local de uso, acabamento e estilo de cada piso (preenchido a partir dos folders/sites)
+  ferramentas/fichas.csv          local de uso, acabamento, estilo e retificado de cada piso (preenchido a partir dos folders/sites)
 
 Os preços lidos do pisos.pdf ficam guardados em ferramentas/precos.json, então o PDF pode ser apagado depois.
 Vale a fonte com a data mais recente (pisos.pdf > precos.json > PDFs por fabricante).
@@ -189,6 +189,9 @@ def main():
         ambientes = ambientes_do_piso(lu, externo, f["acabamento"], f["estilo"])
         nome = nome_exibicao(base)
         retificado = bool(re.search(r"\b(RET|RT)\b|RET\b", str(g["produto"]).upper()))
+        # a coluna "retificado" da ficha manda quando preenchida (1 = sim, 0 = não): nem todo retificado tem RET no nome
+        if (f.get("retificado") or "").strip() in ("0", "1"):
+            retificado = f["retificado"].strip() == "1"
         itens.append(dict(
             id=slug(f"{fab}-{nome}-{int(round(max(m)))}"),
             chave=k, nome=nome, fabricante=FABRICANTES[fab],

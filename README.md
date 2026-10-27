@@ -14,7 +14,7 @@ Um **site estático** (GitHub Pages, sem servidor, sem banco) com o catálogo de
 - Cada piso aparece **já aplicado** em fotos de ambientes (sala, quarto, cozinha, escritório…). As simulações são
   **geradas antes**, em Python, e o site só mostra imagens prontas.
 - Mostra **preço** (à vista, a prazo e oferta), medida, m² por caixa e local de uso.
-- Tem **filtros** por fabricante, onde usar, estilo, acabamento e formato. Também tem busca e ordenação.
+- Tem **filtros** por fabricante, onde usar, local de uso (LU), estilo, acabamento e formato. Também tem busca e ordenação.
 - Deve abrir **com dois cliques no `index.html`** (via `file://`), além de funcionar publicado no GitHub Pages.
 
 Fabricantes base: **Cedasa**, **Grupo Rocha (Rochaforte)** e **Alfagrês**.
@@ -34,6 +34,9 @@ site-pisos/                    ← pasta de trabalho (NÃO vai pro GitHub)
 ├── cedasa/*.pdf
 ├── rochaforte/*.pdf
 ├── fotos/<código>.jpg         foto da peça (nome = código do produto no sistema)
+├── materiais/                 argamassa, rejunte, espaçador, nivelador e cunha da loja (ver §4, item 7)
+│   ├── argamassa.pdf              tabela de preço do Pontual (BASICO / CIMENTÍCIOS)
+│   └── espacador*.xls             exportação de produtos (Código, Produto, Preço, Qtde.)
 └── site-pisos/                ← ESTA pasta = repositório git = raiz do GitHub Pages
     ├── index.html             só a estrutura (HTML). Sem <style> nem <script> inline grandes
     ├── css/
@@ -43,10 +46,14 @@ site-pisos/                    ← pasta de trabalho (NÃO vai pro GitHub)
     │   ├── filtros.js         filtros, busca e ordenação
     │   ├── vitrine.js         destaque grande + abas de ambiente
     │   ├── cards.js           grade de produtos
-    │   └── detalhe.js         modal de detalhe + calculadora + WhatsApp
+    │   ├── detalhe.js         modal de detalhe + calculadora + WhatsApp
+    │   ├── materiais.js       argamassa/rejunte/espaçador/nivelador da calculadora
+    │   ├── comparar.js        comparar até 3 pisos lado a lado (bandeja + janela)
+    │   └── pwa.js             app instalável: registro do sw.js, botão "Instalar app"
     ├── dados/
     │   ├── pisos.json         catálogo gerado
-    │   └── pisos.js           o mesmo catálogo como  window.PISOS = {...};  (para abrir via file://)
+    │   ├── pisos.js           o mesmo catálogo como  window.PISOS = {...};  (para abrir via file://)
+    │   └── materiais.json/.js materiais de assentamento da loja (window.MATERIAIS) — gerado
     ├── imagens/
     │   ├── <ambiente>/<id>.webp        simulação grande (1280 px de largura)
     │   ├── <ambiente>/mini/<id>.webp   miniatura da grade (520 px)
@@ -63,6 +70,7 @@ site-pisos/                    ← pasta de trabalho (NÃO vai pro GitHub)
     │   ├── montar_dados.py
     │   ├── render.py              chão e parede
     │   ├── gerar_imagens.py
+    │   ├── montar_materiais.py    lê materiais/ → dados/materiais.json/.js
     │   ├── mascara.py / mascara_parede.py / perspectiva.py / ver_perspectiva.py / testar_parede.py
     │   ├── fichas.csv
     │   └── relatorio.txt      gerado: o que ficou fora do site e por quê
@@ -98,12 +106,18 @@ Colunas: **Código | Produto | Observação**. O nome do produto traz lote e med
 - O nome base é o nome sem lote (`LT 123…`), sem `RET`/`RT`, sem medidas e datas. `MAT.` vira `MATTE`.
   Regex do lote: `(?<![A-Z])LT\s*\d+.*$`.
 - **Só entra no site o que tem estoque > 0, foto e ficha** (linha no `fichas.csv`).
+- **Fica fora do site:** lote de **ponta** (`(P)` no fim do nome) e lote em **queima**: preço à vista **ou** oferta
+  igual a um valor de `PRECOS_QUEIMA` no topo do `montar_dados.py` (hoje `[9.90]`; `[]` desliga). Se todos os lotes
+  de um piso estão em queima, o piso some e aparece no `relatorio.txt`. Lotes de ponta e de queima ainda
+  **emprestam a foto** para os outros lotes do mesmo piso (lote novo costuma chegar sem foto).
 - Preço exibido: o do lote com **maior estoque**. Oferta: a **menor oferta** entre os lotes com estoque.
 - "Super oferta": desconto relevante sobre o preço a prazo (vira filtro "Só super ofertas" e selo no card).
-- Retificado (RET/RT no nome) influencia o rejunte da simulação: 1,5 mm se retificado, 3 mm se não.
+- Retificado: vem do nome (`RET`/`RT`) ou da coluna `retificado` do `fichas.csv`, que manda quando preenchida
+  (`1` = sim, `0` = não; ex.: Ice Polido é retificado sem RET no nome). Influencia o rejunte da simulação (1,5 mm
+  se retificado, 3 mm se não) e a calculadora de materiais.
 
 ### 3.4 Local de uso (`fichas.csv`)
-Colunas: `chave;local_uso;externo;parede;acabamento;estilo;fonte`.
+Colunas: `chave;local_uso;externo;parede;acabamento;estilo;retificado;fonte` (`retificado` em branco = pelo nome).
 
 | Código | Uso |
 |---|---|
@@ -190,6 +204,8 @@ Seções:
 2. **Barra de filtros fixa (sticky):**
    - chips "onde usar" e busca por nome ou código;
    - selects de marca, estilo, acabamento e formato;
+   - **Locais de uso (LU)**: lista de caixinhas LA a LE + LS (uso externo), com quantos produtos da aba atual há em
+     cada um; marcar vários mostra o que tiver qualquer um deles. Vem do `local_uso` do `fichas.csv` (LS = `externo`).
    - ordenação: maior desconto (padrão), menor preço, nome;
    - "Só super ofertas".
    - No celular, os selects ficam atrás de um botão **"Mais filtros"**.
@@ -206,7 +222,39 @@ Seções:
    - botão **copiar link**;
    - botão **WhatsApp** "Pedir orçamento", que só aparece se `const WHATSAPP = "55DDDNUMERO"` estiver preenchido
      (em `js/app.js`).
-5. **Deep link:** `index.html#<id>` abre direto o modal daquele piso.
+5. **Deep link:** `index.html#<id>` abre direto o modal daquele piso; `index.html#comparar=id1,id2,id3` abre a comparação.
+   Trocar o `#` do endereço passa sempre por `App.trocarHash()` (com `try/catch`): em página dentro de outra
+   (prévia, iframe) o navegador bloqueia `history.replaceState` e o clique travava.
+6. **Comparar (`js/comparar.js`):**
+   - botão **☐ Comparar** no canto da foto de cada card (`Cards.botaoComparar`) e no detalhe do piso;
+     o clique é tratado em fase de captura para **não abrir o detalhe** do card;
+   - **bandeja fixa** embaixo com as peças escolhidas (até `MAX_COMPARAR = 3`); no 4º, aviso na própria bandeja
+     (sem `alert()`); no celular some o "Limpar" (cada peça tem o seu ×);
+   - **janela da comparação** (`<dialog id="comparar">`): todos no **mesmo ambiente**, com abas de chão e parede
+     (as que servem para todos vêm primeiro; `*` = nem todos servem). Produto não indicado para o ambiente mostra a
+     peça com "Não indicado para …";
+   - tabela com preço (selo **Menor preço** por m²), onde usar, acabamento, estilo, retificado, caixa e código;
+   - **calculadora única** (mesma área para todos, +10% de perda), com caixas e total de cada um e o selo
+     **"Mais em conta para a obra"** (o menor total, que nem sempre é o menor preço por m², porque a caixa muda);
+   - WhatsApp com os itens comparados (e as caixas, se preencheu a área) + "Copiar link da comparação";
+   - no celular a tabela rola para o lado (2 colunas por tela) e os rótulos ficam parados à esquerda.
+7. **Calculadora completa (`js/materiais.js`):** além das caixas, lista o que precisa para assentar, **com os
+   produtos da loja** (`dados/materiais.js`), preço, subtotal e **"Total da obra"** (piso + materiais). Vai junto no WhatsApp.
+   - **Argamassa** (sacos de 20 kg), pelos boletins quartzolit Cimentcola: peça ≤ 400 cm² → 4,0 kg/m²; ≤ 900 cm² →
+     4,5 kg/m²; maior → 8,0 kg/m² (dupla colagem). Tipo: **AC-III** se polido, retificado ou ≥ 60×60; **AC-II** se área
+     externa; **AC-I** no resto. Oferece a classe pedida ou acima (nunca abaixo); "Porcelanato Interna" entra como
+     alternativa da AC-III em área interna.
+   - **Rejunte** (kg): `(C+L)/(C×L) × E × J × 1,6` (mm); junta 2 mm (retificado) ou 3 mm; espessura 8 mm (< 60 cm) ou 9 mm.
+     Retificado/polido sugere primeiro o "p/ porcelanato". O cliente escolhe a **cor** no seletor.
+   - **Nivelador** (só chão, lado ≥ 45 cm): clip a cada ~35 cm (2 lados por peça), **descartável**: 1 por ponto na obra toda.
+     Cunhas **reutilizáveis**: só as de 1 dia de assentamento (`areaDia` = 20 m²; sai depois de 24 h e volta no trecho
+     seguinte); obra menor que isso, 1 por clip.
+   - **Espaçador** (peças menores e toda parede): 1 cruzeta por peça.
+   - Tudo com +10% de perda. Só oferece produto **com estoque para a quantidade**; o padrão é o mais barato da classe certa.
+   - Ignorados de propósito (regra `IGNORAR` no `montar_materiais.py`): bloco de vidro e piso sobre piso.
+   - **Garramax Super 7x1** (uso interno/externo, porcelanato, fachada; aderência > 0,5 MPa, tempo em aberto 15 min,
+     sem classe AC): entra como classe `SUPER`, opção em qualquer classe mas nunca a sugestão principal da AC-III.
+   - **Rejuntamento Construcola** é de 1 kg (confirmado pelo David), mesmo sem "1KG" no nome.
 
 Outros requisitos:
 - Imagens com `loading="lazy"`.
@@ -219,7 +267,7 @@ Outros requisitos:
 
 Dependências:
 ```bash
-pip install --break-system-packages openpyxl pdfplumber opencv-python-headless numpy
+pip install --break-system-packages openpyxl pdfplumber opencv-python-headless numpy xlrd
 ```
 
 O `render.py` aplica a textura do piso no chão da foto do ambiente:
@@ -303,6 +351,7 @@ reflexo suave só em brilhante/polido; luz tirada só dos pixels de parede, por 
 cd site-pisos/site-pisos
 python3 ferramentas/montar_dados.py     # lê xlsx + PDFs + fichas → dados/pisos.json/.js + relatório
 python3 ferramentas/gerar_imagens.py    # só gera o que é novo
+python3 ferramentas/montar_materiais.py # se mudou preço de argamassa/rejunte/espaçador (pasta materiais/)
 git add -A && git commit -m "Atualiza preços" && git push
 ```
 Piso novo:
@@ -328,7 +377,16 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
   Use classes próprias (`.peca-mini`).
 - Não suba zips de imagens para o repositório: `*.zip` fica no `.gitignore`.
 
-## 9. Pendências conhecidas
+## 9. Próximos extras combinados com o David
+
+Fazer **um de cada vez**, mostrando a prévia antes de seguir:
+- [x] **Comparar** pisos lado a lado (§4, item 6).
+- [x] **Calculadora completa** com argamassa, rejunte, espaçador e nivelador da loja (§4, item 7).
+- [ ] **Selo "Novidade"** nos pisos que acabaram de chegar.
+- [ ] **QR code** na etiqueta do mostruário (Zebra ZD220) → abre o piso no site e, depois, **"Ver na minha casa"**:
+  o cliente tira foto do cômodo, marca os cantos do chão e vê o piso aplicado (tudo no celular, sem servidor).
+
+## 10. Pendências conhecidas
 
 - Confirmar os itens marcados `SUPOSTO` no `fichas.csv`.
 - Confirmar a conversão da escala 1–5 da Alfagrês (o caso "1 e 3" já foi resolvido pelo nome na loja).
@@ -339,7 +397,7 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
 
 ---
 
-## 10. Por onde começar (ordem sugerida)
+## 11. Por onde começar (ordem sugerida)
 
 1. Criar a estrutura de pastas, o `.gitignore`, o `.nojekyll` e um `index.html` vazio ligando `css/styles.css` e os `js/*.js`.
 2. `ferramentas/comum.py` + `montar_dados.py`, com o `xlsx`, os PDFs e o `fichas.csv` importados → gerar `dados/pisos.json/.js`.

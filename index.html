@@ -76,6 +76,10 @@
   <!-- 4. Modal de detalhe + calculadora + WhatsApp (js/detalhe.js) -->
   <dialog id="detalhe" class="detalhe"></dialog>
 
+  <!-- 5. Comparar pisos lado a lado: bandeja fixa + janela da comparação (js/comparar.js) -->
+  <div class="bandeja" id="bandeja" aria-label="Pisos para comparar" hidden></div>
+  <dialog id="comparar" class="detalhe comparar"></dialog>
+
   <footer class="rodape">
     <div class="rodape-conteudo">
       <div class="rodape-bloco">
@@ -126,11 +130,14 @@
 
   <!-- Ordem importa. Sem type="module" para abrir via file:// -->
   <script src="dados/pisos.js"></script>
+  <script src="dados/materiais.js"></script>
   <script src="js/app.js"></script>
   <script src="js/filtros.js"></script>
   <script src="js/vitrine.js"></script>
   <script src="js/cards.js"></script>
+  <script src="js/materiais.js"></script>
   <script src="js/detalhe.js"></script>
+  <script src="js/comparar.js"></script>
   <script src="js/pwa.js"></script>
 </body>
 </html>

@@ -586,6 +586,110 @@ h1, h2, h3 {
   background: var(--superficie);
 }
 
+/* Filtro de várias opções (Locais de uso): botão que abre uma lista de caixinhas */
+.multi {
+  position: relative;
+  flex: 1 1 45%;
+  min-width: 0;
+}
+
+.multi summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  padding: 0.4rem 0.6rem;
+  background: var(--superficie);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.multi summary::-webkit-details-marker {
+  display: none;
+}
+
+.multi summary::after {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  margin-left: auto;
+  border-right: 2px solid var(--suave);
+  border-bottom: 2px solid var(--suave);
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.15s;
+}
+
+.multi[open] summary::after {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+.multi[open] summary,
+.multi summary:focus-visible {
+  border-color: var(--verde-texto);
+}
+
+.multi-qtd {
+  min-width: 1.25rem;
+  padding: 0 0.3rem;
+  border-radius: 999px;
+  background: var(--verde);
+  color: var(--branco);
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.multi-lista {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 4px);
+  left: 0;
+  min-width: 100%;
+  display: grid;
+  padding: 0.3rem;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--superficie);
+  box-shadow: var(--sombra);
+}
+
+.multi-op {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.5rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.multi-op:hover {
+  background: var(--verde-claro);
+}
+
+.multi-op input {
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--verde);
+}
+
+.multi-n {
+  color: var(--suave);
+}
+
+.multi-op.multi-vazio {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.multi-op.multi-vazio:hover {
+  background: none;
+}
+
 .check {
   display: flex;
   align-items: center;
@@ -1189,6 +1293,10 @@ h1, h2, h3 {
     flex: 0 1 auto;
   }
 
+  .multi {
+    flex: 0 1 auto;
+  }
+
   .abas-detalhe {
     flex-wrap: wrap;
   }
@@ -1325,4 +1433,659 @@ body {
   .instalar-app {
     display: none;
   }
+}
+
+/* ---------- Comparar (js/comparar.js) ---------- */
+
+/* botão no canto da foto do card */
+.comparar-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.6rem 0.3rem 0.45rem;
+  border: 0;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--tinta);
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+}
+
+.comparar-btn:hover {
+  background: var(--branco);
+}
+
+.comparar-btn[aria-pressed="true"] {
+  background: var(--verde);
+  color: var(--branco);
+}
+
+/* quadradinho que vira ✓ */
+.comparar-ico {
+  width: 0.95rem;
+  height: 0.95rem;
+  border: 2px solid currentColor;
+  border-radius: 3px;
+  display: inline-grid;
+  place-items: center;
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+[aria-pressed="true"] > .comparar-ico::after {
+  content: "✓";
+  font-weight: 800;
+}
+
+.botao-comparar {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.botao-comparar[aria-pressed="true"] {
+  background: var(--verde);
+  color: var(--branco);
+}
+
+/* bandeja fixa embaixo */
+.bandeja {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: var(--superficie);
+  border-top: 3px solid var(--verde);
+  box-shadow: 0 -4px 18px rgba(0, 0, 0, 0.15);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.bandeja[hidden] {
+  display: none;
+}
+
+body.com-bandeja {
+  padding-bottom: 5.5rem;
+}
+
+.bandeja-conteudo {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.band-itens {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.band-item {
+  position: relative;
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  max-width: 12rem;
+  padding: 0.25rem 1.6rem 0.25rem 0.25rem;
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  background: var(--fundo);
+}
+
+.band-item img {
+  width: 2.6rem;
+  height: 2.6rem;
+  object-fit: cover;
+  border-radius: 5px;
+}
+
+.band-nome {
+  font-size: 0.85rem;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.band-tirar {
+  position: absolute;
+  top: 0.1rem;
+  right: 0.15rem;
+  width: 1.4rem;
+  height: 1.4rem;
+  border: 0;
+  border-radius: 50%;
+  background: none;
+  color: var(--suave);
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.band-tirar:hover {
+  color: var(--vermelho-texto);
+}
+
+.band-vaga {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  border: 2px dashed var(--linha);
+  border-radius: 8px;
+  color: var(--suave);
+  font-size: 1.3rem;
+}
+
+.band-acoes {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.band-botao {
+  margin: 0;
+  white-space: nowrap;
+}
+
+.band-botao:disabled {
+  background: var(--linha);
+  color: var(--suave);
+  cursor: default;
+}
+
+.band-limpar {
+  border: 0;
+  background: none;
+  color: var(--suave);
+  text-decoration: underline;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.band-aviso {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem 0.6rem;
+  color: var(--vermelho-texto);
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+.band-aviso[hidden] {
+  display: none;
+}
+
+/* no celular: só as fotos das peças na bandeja */
+@media (max-width: 560px) {
+  .band-nome,
+  .band-vaga {
+    display: none;
+  }
+
+  .band-item {
+    padding-right: 0.25rem;
+  }
+
+  .band-tirar {
+    top: -0.35rem;
+    right: -0.35rem;
+    background: var(--superficie);
+    border: 1px solid var(--linha);
+    font-size: 0.95rem;
+  }
+
+  .band-itens {
+    overflow: visible;
+    gap: 0.75rem;
+    padding-right: 0.5rem;
+  }
+
+  /* sem espaço para "Limpar" no celular: cada peça tem o seu × */
+  .band-limpar {
+    display: none;
+  }
+}
+
+/* janela da comparação */
+.comparar {
+  width: min(1200px, 100%);
+}
+
+.cmp-conteudo {
+  padding: 0 0 1.25rem;
+}
+
+.cmp-topo {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1rem;
+  background: var(--superficie);
+  border-bottom: 1px solid var(--linha);
+}
+
+.cmp-topo h2 {
+  font-size: 1.25rem;
+  font-weight: 800;
+}
+
+.cmp-fechar {
+  position: static;
+  flex: none;
+}
+
+.cmp-lugares {
+  padding: 0.6rem 0 0;
+}
+
+.cmp-lugares-rot {
+  display: block;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--verde-texto);
+}
+
+.cmp-abas {
+  padding-top: 0.4rem;
+  scrollbar-width: none;
+}
+
+.cmp-abas::-webkit-scrollbar {
+  display: none;
+}
+
+.cmp-nota {
+  margin: -0.2rem 0 0;
+  padding: 0 1rem;
+  font-size: 0.78rem;
+  color: var(--suave);
+}
+
+/* 3 colunas não cabem num celular: rola para o lado mostrando 2 de cada vez */
+.cmp-rolagem {
+  overflow-x: auto;
+  padding: 0.5rem 0.5rem 0;
+  scroll-snap-type: x mandatory;
+}
+
+.cmp-tabela {
+  width: 100%;
+  min-width: calc(var(--cols) * 46vw);
+  border-collapse: separate;
+  border-spacing: 0.5rem 0;
+  table-layout: fixed;
+}
+
+@media (min-width: 720px) {
+  .cmp-tabela {
+    min-width: 0;
+  }
+}
+
+.cmp-tabela td,
+.cmp-tabela th {
+  vertical-align: top;
+  text-align: left;
+  scroll-snap-align: start;
+}
+
+.cmp-foto {
+  position: relative;
+  aspect-ratio: 3 / 2;
+  border-radius: var(--raio);
+  overflow: hidden;
+  background: var(--foto-fundo);
+}
+
+.cmp-foto > img:first-child {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 75%;
+}
+
+.cmp-so-peca {
+  background: var(--peca-fundo);
+}
+
+.cmp-so-peca > img:first-child {
+  object-fit: contain;
+  padding: 0.75rem 0.75rem 2.2rem;
+}
+
+.cmp-nao {
+  position: absolute;
+  left: 0.5rem;
+  right: 0.5rem;
+  bottom: 0.5rem;
+  text-align: center;
+  background: var(--desconto-fundo);
+  color: var(--vermelho-texto);
+  font-size: 0.78rem;
+  font-weight: 700;
+  border-radius: 6px;
+  padding: 0.25rem 0.4rem;
+}
+
+.cmp-nomes th {
+  padding-top: 0.6rem;
+  font-weight: 400;
+}
+
+.cmp-nomes .vitrine-marca {
+  display: block;
+  font-size: 0.75rem;
+}
+
+.cmp-nome {
+  display: block;
+  font-size: 1.25rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin-top: 0.1rem;
+}
+
+.cmp-medida {
+  display: block;
+  color: var(--suave);
+  font-size: 0.88rem;
+}
+
+/* rótulo de cada linha, por cima das colunas */
+.cmp-rotulo th {
+  padding: 0.9rem 0 0.3rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--verde-texto);
+  border-bottom: 1px solid var(--linha);
+}
+
+/* no celular a tabela rola para o lado: o rótulo e a calculadora ficam parados à esquerda */
+.cmp-rotulo th span,
+.cmp-calc-caixa {
+  position: sticky;
+  left: 0.5rem;
+  display: inline-block;
+  max-width: calc(100vw - 2rem);
+}
+
+.cmp-tabela tbody td {
+  padding-top: 0.35rem;
+  font-size: 0.95rem;
+}
+
+.cmp-tabela .precos p {
+  margin: 0;
+}
+
+.cmp-tabela .preco-oferta {
+  font-size: 1.5rem;
+}
+
+.cmp-tabela .preco-principal {
+  font-size: 1.35rem;
+}
+
+.cmp-tabela .onde li {
+  font-size: 0.78rem;
+}
+
+.cmp-melhor {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+  background: var(--verde);
+  color: var(--branco);
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+}
+
+.cmp-calc-linha td {
+  padding-top: 0.5rem;
+}
+
+.cmp-calc {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  font-size: 0.9rem;
+  margin-right: 0.75rem;
+}
+
+.cmp-calc input {
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  padding: 0.45rem 0.6rem;
+  max-width: 10rem;
+  background: var(--superficie);
+}
+
+.cmp-calc-dica {
+  font-size: 0.82rem;
+  color: var(--suave);
+}
+
+.cmp-total {
+  display: block;
+  background: var(--fundo);
+  border-radius: 8px;
+  padding: 0.55rem 0.65rem;
+  font-size: 0.92rem;
+}
+
+.cmp-total-vazio {
+  color: var(--suave);
+}
+
+.cmp-total .cmp-melhor {
+  display: table;
+}
+
+.cmp-total-valor {
+  display: block;
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--verde-texto);
+}
+
+.cmp-acoes-linha td {
+  padding-top: 0.25rem;
+}
+
+.cmp-ver {
+  display: block;
+  width: 100%;
+  margin-top: 0.6rem;
+  padding: 0.55rem 0.6rem;
+}
+
+.cmp-tirar {
+  display: block;
+  margin: 0.4rem auto 0;
+  border: 0;
+  background: none;
+  color: var(--suave);
+  text-decoration: underline;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.cmp-rodape {
+  padding: 0.5rem 1rem 0;
+  justify-content: center;
+}
+
+/* ---------- Materiais da calculadora (js/materiais.js) ---------- */
+
+.materiais {
+  margin-top: 0.75rem;
+  padding-top: 0.65rem;
+  border-top: 1px dashed var(--linha);
+}
+
+.materiais-tit {
+  margin: 0 0 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--verde-texto);
+}
+
+.materiais ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0.45rem;
+}
+
+.materiais li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0 0.75rem;
+  align-items: baseline;
+  background: var(--superficie);
+  border: 1px solid var(--linha);
+  border-radius: 8px;
+  padding: 0.45rem 0.65rem;
+}
+
+.calc .mat-nome {
+  display: inline-flex;
+  flex-direction: row;
+  justify-self: start;
+  align-items: center;
+  gap: 0.4rem;
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+}
+
+.calc .mat-check {
+  flex: none;
+  padding: 0;
+  border: 0;
+  width: 1.05rem;
+  height: 1.05rem;
+  margin: 0;
+  accent-color: var(--verde-texto);
+  cursor: pointer;
+}
+
+/* material desmarcado: fica visível, mas apagado e fora do total */
+.materiais li.mat-off {
+  background: transparent;
+  border-style: dashed;
+}
+
+.mat-off .mat-qtd,
+.mat-off .mat-det,
+.mat-off .mat-prod,
+.mat-off .mat-unico {
+  opacity: 0.45;
+}
+
+.mat-off .mat-nome {
+  color: var(--suave);
+}
+
+.mat-off .mat-sub {
+  text-decoration: line-through;
+  color: var(--suave);
+  font-weight: 400;
+}
+
+.mat-qtd {
+  font-size: 0.95rem;
+  color: var(--verde-texto);
+  white-space: nowrap;
+}
+
+.mat-det {
+  grid-column: 1 / -1;
+  font-size: 0.78rem;
+  color: var(--suave);
+}
+
+.materiais-aviso {
+  margin: 0.45rem 0 0;
+  font-size: 0.75rem;
+  color: var(--suave);
+}
+
+/* produto da loja em cada material (seletor) + subtotal */
+.mat-prod,
+.mat-unico {
+  grid-column: 1 / -1;
+  margin-top: 0.35rem;
+  min-width: 0;
+  font-size: 0.82rem;
+}
+
+.mat-prod {
+  width: 100%;
+  border: 1px solid var(--linha);
+  border-radius: 6px;
+  padding: 0.3rem 0.4rem;
+  background: var(--fundo);
+}
+
+.mat-unico {
+  color: var(--suave);
+}
+
+.mat-falta {
+  color: var(--vermelho-texto);
+  font-weight: 600;
+}
+
+.mat-sub {
+  grid-column: 1 / -1;
+  justify-self: end;
+  margin-top: 0.25rem;
+  font-weight: 700;
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.mat-totais {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.3rem 1rem;
+  margin: 0.6rem 0 0;
+  font-size: 0.92rem;
+}
+
+.mat-obra strong {
+  font-size: 1.15rem;
+  color: var(--verde-texto);
 }

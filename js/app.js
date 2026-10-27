@@ -17,6 +17,7 @@ const App = {
     estilo: "",
     acabamento: "",
     formato: "",
+    lu: [],           // locais de uso marcados (LA, LB... LS); vazio = todos
     ordem: "desconto",
     superOferta: false,
     ambiente: "sala",  // ambiente preferido nas miniaturas da grade
@@ -54,6 +55,7 @@ const App = {
     Filtros.montar();
     App.atualizar();
     Detalhe.iniciar();
+    Comparar.iniciar();
     document.getElementById("tema").addEventListener("click", App.trocarTema);
     window.addEventListener("hashchange", App.abrirHash);
     App.abrirHash();
@@ -62,6 +64,14 @@ const App = {
   // Redesenha tudo o que depende dos filtros.
   atualizar() {
     Cards.desenhar(Filtros.aplicar(App.dados.pisos));
+  },
+
+  // Troca o #... do endereço sem recarregar. Em alguns lugares (prévia dentro de outro site,
+  // navegador muito restrito) o navegador não deixa: aí só não atualiza o endereço.
+  trocarHash(hash) {
+    try {
+      history.replaceState(null, "", hash || location.pathname + location.search);
+    } catch (e) {}
   },
 
   piso(id) {
@@ -112,8 +122,9 @@ const App = {
     } catch (e) {}
   },
 
-  // index.html#<id> abre direto o detalhe daquele piso.
+  // index.html#<id> abre direto o detalhe daquele piso; #comparar=id1,id2 abre a comparação.
   abrirHash() {
+    if (location.hash.startsWith("#comparar=")) return Comparar.doHash(location.hash.slice("#comparar=".length));
     const id = decodeURIComponent(location.hash.slice(1));
     if (id === "pisos" || id === "revestimentos") return Filtros.secao(id);
     if (id && App.piso(id)) Detalhe.abrir(id);

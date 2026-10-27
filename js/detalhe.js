@@ -8,7 +8,7 @@ const Detalhe = {
     // clique fora do conteúdo fecha
     dlg.addEventListener("click", (ev) => { if (ev.target === dlg) dlg.close(); });
     dlg.addEventListener("close", () => {
-      if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+      if (location.hash) App.trocarHash("");
     });
   },
 
@@ -156,10 +156,13 @@ const Detalhe = {
                    <input type="number" class="calc-in" id="calc-m2" min="0" step="0.5" inputmode="decimal" placeholder="Ex.: 12">
                  </label>`}
             <p id="calc-res" class="calc-res">Informe ${parede ? "largura e altura da parede" : "a área"} para calcular, já com ${PERDA * 100}% de perda.</p>
+            <div id="calc-mat"></div>
           </div>
 
           <div class="acoes">
             ${WHATSAPP ? `<a class="botao botao-whats" id="det-whats" target="_blank" rel="noopener">Pedir orçamento no WhatsApp</a>` : ""}
+            <button type="button" class="botao botao-sec botao-comparar" data-comparar="${p.id}" aria-pressed="${Comparar.tem(p.id)}">
+              <span class="comparar-ico" aria-hidden="true"></span><span class="comparar-txt">${Comparar.tem(p.id) ? "Comparando" : "Comparar"}</span></button>
             <button type="button" class="botao botao-sec" id="det-link">Copiar link</button>
           </div>
         </div>
@@ -169,13 +172,14 @@ const Detalhe = {
     if (fotos.length) Detalhe.carrossel(dlg, 0);
 
     const link = location.href.split("#")[0] + "#" + encodeURIComponent(p.id);
-    let m2Pedido = null;
+    let m2Pedido = null, matPedido = "";
     const atualizarWhats = () => {
       const w = dlg.querySelector("#det-whats");
       if (!w) return;
       const oque = p.tipo === "Revestimento" ? "no revestimento" : "no piso";
       let msg = `Olá! Tenho interesse ${oque} ${p.nome} (${p.fabricante}, ${p.medida}, cód. ${p.codigos[0]}).`;
       if (m2Pedido) msg += ` Preciso de cerca de ${m2Pedido}.`;
+      if (matPedido) msg += ` Materiais: ${matPedido}.`;
       w.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg + " " + link)}`;
     };
     atualizarWhats();
@@ -184,6 +188,7 @@ const Detalhe = {
     const calcular = () => {
       const area = parede ? num("#calc-larg") * num("#calc-alt") : num("#calc-m2");
       const res = dlg.querySelector("#calc-res");
+      let totalPiso = 0;
       if (!(area > 0)) {
         res.textContent = parede
           ? `Informe largura e altura da parede para calcular, já com ${PERDA * 100}% de perda.`
@@ -194,15 +199,22 @@ const Detalhe = {
         if (p.caixa_m2) {
           const caixas = Math.ceil(comPerda / p.caixa_m2 - 1e-9);
           const m2 = caixas * p.caixa_m2;
+          totalPiso = m2 * p.preco;
           res.innerHTML = `<strong>${caixas} caixa${caixas > 1 ? "s" : ""}</strong> = ${m2.toFixed(2).replace(".", ",")} m²
-            <br>Total: <strong>${App.dinheiro(m2 * p.preco)}</strong>`;
+            <br>${p.tipo === "Revestimento" ? "Revestimento" : "Piso"}: <strong>${App.dinheiro(totalPiso)}</strong>`;
           m2Pedido = `${caixas} caixas (${m2.toFixed(2).replace(".", ",")} m²)`;
         } else {
+          totalPiso = comPerda * p.preco;
           res.innerHTML = `<strong>${comPerda.toFixed(2).replace(".", ",")} m²</strong> com perda
-            <br>Total aproximado: <strong>${App.dinheiro(comPerda * p.preco)}</strong>`;
+            <br>Total aproximado: <strong>${App.dinheiro(totalPiso)}</strong>`;
           m2Pedido = `${comPerda.toFixed(1).replace(".", ",")} m²`;
         }
       }
+      // argamassa, rejunte, espaçador/nivelador com os produtos da loja (js/materiais.js)
+      const mat = Materiais.calcular(p, area, parede);
+      const aoMudar = () => { matPedido = Materiais.texto(mat); atualizarWhats(); };
+      Materiais.montar(dlg.querySelector("#calc-mat"), mat, totalPiso, aoMudar);
+      matPedido = Materiais.texto(mat);
       atualizarWhats();
     };
     dlg.querySelectorAll(".calc-in").forEach((i) => i.addEventListener("input", calcular));
@@ -218,7 +230,7 @@ const Detalhe = {
       setTimeout(() => (b.textContent = "Copiar link"), 2000);
     });
 
-    if (location.hash !== "#" + encodeURIComponent(p.id)) history.replaceState(null, "", "#" + encodeURIComponent(p.id));
+    if (location.hash !== "#" + encodeURIComponent(p.id)) App.trocarHash("#" + encodeURIComponent(p.id));
     if (!dlg.open) dlg.showModal();
     dlg.scrollTop = 0;
   },
