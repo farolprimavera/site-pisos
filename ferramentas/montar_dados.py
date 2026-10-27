@@ -141,7 +141,8 @@ def main():
             continue
         l = planilha.get(cod) or {"Produto": pr["produto"]}
         k = C.chave(l["Produto"], pr["fabricante"])
-        g = grupos.setdefault(k, {"lotes": [], "fotos_extra": [], "produto": l["Produto"], "obs": None})
+        g = grupos.setdefault(k, {"lotes": [], "fotos_extra": [], "produto": l["Produto"], "obs": None, "todos": []})
+        g["todos"].append(cod)   # todo código do piso (inclusive ponta, queima e lote zerado): QR da etiqueta
         g["obs"] = g["obs"] or l.get("Observação")
         ponta = pr.get("ponta") or C.RE_PONTA.search(str(pr.get("produto") or l["Produto"]))
         if ponta or em_queima(pr):
@@ -206,11 +207,17 @@ def main():
             local_uso=lu, onde=onde, acabamento=f["acabamento"], estilo=f["estilo"], retificado=retificado,
             foto=com_foto[0], codigos=[x["codigo"] for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0))
                                                    if (x["estoque"] or 0) > 0],
+            outros_codigos=[],
             ambientes=ambientes,
             paredes=[par["ambiente"] for par in PAREDES.values()
                      if parede and (externo or not par.get("so_externo"))],
         ))
 
+    # outros_codigos: lotes que não aparecem no site (ponta, queima, zerado). O QR da etiqueta (#código) acha o piso por eles.
+    for it in itens:
+        it["outros_codigos"] = sorted(c for c in grupos[it["chave"]]["todos"] if c not in it["codigos"])
+        if not it["outros_codigos"]:
+            del it["outros_codigos"]
     itens.sort(key=lambda x: (x["fabricante"], x["nome"]))
     ids = {}
     for it in itens:                               # ids únicos

@@ -42,7 +42,8 @@ const App = {
       p.desconto = p.oferta && p.prazo ? 1 - p.oferta / p.prazo : 0;
       p.superOferta = p.desconto >= SUPER_OFERTA;
       p.novidade = App.ehNovidade(p.novo_desde);
-      p.busca = App.normalizar([p.nome, p.fabricante, p.estilo, p.acabamento, p.formato, ...p.codigos].join(" "));
+      p.busca = App.normalizar([p.nome, p.fabricante, p.estilo, p.acabamento, p.formato, ...p.codigos,
+        ...(p.outros_codigos || [])].join(" "));
       p.paredes = p.paredes || [];
       // revestimento = vai na parede (LA ou piso que também é parede); fica na aba Revestimentos
       p.revest = p.paredes.length > 0 || !p.ambientes.length;
@@ -71,8 +72,6 @@ const App = {
     Cards.desenhar(Filtros.aplicar(App.dados.pisos));
   },
 
-  // Troca o #... do endereço sem recarregar. Em alguns lugares (prévia dentro de outro site,
-  // navegador muito restrito) o navegador não deixa: aí só não atualiza o endereço.
   // "2026-10-27" → true se faz até DIAS_NOVIDADE dias (pela data do aparelho do cliente).
   ehNovidade(desde) {
     if (!desde) return false;
@@ -81,6 +80,8 @@ const App = {
     return dias >= 0 && dias < DIAS_NOVIDADE;
   },
 
+  // Troca o #... do endereço sem recarregar. Em alguns lugares (prévia dentro de outro site,
+  // navegador muito restrito) o navegador não deixa: aí só não atualiza o endereço.
   trocarHash(hash) {
     try {
       history.replaceState(null, "", hash || location.pathname + location.search);
@@ -140,7 +141,15 @@ const App = {
     if (location.hash.startsWith("#comparar=")) return Comparar.doHash(location.hash.slice("#comparar=".length));
     const id = decodeURIComponent(location.hash.slice(1));
     if (id === "pisos" || id === "revestimentos") return Filtros.secao(id);
-    if (id && App.piso(id)) Detalhe.abrir(id);
+    if (id && App.piso(id)) return Detalhe.abrir(id);
+    // QR code da etiqueta da loja: #<código do sistema> (qualquer lote do piso, até ponta ou lote zerado)
+    if (/^\d{4,8}$/.test(id)) {
+      const p = App.dados.pisos.find((x) => x.codigos.includes(id) || (x.outros_codigos || []).includes(id));
+      if (p) {
+        App.trocarHash("#" + encodeURIComponent(p.id));
+        Detalhe.abrir(p.id);
+      }
+    }
   },
 };
 
