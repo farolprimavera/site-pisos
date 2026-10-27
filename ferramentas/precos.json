@@ -1,5 +1,5 @@
 {
- "data": "26/10/2026",
+ "data": "27/10/2026",
  "precos": {
   "11065": {
    "fabricante": "DIVERSOS",
@@ -301,7 +301,7 @@
   "1012661": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45700 45x45 LT: (01/05/26) (E2)",
-   "estoque": 186.93,
+   "estoque": 180.9,
    "vista": 19.9,
    "prazo": 22.9,
    "oferta": null,
@@ -364,7 +364,7 @@
   "1011192": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45901 45x45 (22-21/04/2024) (E1-E2-C)(P)",
-   "estoque": 552.75,
+   "estoque": 550.74,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -462,7 +462,7 @@
   },
   "1012817": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO 701001 70X70 LT: 02/10/26 (E)",
+   "produto": "PISO 701001 70X70 LT: 02/10/26 (E1-C)",
    "estoque": 329.28,
    "vista": 46.9,
    "prazo": 49.9,
@@ -607,7 +607,7 @@
   "1009641": {
    "fabricante": "CEDASA",
    "produto": "PISO BELLASTONE POLIDO 74,5X74,5 LT:008 (E1-E2)",
-   "estoque": 1525.14,
+   "estoque": 1520.7,
    "vista": 45.9,
    "prazo": 48.9,
    "oferta": 32.0,
@@ -687,7 +687,7 @@
   },
   "1012819": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO CALACATA CRISTAL 61x116 LT:15/08/26 (E)",
+   "produto": "PISO CALACATA CRISTAL 61x116 LT:15/08/26 (E1)",
    "estoque": 226.4,
    "vista": 49.9,
    "prazo": 53.9,
@@ -715,7 +715,7 @@
   "1010646": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CALACATA GOLD 45x45 (26/10/2023) (G3/A2)",
-   "estoque": 78.83,
+   "estoque": 68.78,
    "vista": 22.9,
    "prazo": 24.9,
    "oferta": null,
@@ -723,7 +723,7 @@
   },
   "1012820": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO CALACATA GOLD 61x116 LT:11/09/26 (E)",
+   "produto": "PISO CALACATA GOLD 61x116 LT:11/09/26 (E1)",
    "estoque": 226.4,
    "vista": 49.9,
    "prazo": 53.9,
@@ -1111,7 +1111,7 @@
   "1007390": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1761 57,81X57,81 LT:009 (G4/A6)(G3)",
-   "estoque": 401.36,
+   "estoque": 396.72,
    "vista": 26.9,
    "prazo": 28.9,
    "oferta": null,
@@ -1344,7 +1344,7 @@
   },
   "1012764": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO HD 70132 70,X70 LT:10/09/26 (E1)",
+   "produto": "PISO HD 70132 70,X70 LT:10/09/26 (E1-C)",
    "estoque": 487.06,
    "vista": 29.9,
    "prazo": 31.9,
@@ -1362,7 +1362,7 @@
   },
   "1012822": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO HD 70141 RET 70X70 LT: 22/09/26 (E)",
+   "produto": "PISO HD 70141 RET 70X70 LT: 22/09/26 (C)",
    "estoque": 246.96,
    "vista": 31.9,
    "prazo": 33.9,
@@ -1426,7 +1426,7 @@
   "1012774": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70262 RET 70X70 LT:28/08/26 (E1)",
-   "estoque": 229.81,
+   "estoque": 209.23,
    "vista": 39.9,
    "prazo": 42.9,
    "oferta": null,
@@ -1623,7 +1623,7 @@
   },
   "1012823": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO HD 70732 RET 70X70 LT:02/10/26 (E)",
+   "produto": "PISO HD 70732 RET 70X70 LT:02/10/26 (C)",
    "estoque": 246.96,
    "vista": 31.9,
    "prazo": 33.9,
@@ -1696,7 +1696,7 @@
   "1011139": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70892 RET 70X70 LT:18/11/24 (G4/B4)",
-   "estoque": 65.17,
+   "estoque": 51.45,
    "vista": 29.9,
    "prazo": 32.9,
    "oferta": null,
@@ -1714,7 +1714,7 @@
   "1012367": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70922 70X70 LT:12/03/26 (G4/B4)",
-   "estoque": 305.27,
+   "estoque": 102.9,
    "vista": 26.9,
    "prazo": 29.9,
    "oferta": null,
@@ -2046,7 +2046,7 @@
   },
   "1012818": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO MARMO GRIS POLIDO 61x116 LT:29/08/26 (E)",
+   "produto": "PISO MARMO GRIS POLIDO 61x116 LT:29/08/26 (E1)",
    "estoque": 226.4,
    "vista": 49.9,
    "prazo": 53.9,
@@ -2155,19 +2155,10 @@
   "1010875": {
    "fabricante": "ALFAGRES",
    "produto": "PISO NAVONA GRIGIO 45X45 (18/07/2024)(G3/A1)",
-   "estoque": 68.34,
+   "estoque": 64.32,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": 15.9,
-   "ponta": false
-  },
-  "1009088": {
-   "fabricante": "ALFAGRES",
-   "produto": "PISO NAVONA GRIGIO 45X45 LT(20-22/05) (G4)",
-   "estoque": 0.0,
-   "vista": 9.9,
-   "prazo": 9.9,
-   "oferta": null,
    "ponta": false
   },
   "1012184": {
@@ -2217,7 +2208,7 @@
   },
   "1012821": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO ORGANIC BLACK 61x116 LT:12/09/26 (E)",
+   "produto": "PISO ORGANIC BLACK 61x116 LT:12/09/26 (E1)",
    "estoque": 226.4,
    "vista": 49.9,
    "prazo": 53.9,
@@ -2371,7 +2362,7 @@
   "1012666": {
    "fabricante": "ALFAGRES",
    "produto": "PISO SAO TOME 45X45 LOT:( 09/07/26 ) (E2 -E1)",
-   "estoque": 574.86,
+   "estoque": 458.28,
    "vista": 23.9,
    "prazo": 25.9,
    "oferta": null,
@@ -3199,7 +3190,7 @@
   "1009332": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO TIMBRE BLUE 31X60 LT(05/01/2022)(E2)",
-   "estoque": 653.12,
+   "estoque": 555.36,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,
@@ -3217,7 +3208,7 @@
   "1007652": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO TIMBRE IRON 31X60 LT:(06-01-22) (E)",
-   "estoque": 99.84,
+   "estoque": 58.24,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": 19.9,

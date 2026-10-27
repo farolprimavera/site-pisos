@@ -125,7 +125,7 @@ const Detalhe = {
         </div>
         <div class="detalhe-info">
           <p class="vitrine-marca">${App.esc(p.fabricante)} · ${App.esc(p.tipo)}</p>
-          <h2>${App.esc(p.nome)}</h2>
+          <h2>${App.esc(p.nome)}${p.novidade ? ` <span class="selo-novo selo-inline">Novidade</span>` : ""}</h2>
           ${Vitrine.precos(p)}
 
           <h3>Onde usar</h3>

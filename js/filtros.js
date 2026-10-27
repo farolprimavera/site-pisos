@@ -49,6 +49,7 @@ const Filtros = {
             <option value="nome">Nome</option>
           </select>
           <label class="check"><input type="checkbox" id="f-super"> Só super ofertas</label>
+          <label class="check" id="f-novo-label"><input type="checkbox" id="f-novo"> Só novidades <span class="multi-n" id="f-novo-n"></span></label>
           <button type="button" id="f-limpar" class="limpar">Limpar</button>
         </div>
       </div>`;
@@ -71,6 +72,7 @@ const Filtros = {
     ligar("#f-formato", "formato");
     ligar("#f-ordem", "ordem");
     ligar("#f-super", "superOferta");
+    ligar("#f-novo", "novidades");
 
     // Locais de uso: vários de uma vez (mostra o piso que tiver qualquer um dos marcados)
     const lu = el.querySelector("#f-lu");
@@ -104,6 +106,15 @@ const Filtros = {
     });
   },
 
+  // "Só novidades" só aparece quando a aba tem alguma novidade.
+  contarNovidades() {
+    const revest = App.estado.secao === "revestimentos";
+    const n = App.dados.pisos.filter((p) => p.novidade && (revest ? p.revest : p.ambientes.length > 0)).length;
+    const lab = document.getElementById("f-novo-label");
+    lab.hidden = !n && !App.estado.novidades;
+    document.getElementById("f-novo-n").textContent = `(${n})`;
+  },
+
   qtdLU() {
     const n = (App.estado.lu || []).length, q = document.querySelector("#f-lu .multi-qtd");
     q.hidden = !n;
@@ -114,6 +125,7 @@ const Filtros = {
   chips() {
     const e = App.estado;
     Filtros.contarLU();
+    Filtros.contarNovidades();
     const lista = e.secao === "revestimentos" ? App.dados.paredes : App.dados.ambientes;
     const box = document.querySelector("#filtros .chips");
     box.innerHTML = [{ id: "", nome: "Todos" }, ...lista]
@@ -143,11 +155,13 @@ const Filtros = {
   },
 
   limpar() {
-    Object.assign(App.estado, { cat: "", busca: "", marca: "", estilo: "", acabamento: "", formato: "", lu: [], ordem: "desconto", superOferta: false });
+    Object.assign(App.estado, { cat: "", busca: "", marca: "", estilo: "", acabamento: "", formato: "", lu: [], ordem: "desconto", superOferta: false, novidades: false });
     const el = document.getElementById("filtros");
     el.querySelectorAll("select").forEach((s) => (s.selectedIndex = 0));
     el.querySelector("#f-busca").value = "";
     el.querySelector("#f-super").checked = false;
+    el.querySelector("#f-novo").checked = false;
+    Filtros.contarNovidades();
     el.querySelectorAll("#f-lu input").forEach((c) => (c.checked = false));
     Filtros.qtdLU();
     el.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c.dataset.cat === ""));
@@ -167,6 +181,7 @@ const Filtros = {
       (!e.formato || p.formato === e.formato) &&
       (!(e.lu || []).length || e.lu.some((lu) => temLU(p, lu))) &&
       (!e.superOferta || p.superOferta) &&
+      (!e.novidades || p.novidade) &&
       termos.every((t) => p.busca.includes(t)));
     const porNome = (a, b) => a.nome.localeCompare(b.nome, "pt-BR", { numeric: true });
     const ordens = {

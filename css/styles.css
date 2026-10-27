@@ -450,10 +450,18 @@ h1, h2, h3 {
   background: #17803f;
 }
 
-.selo {
+/* selos empilhados no canto da foto: Novidade em cima, desconto/oferta embaixo */
+.selos {
   position: absolute;
   top: 0.6rem;
   left: 0.6rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3rem;
+}
+
+.selo {
   background: var(--vermelho);
   color: var(--branco);
   font-weight: 800;
@@ -465,6 +473,24 @@ h1, h2, h3 {
 .selo-leve {
   background: var(--amarelo);
   color: var(--tinta);
+}
+
+.selo-novo {
+  background: var(--verde);
+  color: var(--branco);
+  font-weight: 800;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  border-radius: 4px;
+  padding: 0.2rem 0.5rem;
+}
+
+/* no detalhe, ao lado do nome */
+.selo-inline {
+  display: inline-block;
+  vertical-align: middle;
+  margin-left: 0.4rem;
+  font-size: 0.75rem;
 }
 
 

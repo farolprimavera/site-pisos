@@ -57,10 +57,13 @@ const Cards = {
       : `<span class="card-preco">${App.dinheiro(p.vista)}<small>/m²</small></span>`;
   },
 
+  // Selos no canto da foto: "Novidade" (até 30 dias no site) em cima do desconto/oferta.
   selo(p) {
-    if (p.superOferta) return `<span class="selo">-${Math.round(p.desconto * 100)}%</span>`;
-    if (p.oferta) return `<span class="selo selo-leve">Oferta</span>`;
-    return "";
+    const s = [];
+    if (p.novidade) s.push(`<span class="selo selo-novo">Novidade</span>`);
+    if (p.superOferta) s.push(`<span class="selo">-${Math.round(p.desconto * 100)}%</span>`);
+    else if (p.oferta) s.push(`<span class="selo selo-leve">Oferta</span>`);
+    return s.length ? `<span class="selos">${s.join("")}</span>` : "";
   },
 
   // Botão "Comparar" no canto da foto (js/comparar.js trata o clique).

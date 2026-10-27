@@ -180,3 +180,18 @@ ROCHAFORTE|HD 70922|70x70;LD;0;0;Acetinado;Cimento;;site Rocha (R7092)
 ROCHAFORTE|HD 70952|70x70;LC;0;0;Polido;Mármore;;SUPOSTO (PR7095)
 ROCHAFORTE|HD ORO REALLE|82x82;LC;0;0;Polido;Mármore;;site Rocha
 ROCHAFORTE|TERRA FIRME|70x70;LE;1;0;Rústico;Pedra;;site Rocha (Safe Step, uso externo)
+ALFAGRES|ALABASTRO|45x45;LD;0;0;Brilhante;Mármore;;site Alfagrês (4, interno)
+ALFAGRES|KILAUEA FENDI|45x45;LD;1;1;Acetinado;Mármore;;site Alfagrês (4, int/ext)
+ALFAGRES|CALCIS GRIS|31x60;LA;0;1;Relevo;Decorado;;site Alfagrês (1); nome na loja = REVEST., só parede
+ALFAGRES|VERSACE|31x60;LA;0;1;Brilhante;Mármore;;site Alfagrês (3); nome na loja = REVEST., só parede
+CEDASA|HD 2082|32x58;LA;0;1;Relevo;Decorado;;revestimento HD 20xx, 3D branco pela foto (local de uso SUPOSTO = LA, nome na loja = REVEST.)
+ROCHAFORTE|701001|70x70;LC;0;0;Polido;Mármore;1;site Rocha (PR70100; polido confirmado pelo David)
+ROCHAFORTE|CALACATA CRISTAL|61x116;LC;0;0;Polido;Mármore;1;site Rocha (linha Mármore)
+ROCHAFORTE|CALACATA GOLD|61x116;LC;0;0;Polido;Mármore;1;site Rocha (linha Mármore)
+ROCHAFORTE|MARMO GRIS POLIDO|61x116;LC;0;0;Polido;Mármore;1;site Rocha (linha Mármore)
+ROCHAFORTE|ORGANIC BLACK|61x116;LC;0;0;Polido;Mármore;1;site Rocha (linha Mármore)
+ROCHAFORTE|HD DAMASCO|82x82;LC;0;0;Polido;Mármore;;site Rocha (linha Mármore)
+ROCHAFORTE|HD 70262|70x70;LC;0;0;Polido;Mármore;;site Rocha (PR7026)
+ROCHAFORTE|HD 70732|70x70;LD;0;0;Acetinado;Mármore;;site Rocha (R7073)
+ROCHAFORTE|METROPOLE|70x70;LE;1;0;Rústico;Cimento;;site Rocha (Safe Step, LS uso externo); cimento pela foto
+ROCHAFORTE|HD 710002|70x70;LD;0;0;Brilhante;Liso;;SUPOSTO (loja = LD; brilhante retificado); branco liso pela foto

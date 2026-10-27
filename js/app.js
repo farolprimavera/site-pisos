@@ -7,6 +7,9 @@ const WHATSAPP = "552127763391";
 // Desconto mínimo (sobre o preço a prazo) para virar "super oferta".
 const SUPER_OFERTA = 0.3;
 
+// Dias que um piso fica com o selo "Novidade" depois de entrar no site (data em p.novo_desde).
+const DIAS_NOVIDADE = 30;
+
 const App = {
   dados: null,   // catálogo inteiro ({ atualizado, locais, ambientes, pisos })
   estado: {
@@ -20,6 +23,7 @@ const App = {
     lu: [],           // locais de uso marcados (LA, LB... LS); vazio = todos
     ordem: "desconto",
     superOferta: false,
+    novidades: false,  // "Só novidades"
     ambiente: "sala",  // ambiente preferido nas miniaturas da grade
     parede: "banheiro", // parede preferida nas miniaturas de revestimento
   },
@@ -37,6 +41,7 @@ const App = {
       p.preco = p.oferta || p.vista || p.prazo || 0;
       p.desconto = p.oferta && p.prazo ? 1 - p.oferta / p.prazo : 0;
       p.superOferta = p.desconto >= SUPER_OFERTA;
+      p.novidade = App.ehNovidade(p.novo_desde);
       p.busca = App.normalizar([p.nome, p.fabricante, p.estilo, p.acabamento, p.formato, ...p.codigos].join(" "));
       p.paredes = p.paredes || [];
       // revestimento = vai na parede (LA ou piso que também é parede); fica na aba Revestimentos
@@ -68,6 +73,14 @@ const App = {
 
   // Troca o #... do endereço sem recarregar. Em alguns lugares (prévia dentro de outro site,
   // navegador muito restrito) o navegador não deixa: aí só não atualiza o endereço.
+  // "2026-10-27" → true se faz até DIAS_NOVIDADE dias (pela data do aparelho do cliente).
+  ehNovidade(desde) {
+    if (!desde) return false;
+    const [a, m, d] = desde.split("-").map(Number);
+    const dias = (Date.now() - new Date(a, m - 1, d).getTime()) / 86400000;
+    return dias >= 0 && dias < DIAS_NOVIDADE;
+  },
+
   trocarHash(hash) {
     try {
       history.replaceState(null, "", hash || location.pathname + location.search);

@@ -15,6 +15,8 @@ Vale a fonte com a data mais recente (pisos.pdf > precos.json > PDFs por fabrica
 Só entra no site o que tem estoque e foto. Lote de ponta ('(P)' no fim do nome) fica de fora.
 Lote em queima (preço à vista ou oferta igual a um dos PRECOS_QUEIMA, hoje R$ 9,90) também fica de fora;
 se todos os lotes de um piso estão em queima, o piso some do site.
+Novidades: ferramentas/estreias.json guarda o dia em que cada piso entrou no site pela primeira vez
+(piso novo ganha a data do dia em que o script roda). O site mostra o selo "Novidade" por 30 dias.
 Rodar:  python3 ferramentas/montar_dados.py
 """
 import csv, json, re, sys, datetime
@@ -214,6 +216,19 @@ def main():
     for it in itens:                               # ids únicos
         n = ids.get(it["id"], 0); ids[it["id"]] = n + 1
         if n: it["id"] += f"-{n + 1}"
+    # Novidades: dia em que cada piso apareceu no site pela 1ª vez (o site mostra o selo por 30 dias).
+    # Piso que sai do site (sem estoque) e volta depois mantém a data antiga: não vira novidade de novo.
+    arq_estreias = AQUI / "estreias.json"
+    estreias = json.loads(arq_estreias.read_text(encoding="utf-8")) if arq_estreias.exists() else {}
+    hoje = datetime.date.today().isoformat()
+    estrearam = []
+    for it in itens:
+        if it["chave"] not in estreias:
+            estreias[it["chave"]] = hoje
+            estrearam.append(it["chave"])
+        it["novo_desde"] = estreias[it["chave"]]
+    arq_estreias.write_text(json.dumps(dict(sorted(estreias.items())), ensure_ascii=False, indent=1) + "\n",
+                            encoding="utf-8")
     saida = dict(atualizado=data_precos or datetime.date.today().strftime("%d/%m/%Y"),
                  locais=[dict(id=c, nome=n) for c, n, _ in LOCAIS],
                  ambientes=[dict(id=a, nome=v["nome"]) for a, v in AMBIENTES.items()],
@@ -225,6 +240,7 @@ def main():
     (SITE / "dados" / "pisos.js").write_text("window.PISOS=" + txt + ";\n", encoding="utf-8")
     rel = [f"{len(itens)} produtos no site ({sum(1 for i in itens if i['tipo']=='Piso')} pisos, "
            f"{sum(1 for i in itens if i['tipo']!='Piso')} revestimentos de parede)",
+           f"Entraram no site agora, com selo Novidade por 30 dias ({len(estrearam)}): " + ", ".join(estrearam),
            f"Fora do site por falta de foto ({len(sem_foto)}): " + ", ".join(sem_foto),
            f"Fora do site por falta de ficha técnica em fichas.csv ({len(sem_ficha)}): " + ", ".join(sem_ficha),
            f"Local de uso SUPOSTO, conferir ({len(supostos)}): " + ", ".join(supostos),

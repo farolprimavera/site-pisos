@@ -175,12 +175,17 @@ Ambientes onde o piso é renderizado (regra em `ambientes/ambientes.json` → `"
     "local_uso": "LC", "onde": ["quarto", "cozinha", "parede"],
     "acabamento": "Brilhante", "estilo": "Liso", "retificado": false,
     "foto": "1011200", "codigos": ["1011200", "1007275"],
-    "ambientes": ["sala", "quarto", "escritorio", "cozinha"]
+    "ambientes": ["sala", "quarto", "escritorio", "cozinha"],
+    "novo_desde": "2026-09-01"
   }]
 }
 ```
 O `montar_dados.py` grava o `.json`, o `.js` (`"window.PISOS=" + json + ";"`) e o `relatorio.txt`, que lista
-o que ficou fora do site: sem foto, sem ficha, sem estoque, itens SUPOSTO.
+o que ficou fora do site: sem foto, sem ficha, sem estoque, itens SUPOSTO, e o que **entrou agora** (novidades).
+
+`novo_desde` vem do `ferramentas/estreias.json` (vai para o git): o dia em que cada piso apareceu no site pela
+primeira vez. Piso novo ganha a data do dia em que o `montar_dados.py` roda; piso que sai (sem estoque) e volta
+mantém a data antiga e não vira novidade de novo. Para tirar um piso das novidades antes, troque a data dele lá.
 
 ---
 
@@ -255,6 +260,11 @@ Seções:
    - **Garramax Super 7x1** (uso interno/externo, porcelanato, fachada; aderência > 0,5 MPa, tempo em aberto 15 min,
      sem classe AC): entra como classe `SUPER`, opção em qualquer classe mas nunca a sugestão principal da AC-III.
    - **Rejuntamento Construcola** é de 1 kg (confirmado pelo David), mesmo sem "1KG" no nome.
+
+8. **Novidades:** selo verde **"Novidade"** no card (em cima do desconto) e ao lado do nome no detalhe, por
+   **30 dias** a partir de `novo_desde` (`DIAS_NOVIDADE` no `js/app.js`; conta pela data do aparelho do cliente,
+   então o selo some sozinho, sem rodar script). Caixinha **"Só novidades (n)"** nos filtros, que só aparece quando a aba
+   tem alguma novidade.
 
 Outros requisitos:
 - Imagens com `loading="lazy"`.
@@ -382,7 +392,7 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
 Fazer **um de cada vez**, mostrando a prévia antes de seguir:
 - [x] **Comparar** pisos lado a lado (§4, item 6).
 - [x] **Calculadora completa** com argamassa, rejunte, espaçador e nivelador da loja (§4, item 7).
-- [ ] **Selo "Novidade"** nos pisos que acabaram de chegar.
+- [x] **Selo "Novidade"** nos pisos que acabaram de chegar, por 30 dias (§4, item 8).
 - [ ] **QR code** na etiqueta do mostruário (Zebra ZD220) → abre o piso no site e, depois, **"Ver na minha casa"**:
   o cliente tira foto do cômodo, marca os cantos do chão e vê o piso aplicado (tudo no celular, sem servidor).
 
