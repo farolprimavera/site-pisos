@@ -265,6 +265,19 @@ Seções:
    **30 dias** a partir de `novo_desde` (`DIAS_NOVIDADE` no `js/app.js`; conta pela data do aparelho do cliente,
    então o selo some sozinho, sem rodar script). Caixinha **"Só novidades (n)"** nos filtros, que só aparece quando a aba
    tem alguma novidade.
+9. **Modo totem (`js/totem.js`)**, igual ao dos sites de tintas e de impermeabilizantes: no aparelho marcado, depois
+   de **2 minutos** sem ninguém mexer aparece **"Ainda está aí?"** com 15 s de contagem e o site volta sozinho à tela
+   inicial (recarrega: limpa Comparar, metragem, materiais e rolagem). Na tela inicial limpa não conta, para não
+   recarregar a noite inteira.
+   - **Marcar o totem:** abrir uma vez `https://farolprimavera.github.io/site-pisos/index.html?totem=1` no navegador
+     do aparelho (`?totem=0` desmarca). Fica guardado no aparelho (`localStorage` `farol-totem`). Se o site for usado
+     como **app instalado**, marcar dentro do app: app e navegador não dividem essa memória.
+   - No totem some **Instalar app** e **Copiar link**, e o detalhe do piso mostra um QR **"Leve no celular"**
+     (`js/qrcode.js`, MIT, o mesmo do site de tintas). Links e QR nunca levam o `?totem=1` (`App.link`).
+   - Ao voltar ao início: esquece o tema claro/escuro do cliente anterior e, se houver versão nova do site
+     esperando, já ativa (no totem ninguém toca em "Atualizar").
+   - Para testar com tempos curtos, mude **os dois** (`MINUTOS` e `AVISO`): com o aviso maior que o total o aviso
+     reaparece na hora (há um piso de 1 s, mas fica estranho).
 
 Outros requisitos:
 - Imagens com `loading="lazy"`.

@@ -256,7 +256,7 @@ const Comparar = {
     dlg.querySelectorAll("[data-ver]").forEach((b) => b.addEventListener("click", () => Detalhe.abrir(b.dataset.ver)));
     dlg.querySelectorAll("[data-tirar-cmp]").forEach((b) => b.addEventListener("click", () => Comparar.alternar(b.dataset.tirarCmp)));
 
-    const link = location.href.split("#")[0] + "#comparar=" + Comparar.ids.map(encodeURIComponent).join(",");
+    const link = App.link("#comparar=") + Comparar.ids.map(encodeURIComponent).join(",");
     const calcular = () => {
       Comparar.area = dlg.querySelector("#cmp-area").value;
       const area = parseFloat(String(Comparar.area).replace(",", "."));

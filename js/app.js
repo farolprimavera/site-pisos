@@ -80,6 +80,11 @@ const App = {
     return dias >= 0 && dias < DIAS_NOVIDADE;
   },
 
+  // Link para compartilhar: o endereço da página sem o ?... (nunca leva o ?totem=1 do aparelho da loja)
+  link(hash) {
+    return location.href.split(/[?#]/)[0] + (hash || "");
+  },
+
   // Troca o #... do endereço sem recarregar. Em alguns lugares (prévia dentro de outro site,
   // navegador muito restrito) o navegador não deixa: aí só não atualiza o endereço.
   trocarHash(hash) {

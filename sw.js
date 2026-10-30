@@ -27,7 +27,7 @@
    Com versão nova, o site mostra "Nova versão disponível. Atualizar".
    ========================================================================== */
 
-const VERSAO = "pisos-v3";
+const VERSAO = "pisos-v4";
 const CASCA = `${VERSAO}-casca`;
 const IMAGENS = `${VERSAO}-imagens`;
 const MAX_IMAGENS = 300;
@@ -48,6 +48,8 @@ const ARQUIVOS_CASCA = [
   "./js/detalhe.js",
   "./js/comparar.js",
   "./js/pwa.js",
+  "./js/qrcode.js",
+  "./js/totem.js",
   "./marca/logo-farol-web.png",
   "./icones/favicon.ico",
   "./icones/favicon-16.png",

@@ -165,13 +165,17 @@ const Detalhe = {
               <span class="comparar-ico" aria-hidden="true"></span><span class="comparar-txt">${Comparar.tem(p.id) ? "Comparando" : "Comparar"}</span></button>
             <button type="button" class="botao botao-sec" id="det-link">Copiar link</button>
           </div>
+          ${document.documentElement.dataset.totem ? `<div class="qr-celular">
+            <div class="qr-celular-codigo" id="det-qr" role="img" aria-label="QR code para abrir este piso no celular"></div>
+            <p><strong>Leve no celular</strong>Aponte a câmera para abrir este piso no seu celular, com o preço e a calculadora.</p>
+          </div>` : ""}
         </div>
       </div>`;
 
     dlg.querySelector(".fechar").addEventListener("click", () => dlg.close());
     if (fotos.length) Detalhe.carrossel(dlg, 0);
 
-    const link = location.href.split("#")[0] + "#" + encodeURIComponent(p.id);
+    const link = App.link("#" + encodeURIComponent(p.id));
     let m2Pedido = null, matPedido = "";
     const atualizarWhats = () => {
       const w = dlg.querySelector("#det-whats");
@@ -229,6 +233,15 @@ const Detalhe = {
       }
       setTimeout(() => (b.textContent = "Copiar link"), 2000);
     });
+
+    // QR "Leve no celular" (só no totem, js/totem.js): o cliente leva o piso no próprio celular
+    const qrBox = dlg.querySelector("#det-qr");
+    if (qrBox && typeof qrcode !== "undefined") {
+      const q = qrcode(0, "M");
+      q.addData(link);
+      q.make();
+      qrBox.innerHTML = q.createSvgTag({ cellSize: 4, margin: 2, scalable: true });
+    }
 
     if (location.hash !== "#" + encodeURIComponent(p.id)) App.trocarHash("#" + encodeURIComponent(p.id));
     if (!dlg.open) dlg.showModal();
