@@ -1029,13 +1029,26 @@ h1, h2, h3 {
 }
 
 /* 1º slide: a peça inteira, sem cortar, sobre fundo neutro */
+/* Foto da peça: no tamanho dela, sem esticar. Muitas fotos da loja são pequenas (100 a 400 px)
+   e, esticadas para a largura do carrossel, ficavam borradas e pixeladas. O quadro continua 3:2
+   (igual aos ambientes, para o carrossel não pular) e a peça fica centralizada nele. */
 .slide-peca {
   background: var(--peca-fundo);
+  aspect-ratio: 3 / 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem 1.25rem 3rem;
 }
 
-.slide-peca img {
+.amb-slide.slide-peca img {
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  max-height: 100%;
+  aspect-ratio: auto;
   object-fit: contain;
-  padding: 1.25rem 1.25rem 3rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
 }
 
 .amb-dica {
@@ -1095,9 +1108,22 @@ h1, h2, h3 {
   display: none;
 }
 
+.peca-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 14rem;
+  padding: 1.25rem;
+  background: var(--peca-fundo);
+}
+
+/* sem esticar, pelo mesmo motivo da foto da peça no carrossel */
 .detalhe-peca.sozinha {
-  width: 100%;
   display: block;
+  width: auto;
+  height: auto;
+  max-width: 100%;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.18);
 }
 
 .detalhe-info {
