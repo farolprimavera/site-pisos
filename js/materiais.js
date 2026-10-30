@@ -41,13 +41,19 @@ const MATERIAIS = {
 const Materiais = {
   escolhas: {},   // produto escolhido pelo cliente em cada linha (id da linha → código)
   fora: new Set(), // linhas que o cliente desmarcou (não entram no total nem no WhatsApp)
+  // Tabela de preço escolhida na calculadora: "vista" (dinheiro, débito, PIX ou 3x sem juros; vale a
+  // oferta) ou "prazo". Fica na memória enquanto o cliente navega, igual às escolhas acima.
+  tabela: "vista",
 
   produtos(tipo) {
     return ((window.MATERIAIS && window.MATERIAIS.itens) || []).filter((m) => m.tipo === tipo);
   },
 
+  // Preço pela tabela escolhida. A oferta (SUPER OFERTA) só vale à vista.
   preco(m) {
-    return m.oferta || m.vista || m.prazo || 0;
+    return Materiais.tabela === "prazo"
+      ? m.prazo || m.vista || m.oferta || 0
+      : m.oferta || m.vista || m.prazo || 0;
   },
 
   // Linhas de material para cobrir `area` m² com o produto p (parede = true: revestimento na parede).
@@ -191,7 +197,7 @@ const Materiais = {
       </ul>
       <p class="mat-totais">
         <span>${lista.some(Materiais.marcada) ? `Materiais <strong>${App.dinheiro(Materiais.total(lista))}</strong>` : "Só o piso, sem materiais"}</span>
-        ${totalPiso ? `<span class="mat-obra">Total da obra <strong>${App.dinheiro(totalPiso + Materiais.total(lista))}</strong></span>` : ""}
+        ${totalPiso ? `<span class="mat-obra">Total da obra ${Materiais.tabela === "prazo" ? "a prazo" : "à vista"} <strong>${App.dinheiro(totalPiso + Materiais.total(lista))}</strong></span>` : ""}
       </p>
       <p class="materiais-aviso">Desmarque o que não quiser no orçamento. Quantidades estimadas pelas tabelas dos fabricantes; confirme com o vendedor.</p>
     </div>`;

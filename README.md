@@ -116,6 +116,16 @@ Colunas: **Código | Produto | Observação**. O nome do produto traz lote e med
   (`1` = sim, `0` = não; ex.: Ice Polido é retificado sem RET no nome). Influencia o rejunte da simulação (1,5 mm
   se retificado, 3 mm se não) e a calculadora de materiais.
 
+### 3.3b Peso da caixa (`ferramentas/pesos.csv`)
+Colunas: `chave;peso_kg;fonte;obs`. Pesquisado em 30/10/2026 nas fichas técnicas e páginas dos fabricantes (Alfagrês,
+Cedasa, Rocha); 29 Cedasa vieram da Observação da planilha da loja (o Cumaru Soft estava 89 kg, corrigido para 41 kg).
+Peso vazio = não achado (13 pisos, quase todos fora de linha). Sem linha no `pesos.csv`, o `montar_dados.py` ainda
+tenta a Observação da planilha ("Peso/Caixa: 36,3 kg", "PESO: 38kg" ou Kg/m² × m²/caixa). Vai para o
+`pisos.json` como `peso_caixa` e aparece na Ficha do detalhe ("Peso da caixa"). Piso novo: acrescente a linha.
+
+A Ficha do detalhe mostra também **PEI / Local de uso** (`local_uso` com o nome do filtro, ex.: "LD · alto
+tráfego"; piso liberado para área externa ganha "· LS, uso externo").
+
 ### 3.4 Local de uso (`fichas.csv`)
 Colunas: `chave;local_uso;externo;parede;acabamento;estilo;retificado;fonte` (`retificado` em branco = pelo nome).
 
@@ -256,6 +266,10 @@ Seções:
      seguinte); obra menor que isso, 1 por clip.
    - **Espaçador** (peças menores e toda parede): 1 cruzeta por peça.
    - Tudo com +10% de perda. Só oferece produto **com estoque para a quantidade**; o padrão é o mais barato da classe certa.
+   - **Tabela de preço** no topo da calculadora: **À vista** (padrão; dinheiro, débito, PIX ou 3x sem juros, vale a
+     oferta/SUPER OFERTA) ou **A prazo** (preço a prazo). Troca o piso e todos os materiais juntos, aparece no
+     "Total da obra à vista/a prazo" e vai na mensagem do WhatsApp. A escolha fica na memória enquanto o cliente navega
+     (`Materiais.tabela`).
    - Ignorados de propósito (regra `IGNORAR` no `montar_materiais.py`): bloco de vidro e piso sobre piso.
    - **Garramax Super 7x1** (uso interno/externo, porcelanato, fachada; aderência > 0,5 MPa, tempo em aberto 15 min,
      sem classe AC): entra como classe `SUPER`, opção em qualquer classe mas nunca a sugestão principal da AC-III.
@@ -272,7 +286,9 @@ Seções:
    - **Marcar o totem:** abrir uma vez `https://farolprimavera.github.io/site-pisos/index.html?totem=1` no navegador
      do aparelho (`?totem=0` desmarca). Fica guardado no aparelho (`localStorage` `farol-totem`). Se o site for usado
      como **app instalado**, marcar dentro do app: app e navegador não dividem essa memória.
-   - No totem some **Instalar app** e **Copiar link**, e o detalhe do piso mostra um QR **"Leve no celular"**
+   - No totem some **Instalar app**, **Copiar link** e **Pedir orçamento no WhatsApp** (no detalhe e na comparação:
+     o `wa.me` tiraria o cliente do site); no lugar aparece **"Gostou? Chame um vendedor para fechar o orçamento."**
+   - O detalhe do piso mostra um QR **"Leve no celular"**
      (`js/qrcode.js`, MIT, o mesmo do site de tintas). Links e QR nunca levam o `?totem=1` (`App.link`).
    - Ao voltar ao início: esquece o tema claro/escuro do cliente anterior e, se houver versão nova do site
      esperando, já ativa (no totem ninguém toca em "Atualizar").

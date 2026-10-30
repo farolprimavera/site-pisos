@@ -100,6 +100,23 @@ def lu_ok(lu, minimo):
     return lu in ORDEM_LU and ORDEM_LU.index(lu) >= ORDEM_LU.index(minimo) and lu != "LA"
 
 
+RE_PESO = re.compile(r"peso\s*(?:/\s*caixa)?\s*:?\s*(\d+(?:[.,]\d+)?)\s*kg", re.I)
+RE_KGM2 = re.compile(r"kg\s*/\s*m\s*[2²]\s*:?\s*(\d+(?:[.,]\d+)?)", re.I)
+
+
+def peso_da_obs(textos, caixa_m2):
+    """Peso da caixa (kg) pela Observação da planilha: 'Peso/Caixa: 36,3 kg', 'PESO:38kg' ou Kg/m2 × m²/caixa."""
+    for t in textos:
+        m = RE_PESO.search(str(t or ""))
+        if m:
+            return C.num_br(m.group(1))
+    for t in textos:
+        m = RE_KGM2.search(str(t or ""))
+        if m and caixa_m2:
+            return round(C.num_br(m.group(1)) * caixa_m2, 1)
+    return None
+
+
 def data_iso(d):
     return d[6:] + d[3:5] + d[:2] if d else ""
 
@@ -129,6 +146,10 @@ def carregar_precos():
 
 def main():
     fichas = {r["chave"]: r for r in csv.DictReader(open(AQUI / "fichas.csv", encoding="utf-8"), delimiter=";")}
+    # peso da caixa (kg) pesquisado nos fabricantes; vale mais que o da Observação da planilha
+    arq_pesos = AQUI / "pesos.csv"
+    pesos = {r["chave"]: C.num_br(r["peso_kg"]) for r in csv.DictReader(open(arq_pesos, encoding="utf-8"), delimiter=";")
+             if (r.get("peso_kg") or "").strip()} if arq_pesos.exists() else {}
     precos, data_precos = carregar_precos()
     planilha = {str(l["Código"]).strip(): l for l in C.ler_planilha(TRABALHO / "pisos.xlsx")}
     fotos = TRABALHO / "fotos"
@@ -144,6 +165,7 @@ def main():
         g = grupos.setdefault(k, {"lotes": [], "fotos_extra": [], "produto": l["Produto"], "obs": None, "todos": []})
         g["todos"].append(cod)   # todo código do piso (inclusive ponta, queima e lote zerado): QR da etiqueta
         g["obs"] = g["obs"] or l.get("Observação")
+        g.setdefault("obs_todas", []).append(l.get("Observação"))
         ponta = pr.get("ponta") or C.RE_PONTA.search(str(pr.get("produto") or l["Produto"]))
         if ponta or em_queima(pr):
             # ponta de estoque ou queima (R$ 9,90): não vai para o site, mas empresta a foto
@@ -208,6 +230,7 @@ def main():
             foto=com_foto[0], codigos=[x["codigo"] for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0))
                                                    if (x["estoque"] or 0) > 0],
             outros_codigos=[],
+            peso_caixa=pesos.get(k) or peso_da_obs(g.get("obs_todas", []), m2),
             ambientes=ambientes,
             paredes=[par["ambiente"] for par in PAREDES.values()
                      if parede and (externo or not par.get("so_externo"))],

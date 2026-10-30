@@ -1182,6 +1182,44 @@ h1, h2, h3 {
   max-width: 8rem;
 }
 
+/* Tabela de preço do orçamento: À vista | A prazo */
+.calc-tabela {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.3rem;
+}
+
+.calc-tabela-tit {
+  font-size: 0.9rem;
+  font-weight: 600;
+  margin-right: 0.2rem;
+}
+
+.calc-tabela button {
+  border: 2px solid var(--verde);
+  background: var(--superficie);
+  color: var(--verde-texto);
+  border-radius: 999px;
+  padding: 0.35rem 0.9rem;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+
+.calc-tabela button[aria-pressed="true"] {
+  background: var(--verde);
+  color: var(--branco);
+}
+
+.calc-tabela-dica {
+  margin: 0 0 0.6rem;
+  font-size: 0.8rem;
+  color: var(--suave);
+}
+
 .calc-res {
   margin: 0.5rem 0 0;
   font-size: 0.95rem;
@@ -2124,8 +2162,28 @@ body.com-bandeja {
 /* no aparelho da loja não se instala app nem se copia link */
 :root[data-totem] #btnInstalar,
 :root[data-totem] #det-link,
-:root[data-totem] #cmp-link {
+:root[data-totem] #cmp-link,
+:root[data-totem] #det-whats,
+:root[data-totem] #cmp-whats {
   display: none !important;
+}
+
+/* No totem o WhatsApp tiraria o cliente do site (e quem chega depois encontra o WhatsApp
+   aberto). No lugar: chamar o vendedor; para levar no celular, o QR "Leve no celular". */
+.totem-vendedor {
+  display: none;
+}
+
+:root[data-totem] .totem-vendedor {
+  display: block;
+  flex-basis: 100%;
+  margin: 1rem 0 0;
+  padding: 0.8rem 1rem;
+  border-radius: var(--raio);
+  background: var(--verde-claro);
+  color: var(--verde-texto);
+  font-weight: 700;
+  font-size: 1.05rem;
 }
 
 .totem-aviso {

@@ -241,6 +241,7 @@ const Comparar = {
         </div>
 
         <div class="acoes cmp-rodape">
+          <p class="totem-vendedor">Gostou? Chame um vendedor para fechar o orçamento.</p>
           ${WHATSAPP ? `<a class="botao botao-whats" id="cmp-whats" target="_blank" rel="noopener">Pedir orçamento dos ${pisos.length} no WhatsApp</a>` : ""}
           <button type="button" class="botao botao-sec" id="cmp-link">Copiar link da comparação</button>
         </div>

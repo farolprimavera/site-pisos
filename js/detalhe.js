@@ -3,6 +3,14 @@
 const PERDA = 0.1;   // 10% a mais para recortes e quebras
 
 const Detalhe = {
+  // "PEI / Local de uso" da ficha: LC · médio tráfego (+ LS uso externo). Nomes iguais ao filtro (js/filtros.js).
+  localUso(p) {
+    const lu = LOCAIS_USO.find((l) => l.id === p.local_uso);
+    if (!lu) return "";
+    const ext = (p.onde || []).includes("externa") ? " · LS, uso externo" : "";
+    return `<dt>PEI / Local de uso</dt><dd>${lu.id} · ${App.esc(lu.nome.toLowerCase())}${ext}</dd>`;
+  },
+
   iniciar() {
     const dlg = document.getElementById("detalhe");
     // clique fora do conteúdo fecha
@@ -137,12 +145,20 @@ const Detalhe = {
             <dt>Acabamento</dt><dd>${App.esc(p.acabamento)}</dd>
             <dt>Estilo</dt><dd>${App.esc(p.estilo)}</dd>
             <dt>Retificado</dt><dd>${p.retificado ? "Sim" : "Não"}</dd>
+            ${Detalhe.localUso(p)}
             ${p.caixa_m2 ? `<dt>Caixa</dt><dd>${String(p.caixa_m2).replace(".", ",")} m²${p.caixa_pecas ? ` · ${p.caixa_pecas} peças` : ""}</dd>` : ""}
+            ${p.peso_caixa ? `<dt>Peso da caixa</dt><dd>${String(p.peso_caixa).replace(".", ",")} kg</dd>` : ""}
             <dt>Código</dt><dd>${App.esc(p.codigos.join(", "))}</dd>
           </dl>
 
           <h3>Quanto preciso?</h3>
           <div class="calc">
+            <div class="calc-tabela" role="group" aria-label="Tabela de preço do orçamento">
+              <span class="calc-tabela-tit">Preços</span>
+              <button type="button" data-tabela="vista">À vista</button>
+              <button type="button" data-tabela="prazo">A prazo</button>
+            </div>
+            <p class="calc-tabela-dica" id="calc-tabela-dica"></p>
             ${parede
               ? `<div class="calc-dims">
                    <label>Largura da parede (m)
@@ -160,6 +176,7 @@ const Detalhe = {
           </div>
 
           <div class="acoes">
+            <p class="totem-vendedor">Gostou? Chame um vendedor para fechar o orçamento.</p>
             ${WHATSAPP ? `<a class="botao botao-whats" id="det-whats" target="_blank" rel="noopener">Pedir orçamento no WhatsApp</a>` : ""}
             <button type="button" class="botao botao-sec botao-comparar" data-comparar="${p.id}" aria-pressed="${Comparar.tem(p.id)}">
               <span class="comparar-ico" aria-hidden="true"></span><span class="comparar-txt">${Comparar.tem(p.id) ? "Comparando" : "Comparar"}</span></button>
@@ -184,11 +201,24 @@ const Detalhe = {
       let msg = `Olá! Tenho interesse ${oque} ${p.nome} (${p.fabricante}, ${p.medida}, cód. ${p.codigos[0]}).`;
       if (m2Pedido) msg += ` Preciso de cerca de ${m2Pedido}.`;
       if (matPedido) msg += ` Materiais: ${matPedido}.`;
+      if (m2Pedido) msg += ` Preços ${Materiais.tabela === "prazo" ? "a prazo" : "à vista"}.`;
       w.href = `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(msg + " " + link)}`;
     };
     atualizarWhats();
 
     const num = (sel) => parseFloat(String(dlg.querySelector(sel).value).replace(",", "."));
+    // Tabela de preço do orçamento (À vista | A prazo): troca o piso e todos os materiais juntos.
+    const precoPiso = () => (Materiais.tabela === "prazo"
+      ? p.prazo || p.vista || p.preco
+      : p.oferta || p.vista || p.prazo || p.preco);
+    const marcarTabela = () => {
+      dlg.querySelectorAll("[data-tabela]").forEach((b) =>
+        b.setAttribute("aria-pressed", b.dataset.tabela === Materiais.tabela));
+      dlg.querySelector("#calc-tabela-dica").textContent = Materiais.tabela === "prazo"
+        ? `A prazo: ${App.dinheiro(precoPiso())}/m² no piso.`
+        : `À vista (dinheiro, débito, PIX ou 3x sem juros): ${App.dinheiro(precoPiso())}/m² no piso.`;
+    };
+
     const calcular = () => {
       const area = parede ? num("#calc-larg") * num("#calc-alt") : num("#calc-m2");
       const res = dlg.querySelector("#calc-res");
@@ -203,12 +233,12 @@ const Detalhe = {
         if (p.caixa_m2) {
           const caixas = Math.ceil(comPerda / p.caixa_m2 - 1e-9);
           const m2 = caixas * p.caixa_m2;
-          totalPiso = m2 * p.preco;
+          totalPiso = m2 * precoPiso();
           res.innerHTML = `<strong>${caixas} caixa${caixas > 1 ? "s" : ""}</strong> = ${m2.toFixed(2).replace(".", ",")} m²
             <br>${p.tipo === "Revestimento" ? "Revestimento" : "Piso"}: <strong>${App.dinheiro(totalPiso)}</strong>`;
           m2Pedido = `${caixas} caixas (${m2.toFixed(2).replace(".", ",")} m²)`;
         } else {
-          totalPiso = comPerda * p.preco;
+          totalPiso = comPerda * precoPiso();
           res.innerHTML = `<strong>${comPerda.toFixed(2).replace(".", ",")} m²</strong> com perda
             <br>Total aproximado: <strong>${App.dinheiro(totalPiso)}</strong>`;
           m2Pedido = `${comPerda.toFixed(1).replace(".", ",")} m²`;
@@ -222,6 +252,12 @@ const Detalhe = {
       atualizarWhats();
     };
     dlg.querySelectorAll(".calc-in").forEach((i) => i.addEventListener("input", calcular));
+    dlg.querySelectorAll("[data-tabela]").forEach((b) => b.addEventListener("click", () => {
+      Materiais.tabela = b.dataset.tabela;
+      marcarTabela();
+      calcular();
+    }));
+    marcarTabela();
 
     dlg.querySelector("#det-link").addEventListener("click", async (ev) => {
       const b = ev.currentTarget;
