@@ -1605,6 +1605,38 @@ body.com-bandeja {
   padding-bottom: 5.5rem;
 }
 
+/* botão flutuante "Topo" (igual ao do site de tintas) */
+.ir-topo {
+  position: fixed;
+  right: max(1rem, env(safe-area-inset-right));
+  bottom: calc(1rem + env(safe-area-inset-bottom));
+  z-index: 42;
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: 0.05rem;
+  width: 3.4rem;
+  height: 3.4rem;
+  border: 2px solid #fff; /* contorno branco: aparece também em cima do verde e no tema escuro */
+  border-radius: 50%;
+  background: var(--verde);
+  color: #fff;
+  font: inherit;
+  font-size: 0.66rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  animation: ir-topo-aparecer 0.2s ease-out;
+}
+.ir-topo svg { width: 1.3rem; height: 1.3rem; }
+.ir-topo:hover { background: var(--verde-escuro); }
+.ir-topo[hidden] { display: none; }
+@keyframes ir-topo-aparecer { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+/* com a bandeja do Comparar aberta, fica acima dela */
+body.com-bandeja .ir-topo { bottom: calc(6.5rem + env(safe-area-inset-bottom)); }
+@media (max-width: 560px) { .ir-topo { right: max(0.75rem, env(safe-area-inset-right)); } }
+
 .bandeja-conteudo {
   max-width: 1200px;
   margin: 0 auto;

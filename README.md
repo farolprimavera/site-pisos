@@ -295,6 +295,8 @@ Seções:
      esperando, já ativa (no totem ninguém toca em "Atualizar").
    - Para testar com tempos curtos, mude **os dois** (`MINUTOS` e `AVISO`): com o aviso maior que o total o aviso
      reaparece na hora (há um piso de 1 s, mas fica estranho).
+10. **Botão "Topo"** (igual ao do site de tintas, no fim do `js/app.js`, classe `.ir-topo`): círculo verde no canto
+    de baixo, aparece depois de rolar 500 px (ou metade da rolagem, se a página for curta para a tela, como no totem em pé) e volta suave ao começo. Com a bandeja do Comparar aberta, fica acima dela.
 
 Outros requisitos:
 - Imagens com `loading="lazy"`.

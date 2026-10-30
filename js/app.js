@@ -158,4 +158,28 @@ const App = {
   },
 };
 
+/* Botão flutuante "Topo" (igual ao do site de tintas): aparece depois de rolar 500 px e volta suave
+   para o começo. Com a bandeja do Comparar aberta ele sobe para ficar acima dela (CSS). */
+(function () {
+  const b = document.createElement("button");
+  b.type = "button";
+  b.className = "ir-topo";
+  b.hidden = true;
+  b.setAttribute("aria-label", "Voltar ao topo da página");
+  b.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>Topo</span>';
+  b.addEventListener("click", () => window.scrollTo({ top: 0, behavior: "smooth" }));
+  document.body.appendChild(b);
+  let agendado = false;
+  window.addEventListener("scroll", () => {
+    if (agendado) return;
+    agendado = true;
+    requestAnimationFrame(() => {
+      // 500 px, ou metade da rolagem quando a página é curta para a tela (totem em pé: só rola uns 400 px)
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      b.hidden = window.scrollY < Math.min(500, Math.max(150, max / 2));
+      agendado = false;
+    });
+  }, { passive: true });
+})();
+
 document.addEventListener("DOMContentLoaded", App.iniciar);
