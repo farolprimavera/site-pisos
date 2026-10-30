@@ -29,6 +29,70 @@ def carregar_ambientes(pasta):
     return json.loads((Path(pasta) / "ambientes.json").read_text(encoding="utf-8"))
 
 
+def filtro_guiado(guia, p, r, eps):
+    """Filtro guiado (He et al.): suaviza p seguindo as bordas da imagem guia (0..1)."""
+    caixa = lambda x: cv2.boxFilter(x, -1, (2 * r + 1, 2 * r + 1))
+    mi, mp = caixa(guia), caixa(p)
+    cov = caixa(guia * p) - mi * mp
+    var = caixa(guia * guia) - mi * mi
+    a = cov / (var + eps)
+    b = mp - a * mi
+    return caixa(a) * guia + caixa(b)
+
+
+_ALFA = {}
+
+
+def alfa_chao(amb, foto, mask):
+    """Máscara do chão refinada (0..1), calculada uma vez por ambiente.
+
+    1. Fecha as frestas de piso antigo que a máscara deixou junto dos móveis e paredes: debaixo da cama,
+       do sofá, do rack, na base dos armários. Entra o que fica até `zona` px da máscara, tem a mesma cor
+       do chão em volta (só o tom muda: é sombra) e não é muito escuro (pés de metal) nem mais claro
+       (rodapé, móvel branco).
+    2. Borda suave e colada no contorno real dos móveis (filtro guiado pela foto), em vez da escadinha
+       de pixels da máscara preto-e-branco — era isso que deixava os cantos serrilhados e com um fio do
+       piso antigo em volta."""
+    if amb["id"] in _ALFA:
+        return _ALFA[amb["id"]]
+    cfg = amb.get("refino", {})
+    m = mask > 128
+    lab = cv2.cvtColor(cv2.GaussianBlur(foto, (0, 0), 1.0), cv2.COLOR_BGR2LAB).astype(np.float32)
+    L, A, B = lab[..., 0], lab[..., 1], lab[..., 2]
+    w = m.astype(np.float32)
+    den = np.maximum(cv2.GaussianBlur(w, (0, 0), 31), 1e-3)
+    rA, rB, rL = (cv2.GaussianBlur(c * w, (0, 0), 31) / den for c in (A, B, L))
+    croma = np.sqrt((A - rA) ** 2 + (B - rB) ** 2)
+    zona = cfg.get("zona", 50)
+    perto = cv2.dilate(m.astype(np.uint8), cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (2 * zona + 1,) * 2)) > 0
+    P = np.zeros(m.shape, np.uint8)
+    if "mascara" in amb:
+        cv2.fillPoly(P, [np.array(amb["mascara"]["poligono"], np.int32)], 1)
+        for e in amb["mascara"].get("excluir", []):
+            cv2.fillPoly(P, [np.array(e, np.int32)], 0)
+    else:
+        P[:] = 1
+    cand = perto & ~m & (P > 0) & (croma < cfg.get("croma", 7.0)) \
+        & (L > rL * cfg.get("escuro", 0.45)) & (L < rL * cfg.get("claro", 1.04))
+    cand = cv2.morphologyEx(cand.astype(np.uint8), cv2.MORPH_OPEN, np.ones((3, 3), np.uint8)) > 0
+    # não atravessa borda forte da foto: a junta parede/chão, o rodapé e o contorno dos móveis seguram
+    # o crescimento; a sombra debaixo da cama não tem borda forte e entra
+    cinza = cv2.cvtColor(foto, cv2.COLOR_BGR2GRAY)
+    bordas = cv2.dilate(cv2.Canny(cinza, cfg.get("canny", 25), cfg.get("canny", 25) * 3), np.ones((3, 3), np.uint8)) > 0
+    cand &= ~bordas
+    _, lb = cv2.connectedComponents((cand | m).astype(np.uint8), connectivity=4)
+    cand &= np.isin(lb, np.unique(lb[m]))
+    # devolve o fio de borda que ficou entre o chão novo e o objeto (sem passar da borda)
+    cand |= cv2.dilate(cand.astype(np.uint8), np.ones((3, 3), np.uint8)).astype(bool) & bordas & ~m & (P > 0) \
+        & (croma < cfg.get("croma", 7.0))
+    m2 = (m | cand).astype(np.float32)
+    guia = cv2.cvtColor(foto, cv2.COLOR_BGR2GRAY).astype(np.float32) / 255
+    a = np.clip(filtro_guiado(guia, m2, 2, 1e-3), 0, 1)
+    a = np.clip((a - 0.5) * 1.3 + 0.5, 0, 1)      # mantém a borda firme (sem "fantasma")
+    _ALFA[amb["id"]] = a
+    return a
+
+
 def homografia(amb):
     L, P = amb["largura_cm"], amb.get("profundidade_cm", amb.get("altura_cm"))
     # chão:   fundo-esq, fundo-dir, frente-dir, frente-esq      <->  (0,P) (L,P) (L,0) (0,0)
@@ -232,14 +296,17 @@ def renderizar(amb, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, cor_rejunte=
     M = S @ H @ T
     big = cv2.warpPerspective(plano, M, (Ww * ss, Hh * ss), flags=cv2.INTER_LINEAR, borderMode=cv2.BORDER_REPLICATE)
     piso = cv2.resize(big, (Ww, Hh), interpolation=cv2.INTER_AREA)
-    # luz e sombra da foto original (desfocada para não "vazar" o piso antigo)
+    # luz e sombra da foto original (desfocada para não "vazar" o piso antigo). Média só dos pixels
+    # de chão: a cor dos móveis não entra, senão escurecia/clareava o piso numa faixa em volta deles.
+    alfa = alfa_chao(amb, foto, mask)
     g = cv2.cvtColor(foto, cv2.COLOR_BGR2GRAY).astype(np.float32)
-    gb = cv2.GaussianBlur(g, (0, 0), 9)
-    sel = mask > 128
+    peso = np.maximum(cv2.GaussianBlur(alfa, (0, 0), 9), 1e-3)
+    gb = cv2.GaussianBlur(g * alfa, (0, 0), 9) / peso
+    sel = alfa > 0.5
     ref = np.percentile(gb[sel], 60)
     s = np.clip(1 + (gb / ref - 1) * sombra, 0.3, 1.3)[..., None]
     piso = piso * exposicao * np.minimum(s, 1.08) + np.maximum(s - 1.08, 0) * 60
-    a = cv2.GaussianBlur(mask.astype(np.float32) / 255, (0, 0), 0.8)[..., None]
+    a = alfa[..., None]
     out = foto.astype(np.float32) * (1 - a) + piso * a
     out = np.clip(out, 0, 255).astype(np.uint8)
     if largura_saida and largura_saida != Ww:

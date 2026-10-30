@@ -19,7 +19,7 @@ SITE = AQUI.parent
 FOTOS = SITE.parent / "fotos"
 AMB = SITE / "ambientes"
 OUT = SITE / "imagens"
-VERSAO = "5"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)
+VERSAO = "6"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)
 VERSAO_PAREDE = "1"   # o mesmo, só para as paredes (não regera os chãos)
 sys.path.insert(0, str(AQUI))
 import render as R

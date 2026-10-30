@@ -323,7 +323,14 @@ O `render.py` aplica a textura do piso no chão da foto do ambiente:
    s = np.clip(1 + (gb / ref - 1) * sombra, 0.3, 1.3)[..., None]
    piso = piso * np.minimum(s, 1.08) + np.maximum(s - 1.08, 0) * 60
    ```
-5. **Recorte:** usa a máscara do chão (PNG branco = chão) como alfa. Os móveis ficam por cima.
+5. **Recorte:** a máscara do chão (PNG branco = chão) passa pelo `alfa_chao()` antes de virar alfa:
+   - fecha as frestas de piso antigo junto dos móveis (debaixo da cama, do sofá, do rack): entra o que fica
+     perto da máscara, tem a mesma cor do chão em volta (só muda o tom, é sombra) e não cruza borda forte da foto;
+   - a borda vira um degradê fino colado no contorno real dos móveis (filtro guiado pela foto), sem serrilhado
+     e sem o fio do piso antigo em volta;
+   - a sombra usa só os pixels do chão (o desfoque não puxa a cor dos móveis);
+   - ajuste por ambiente no `ambientes.json`: `"refino": {"zona": 50, "claro": 1.04, "escuro": 0.45, "croma": 7, "canny": 25}`
+     (o quintal usa `claro` 1.2 porque o chão ao sol é mais claro). Os móveis ficam por cima.
 6. Saída em WebP: grande com 1280 px de largura (qualidade 80), mini com 520 px (qualidade 76), peça até 600 px (qualidade 82).
 
 O `gerar_imagens.py` é **incremental**:
@@ -413,6 +420,9 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
 - `fetch` não funciona abrindo o HTML direto do disco. Por isso existe o `pisos.js`.
 - Remover texto ou marca da foto com `cv2.inpaint` borra o chão. Prefira fotos limpas.
 - A máscara automática pega tampo de mesa e tapete como se fosse chão. Sempre confira visualmente.
+- A máscara do `quintal-piscina` tem retoque à mão (chão ao sol em volta das espreguiçadeiras e debaixo da mesa).
+  Rodar o `mascara.py` nele de novo apaga esse retoque.
+- Mudou o `render.py`? Aumente o `VERSAO` do `gerar_imagens.py`: o código do render não entra na assinatura.
 - Cuidado com a especificidade do CSS: uma regra como `.card .foto img` sobrescreveu a miniatura da peça.
   Use classes próprias (`.peca-mini`).
 - Não suba zips de imagens para o repositório: `*.zip` fica no `.gitignore`.
