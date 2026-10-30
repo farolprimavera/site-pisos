@@ -288,8 +288,9 @@ Seções:
      como **app instalado**, marcar dentro do app: app e navegador não dividem essa memória.
    - No totem some **Instalar app**, **Copiar link** e **Pedir orçamento no WhatsApp** (no detalhe e na comparação:
      o `wa.me` tiraria o cliente do site); no lugar aparece **"Gostou? Chame um vendedor para fechar o orçamento."**
-   - O detalhe do piso mostra um QR **"Leve no celular"**
-     (`js/qrcode.js`, MIT, o mesmo do site de tintas). Links e QR nunca levam o `?totem=1` (`App.link`).
+   - QR **"Leve no celular"** no canto da foto do detalhe, igual ao site de tintas (`.qr-foto`): aparece no
+     computador e no totem; no celular some (o cliente já está com a página na mão). `js/qrcode.js` (MIT, o mesmo das
+     tintas). Links e QR nunca levam o `?totem=1` (`App.link`).
    - Ao voltar ao início: esquece o tema claro/escuro do cliente anterior e, se houver versão nova do site
      esperando, já ativa (no totem ninguém toca em "Atualizar").
    - Para testar com tempos curtos, mude **os dois** (`MINUTOS` e `AVISO`): com o aviso maior que o total o aviso

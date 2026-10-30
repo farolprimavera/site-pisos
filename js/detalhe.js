@@ -126,10 +126,20 @@ const Detalhe = {
                  <button type="button" class="seta seta-prox" aria-label="Próxima foto">›</button>
                  <span class="amb-conta"></span>
                  <span class="amb-dica">Veja nos ambientes ›</span>
+                 <!-- QR no canto da foto, igual ao site de tintas: abre este piso no celular -->
+                 <div class="qr-foto" aria-hidden="false">
+                   <div class="qr-foto-codigo det-qr" role="img" aria-label="QR code para abrir este piso no celular"></div>
+                   <span>Leve no celular</span>
+                 </div>
                </div>
                <p class="amb-titulo">${titulo}</p>
                <div class="abas abas-detalhe">${abas}</div>`
-            : `<img class="detalhe-peca sozinha" src="${App.img.peca(p.id)}" alt="Peça ${App.esc(p.nome)}">`}
+            : `<div class="peca-box"><img class="detalhe-peca sozinha" src="${App.img.peca(p.id)}" alt="Peça ${App.esc(p.nome)}">
+                 <div class="qr-foto" aria-hidden="false">
+                   <div class="qr-foto-codigo det-qr" role="img" aria-label="QR code para abrir este piso no celular"></div>
+                   <span>Leve no celular</span>
+                 </div>
+               </div>`}
         </div>
         <div class="detalhe-info">
           <p class="vitrine-marca">${App.esc(p.fabricante)} · ${App.esc(p.tipo)}</p>
@@ -182,10 +192,6 @@ const Detalhe = {
               <span class="comparar-ico" aria-hidden="true"></span><span class="comparar-txt">${Comparar.tem(p.id) ? "Comparando" : "Comparar"}</span></button>
             <button type="button" class="botao botao-sec" id="det-link">Copiar link</button>
           </div>
-          ${document.documentElement.dataset.totem ? `<div class="qr-celular">
-            <div class="qr-celular-codigo" id="det-qr" role="img" aria-label="QR code para abrir este piso no celular"></div>
-            <p><strong>Leve no celular</strong>Aponte a câmera para abrir este piso no seu celular, com o preço e a calculadora.</p>
-          </div>` : ""}
         </div>
       </div>`;
 
@@ -270,8 +276,9 @@ const Detalhe = {
       setTimeout(() => (b.textContent = "Copiar link"), 2000);
     });
 
-    // QR "Leve no celular" (só no totem, js/totem.js): o cliente leva o piso no próprio celular
-    const qrBox = dlg.querySelector("#det-qr");
+    // QR "Leve no celular" no canto da foto (como no site de tintas): no computador e no totem;
+    // no celular o cliente já está com a página na mão e o CSS esconde
+    const qrBox = dlg.querySelector(".det-qr");
     if (qrBox && typeof qrcode !== "undefined") {
       const q = qrcode(0, "M");
       q.addData(link);
