@@ -25,6 +25,7 @@ const Filtros = {
         <div class="secoes" role="tablist" aria-label="Tipo de produto">
           <button type="button" class="secao-aba" role="tab" data-secao="pisos" aria-selected="true">Pisos</button>
           <button type="button" class="secao-aba" role="tab" data-secao="revestimentos" aria-selected="false">Revestimentos</button>
+          <button type="button" class="secao-aba" role="tab" data-secao="porcelanatos" aria-selected="false">Porcelanatos</button>
         </div>
         <div class="filtros-linha">
           <div class="chips" role="group" aria-label="Ambiente"></div>
@@ -94,8 +95,7 @@ const Filtros = {
 
   // Quantos produtos da aba atual há em cada local de uso (o número cinza ao lado de cada opção).
   contarLU() {
-    const revest = App.estado.secao === "revestimentos";
-    const daAba = App.dados.pisos.filter((p) => (revest ? p.revest : p.ambientes.length > 0));
+    const daAba = App.dados.pisos.filter((p) => App.daSecao(p, App.estado.secao));
     document.querySelectorAll("#f-lu .multi-n").forEach((s) => {
       const n = daAba.filter((p) => temLU(p, s.dataset.lu)).length;
       s.textContent = `(${n})`;
@@ -108,8 +108,7 @@ const Filtros = {
 
   // "Só novidades" só aparece quando a aba tem alguma novidade.
   contarNovidades() {
-    const revest = App.estado.secao === "revestimentos";
-    const n = App.dados.pisos.filter((p) => p.novidade && (revest ? p.revest : p.ambientes.length > 0)).length;
+    const n = App.dados.pisos.filter((p) => p.novidade && App.daSecao(p, App.estado.secao)).length;
     const lab = document.getElementById("f-novo-label");
     lab.hidden = !n && !App.estado.novidades;
     document.getElementById("f-novo-n").textContent = `(${n})`;
@@ -121,12 +120,19 @@ const Filtros = {
     q.textContent = n;
   },
 
-  // Chips de ambiente da aba atual: os ambientes de chão (Pisos) ou as paredes (Revestimentos).
+  // Chips de ambiente da aba atual: os ambientes de chão (Pisos), as paredes (Revestimentos) ou,
+  // em Porcelanatos, os ambientes e paredes onde há algum porcelanato (chão ou parede: mesmo id).
   chips() {
     const e = App.estado;
     Filtros.contarLU();
     Filtros.contarNovidades();
-    const lista = e.secao === "revestimentos" ? App.dados.paredes : App.dados.ambientes;
+    let lista = e.secao === "revestimentos" ? App.dados.paredes : App.dados.ambientes;
+    if (e.secao === "porcelanatos") {
+      const porc = App.dados.pisos.filter((p) => p.porcelanato);
+      const usados = new Set(porc.flatMap((p) => [...p.ambientes, ...p.paredes]));
+      const ids = new Set(App.dados.ambientes.map((a) => a.id));
+      lista = [...App.dados.ambientes, ...App.dados.paredes.filter((a) => !ids.has(a.id))].filter((a) => usados.has(a.id));
+    }
     const box = document.querySelector("#filtros .chips");
     box.innerHTML = [{ id: "", nome: "Todos" }, ...lista]
       .map((c) => `<button type="button" class="chip" data-cat="${c.id}" aria-pressed="${c.id === e.cat}">${App.esc(c.nome)}</button>`)
@@ -134,14 +140,17 @@ const Filtros = {
     box.querySelectorAll(".chip").forEach((b) => b.addEventListener("click", () => {
       e.cat = b.dataset.cat;
       // as miniaturas da grade passam a mostrar o ambiente (ou a parede) escolhido
-      if (e.cat) e[e.secao === "revestimentos" ? "parede" : "ambiente"] = e.cat;
+      if (e.cat && e.secao === "porcelanatos") {
+        if (App.nomeAmbiente[e.cat]) e.ambiente = e.cat;
+        if (App.nomeParede[e.cat]) e.parede = e.cat;
+      } else if (e.cat) e[e.secao === "revestimentos" ? "parede" : "ambiente"] = e.cat;
       box.querySelectorAll(".chip").forEach((c) => c.setAttribute("aria-pressed", c === b));
       b.scrollIntoView({ block: "nearest", inline: "nearest", behavior: "smooth" });
       App.atualizar();
     }));
   },
 
-  // Troca a aba do topo (Pisos | Revestimentos).
+  // Troca a aba do topo (Pisos | Revestimentos | Porcelanatos).
   secao(s) {
     const e = App.estado;
     if (e.secao !== s) {
@@ -172,9 +181,10 @@ const Filtros = {
     const e = App.estado;
     const termos = App.normalizar(e.busca).split(/\s+/).filter(Boolean);
     const revest = e.secao === "revestimentos";
+    const porc = e.secao === "porcelanatos";
     const lista = pisos.filter((p) =>
-      (revest ? p.revest : p.ambientes.length > 0) &&
-      (!e.cat || (revest ? p.paredes : p.ambientes).includes(e.cat)) &&
+      App.daSecao(p, e.secao) &&
+      (!e.cat || (porc ? [...p.ambientes, ...p.paredes] : revest ? p.paredes : p.ambientes).includes(e.cat)) &&
       (!e.marca || p.fabricante === e.marca) &&
       (!e.estilo || p.estilo === e.estilo) &&
       (!e.acabamento || p.acabamento === e.acabamento) &&

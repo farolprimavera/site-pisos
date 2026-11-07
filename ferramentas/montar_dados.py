@@ -4,6 +4,8 @@ Monta dados/pisos.json — o catálogo que o site lê.
 Lê da pasta de cima (a pasta de trabalho, fora do git):
   pisos.xlsx                      Código | Produto | Observação (caixa)
   pisos.pdf                       tabela de preço do sistema com todos os fabricantes (também vale dentro de site-pisos/)
+  porcelanato.pdf                 tabela de preço do subgrupo PORCELANATOS (no sistema a marca vem como DIVERSOS;
+                                  no site aparecem com a marca "Porcelanato")
   <fabricante>/<fabricante>.pdf   formato antigo, um PDF por fabricante (alfagres/alfagres.pdf, cedasa/cedasa.pdf, ...)
   fotos/<código>.jpg              foto da peça
 e daqui:
@@ -13,8 +15,11 @@ Os preços lidos do pisos.pdf ficam guardados em ferramentas/precos.json, então
 Vale a fonte com a data mais recente (pisos.pdf > precos.json > PDFs por fabricante).
 
 Só entra no site o que tem estoque e foto. Lote de ponta ('(P)' no fim do nome) fica de fora.
-Lote em queima (preço à vista ou oferta igual a um dos PRECOS_QUEIMA, hoje R$ 9,90) também fica de fora;
-se todos os lotes de um piso estão em queima, o piso some do site.
+Lote em queima (preço à vista ou oferta igual a um dos PRECOS_QUEIMA, hoje R$ 9,90) também fica de fora.
+O QR da etiqueta desses lotes (#código) abre o piso pelos outros lotes que estão no site.
+Piso que só tem lote de ponta ou de queima com estoque vira PÁGINA ESCONDIDA (PAGINA_ESCONDIDA = True):
+não aparece na lista nem na busca, só abre pelo QR da etiqueta, e no lugar do preço diz para consultar
+um vendedor ("oculto": true no pisos.json).
 Novidades: ferramentas/estreias.json guarda o dia em que cada piso entrou no site pela primeira vez
 (piso novo ganha a data do dia em que o script roda). O site mostra o selo "Novidade" por 30 dias.
 Rodar:  python3 ferramentas/montar_dados.py
@@ -28,7 +33,10 @@ TRABALHO = SITE.parent
 sys.path.insert(0, str(AQUI))
 import comum as C
 
-FABRICANTES = {"ALFAGRES": "Alfagrês", "CEDASA": "Cedasa", "ROCHAFORTE": "Rocha"}
+FABRICANTES = {"ALFAGRES": "Alfagrês", "CEDASA": "Cedasa", "ROCHAFORTE": "Rocha", "PORCELANATO": "Porcelanato"}
+# Piso só com lote de ponta/queima (pouquíssimo estoque): página escondida, aberta só pelo QR da etiqueta,
+# sem preço ("Consulte um vendedor").  Para tirar essas páginas do site: PAGINA_ESCONDIDA = False
+PAGINA_ESCONDIDA = True
 ORDEM_LU = ["LA", "LB", "LC", "LD", "LE", "LF"]
 # Preços de queima: lote com preço à vista ou oferta igual a um destes não vai para o site.
 # (A foto do lote, como a das pontas, ainda pode ser usada pelos outros lotes do mesmo piso.)  Para desligar: PRECOS_QUEIMA = []
@@ -69,6 +77,11 @@ def ambientes_do_piso(lu, externo, acabamento, estilo):
             continue
         out.append(a)
     return out
+
+# Mesmo piso cadastrado com nomes diferentes na loja (lote novo com outro nome): junta no mesmo produto do site.
+APELIDOS = {
+    "ROCHAFORTE|HD 7092|70x70": "ROCHAFORTE|HD 70922|70x70",   # R7092 (lote de 26/10/26 veio como "HD 7092")
+}
 
 NOMES = {"IMENT CARRARA BRANCO": "Carrara Branco", "380 007": "380.007", "HD ARIZONA BROWN": "Arizon Brown",
          "HD ARIZON SAND": "Arizon Sand"}
@@ -144,6 +157,23 @@ def carregar_precos():
     return d["precos"], d["data"]
 
 
+def carregar_porcelanatos():
+    """Tabela de preço do subgrupo PORCELANATOS (porcelanato.pdf), guardada em ferramentas/precos_porcelanato.json.
+    No sistema a marca deles vem como DIVERSOS: no site viram a marca "Porcelanato"."""
+    cache = AQUI / "precos_porcelanato.json"
+    for pdf in (SITE / "porcelanato.pdf", TRABALHO / "porcelanato.pdf"):
+        if pdf.exists():
+            d = dict(data=C.data_pdf(pdf), precos=C.ler_pdf_geral(pdf))
+            cache.write_text(json.dumps(d, ensure_ascii=False, indent=1), encoding="utf-8")
+            print(f"Porcelanatos lidos de {pdf} ({d['data']}) e guardados em {cache.name}")
+            break
+    else:
+        d = json.loads(cache.read_text(encoding="utf-8")) if cache.exists() else dict(data=None, precos={})
+    for v in d["precos"].values():
+        v["fabricante"] = "PORCELANATO"
+    return d["precos"]
+
+
 def main():
     fichas = {r["chave"]: r for r in csv.DictReader(open(AQUI / "fichas.csv", encoding="utf-8"), delimiter=";")}
     # peso da caixa (kg) pesquisado nos fabricantes; vale mais que o da Observação da planilha
@@ -151,6 +181,7 @@ def main():
     pesos = {r["chave"]: C.num_br(r["peso_kg"]) for r in csv.DictReader(open(arq_pesos, encoding="utf-8"), delimiter=";")
              if (r.get("peso_kg") or "").strip()} if arq_pesos.exists() else {}
     precos, data_precos = carregar_precos()
+    precos.update(carregar_porcelanatos())
     planilha = {str(l["Código"]).strip(): l for l in C.ler_planilha(TRABALHO / "pisos.xlsx")}
     fotos = TRABALHO / "fotos"
 
@@ -162,7 +193,9 @@ def main():
             continue
         l = planilha.get(cod) or {"Produto": pr["produto"]}
         k = C.chave(l["Produto"], pr["fabricante"])
-        g = grupos.setdefault(k, {"lotes": [], "fotos_extra": [], "produto": l["Produto"], "obs": None, "todos": []})
+        k = APELIDOS.get(k, k)
+        g = grupos.setdefault(k, {"lotes": [], "fotos_extra": [], "escondidos": [], "produto": l["Produto"], "obs": None,
+                                  "todos": []})
         g["todos"].append(cod)   # todo código do piso (inclusive ponta, queima e lote zerado): QR da etiqueta
         g["obs"] = g["obs"] or l.get("Observação")
         g.setdefault("obs_todas", []).append(l.get("Observação"))
@@ -174,19 +207,25 @@ def main():
                 queima.add(k)
             if (fotos / f"{cod}.jpg").exists():
                 g["fotos_extra"].append((pr["estoque"] or 0, cod))
+            # guardado para a página escondida (se o piso não tiver nenhum outro lote no site)
+            g["escondidos"].append(dict(codigo=cod, estoque=pr["estoque"], foto=(fotos / f"{cod}.jpg").exists()))
             continue
         g["lotes"].append(dict(codigo=cod, estoque=pr["estoque"], vista=pr["vista"], prazo=pr["prazo"],
                                oferta=pr["oferta"], foto=(fotos / f"{cod}.jpg").exists()))
 
     itens, sem_ficha, sem_foto, supostos, revest_no_chao = [], [], [], [], []
-    so_queima = []
+    so_queima, escondidos = [], []
     for k, g in grupos.items():
-        lotes = g["lotes"]
+        lotes, oculto = g["lotes"], False
         est = sum(max(x["estoque"] or 0, 0) for x in lotes)
         if est <= 0:
             if k in queima:
                 so_queima.append(k)
-            continue
+            # só sobrou ponta/queima com estoque: página escondida (abre pelo QR da etiqueta, sem preço)
+            esc = [x for x in g["escondidos"] if (x["estoque"] or 0) > 0]
+            if not (PAGINA_ESCONDIDA and esc):
+                continue
+            lotes, oculto = esc, True
         fab, base, _ = k.split("|")
         f = fichas.get(k)
         com_foto = [x["codigo"] for x in sorted(lotes, key=lambda x: -(x["estoque"] or 0)) if x["foto"]] \
@@ -197,9 +236,12 @@ def main():
             sem_ficha.append(k); continue
         if f["fonte"].startswith("SUPOSTO"):
             supostos.append(k)
-        com_preco = [x for x in lotes if x["vista"] and (x["estoque"] or 0) > 0] or [x for x in lotes if x["vista"]]
+        if oculto:    # página escondida: sem preço nenhum
+            com_preco, ofertas = [], []
+        else:
+            com_preco = [x for x in lotes if x["vista"] and (x["estoque"] or 0) > 0] or [x for x in lotes if x["vista"]]
+            ofertas = [x["oferta"] for x in lotes if x["oferta"] and (x["estoque"] or 0) > 0]
         principal = max(com_preco, key=lambda x: (x["estoque"] or 0)) if com_preco else None
-        ofertas = [x["oferta"] for x in lotes if x["oferta"] and (x["estoque"] or 0) > 0]
         m = C.medida(g["produto"])
         m2, pcs = C.caixa(g["obs"])
         lu = f["local_uso"]
@@ -217,6 +259,8 @@ def main():
         # a coluna "retificado" da ficha manda quando preenchida (1 = sim, 0 = não): nem todo retificado tem RET no nome
         if (f.get("retificado") or "").strip() in ("0", "1"):
             retificado = f["retificado"].strip() == "1"
+        if oculto:
+            escondidos.append(k)
         itens.append(dict(
             id=slug(f"{fab}-{nome}-{int(round(max(m)))}"),
             chave=k, nome=nome, fabricante=FABRICANTES[fab],
@@ -235,6 +279,10 @@ def main():
             paredes=[par["ambiente"] for par in PAREDES.values()
                      if parede and (externo or not par.get("so_externo"))],
         ))
+        if oculto:
+            itens[-1]["oculto"] = True
+        if fab == "PORCELANATO":      # aba "Porcelanatos" do site
+            itens[-1]["porcelanato"] = True
 
     # outros_codigos: lotes que não aparecem no site (ponta, queima, zerado). O QR da etiqueta (#código) acha o piso por eles.
     for it in itens:
@@ -253,6 +301,8 @@ def main():
     hoje = datetime.date.today().isoformat()
     estrearam = []
     for it in itens:
+        if it.get("oculto"):        # página escondida não conta como novidade
+            continue
         if it["chave"] not in estreias:
             estreias[it["chave"]] = hoje
             estrearam.append(it["chave"])
@@ -268,14 +318,17 @@ def main():
     (SITE / "dados" / "pisos.json").write_text(txt, encoding="utf-8")
     # cópia em .js: deixa abrir o index.html direto do computador (dois cliques), sem servidor
     (SITE / "dados" / "pisos.js").write_text("window.PISOS=" + txt + ";\n", encoding="utf-8")
-    rel = [f"{len(itens)} produtos no site ({sum(1 for i in itens if i['tipo']=='Piso')} pisos, "
-           f"{sum(1 for i in itens if i['tipo']!='Piso')} revestimentos de parede)",
+    vis = [i for i in itens if not i.get("oculto")]
+    rel = [f"{len(vis)} produtos no site ({sum(1 for i in vis if i['tipo']=='Piso')} pisos, "
+           f"{sum(1 for i in vis if i['tipo']!='Piso')} revestimentos de parede; "
+           f"{sum(1 for i in vis if i['fabricante']=='Porcelanato')} porcelanatos)",
+           f"Páginas escondidas, só pelo QR da etiqueta, sem preço ({len(escondidos)}): " + ", ".join(sorted(escondidos)),
            f"Entraram no site agora, com selo Novidade por 30 dias ({len(estrearam)}): " + ", ".join(estrearam),
            f"Fora do site por falta de foto ({len(sem_foto)}): " + ", ".join(sem_foto),
            f"Fora do site por falta de ficha técnica em fichas.csv ({len(sem_ficha)}): " + ", ".join(sem_ficha),
            f"Local de uso SUPOSTO, conferir ({len(supostos)}): " + ", ".join(supostos),
-           f"Fora do site por estar só com lote em queima (R$ {', '.join(f'{q:.2f}'.replace('.', ',') for q in PRECOS_QUEIMA)}) "
-           f"({len(so_queima)}): " + ", ".join(sorted(so_queima)),
+           f"Só com lote em queima (R$ {', '.join(f'{q:.2f}'.replace('.', ',') for q in PRECOS_QUEIMA)}), fora da lista "
+           f"(com estoque, viram página escondida) ({len(so_queima)}): " + ", ".join(sorted(so_queima)),
            f"Cadastrado como REVEST. na loja, mas a ficha não é LA, conferir ({len(revest_no_chao)}): "
            + ", ".join(revest_no_chao)]
     (SITE / "ferramentas" / "relatorio.txt").write_text("\n\n".join(rel), encoding="utf-8")

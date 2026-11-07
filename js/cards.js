@@ -14,6 +14,7 @@ const Cards = {
     Cards.pagina(secao);
     document.getElementById("pisos").hidden = secao !== "pisos";
     document.getElementById("revestimentos").hidden = secao !== "revestimentos";
+    document.getElementById("porcelanatos").hidden = secao !== "porcelanatos";
   },
 
   // Desenha a página atual de uma seção ("pisos" ou "revestimentos").
@@ -23,7 +24,9 @@ const Cards = {
     const n = Math.min(Math.max(Cards.paginas[secao], 1), total);
     Cards.paginas[secao] = n;
     const fatia = itens.slice((n - 1) * POR_PAGINA, n * POR_PAGINA);
-    const fn = secao === "pisos" ? Cards.cardPiso : Cards.cardRevest;
+    // porcelanato: card de piso (ambiente no chão) ou, se for só de parede, card de revestimento
+    const fn = secao === "pisos" ? Cards.cardPiso : secao === "revestimentos" ? Cards.cardRevest
+      : (p) => (p.ambientes.length ? Cards.cardPiso(p) : Cards.cardRevest(p));
 
     document.getElementById(`contagem-${secao}`).textContent = itens.length === 1 ? "1 item" : `${itens.length} itens`;
     const grade = document.getElementById(`grade-${secao}`);

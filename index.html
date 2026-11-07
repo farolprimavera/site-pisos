@@ -49,7 +49,7 @@
     <!-- 1. Vitrine: simulação grande + abas de ambiente + bloco de preço (js/vitrine.js) -->
     <section id="vitrine" class="vitrine" aria-label="Piso em destaque"></section>
 
-    <!-- 2. Barra fixa: abas Pisos | Revestimentos + filtros (js/filtros.js) -->
+    <!-- 2. Barra fixa: abas Pisos | Revestimentos | Porcelanatos + filtros (js/filtros.js) -->
     <section id="filtros" class="filtros" aria-label="Filtros"></section>
 
     <!-- 3. Grade de pisos (js/cards.js) -->
@@ -70,6 +70,16 @@
       </div>
       <div id="grade-revestimentos" class="grade"></div>
       <nav class="paginas" id="paginas-revestimentos" aria-label="Páginas de revestimentos"></nav>
+    </section>
+
+    <!-- 3c. Porcelanatos: aba própria, no chão ou na parede (js/cards.js) -->
+    <section id="porcelanatos" class="secao" aria-labelledby="titulo-porcelanatos" hidden>
+      <div class="secao-topo">
+        <h2 id="titulo-porcelanatos">Porcelanatos</h2>
+        <span class="contagem" id="contagem-porcelanatos"></span>
+      </div>
+      <div id="grade-porcelanatos" class="grade"></div>
+      <nav class="paginas" id="paginas-porcelanatos" aria-label="Páginas de porcelanatos"></nav>
     </section>
   </main>
 

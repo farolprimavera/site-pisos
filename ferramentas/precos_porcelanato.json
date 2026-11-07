@@ -1,0 +1,167 @@
+{
+ "data": "07/11/2026",
+ "precos": {
+  "20267": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCEL 61X121 PIETRA BORG.ALMOND LT:01-19 (G4/B2)",
+   "estoque": 145.6,
+   "vista": 78.9,
+   "prazo": 86.9,
+   "oferta": 63.0,
+   "ponta": false
+  },
+  "1003505": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCEL.82x82 IMPERIUM GRAFITE LT:001-20 (G3/B6)",
+   "estoque": 206.04,
+   "vista": 82.9,
+   "prazo": 91.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "20720": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 32X60 DOTS BLACK LT:G3 (P)",
+   "estoque": 0.0,
+   "vista": 36.9,
+   "prazo": 41.9,
+   "oferta": null,
+   "ponta": true
+  },
+  "20719": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 32X60 DOTS WHITE LT:H3 (E2)",
+   "estoque": 92.0,
+   "vista": 45.9,
+   "prazo": 49.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1009545": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 60X60 IVORY PLAIN (P)",
+   "estoque": 0.0,
+   "vista": 59.9,
+   "prazo": 62.9,
+   "oferta": 49.9,
+   "ponta": true
+  },
+  "1006294": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 61X120 DETROIT FENDI LT:1-19 (P)",
+   "estoque": 0.0,
+   "vista": 79.9,
+   "prazo": 89.9,
+   "oferta": null,
+   "ponta": true
+  },
+  "1004188": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 61X120 SPLENDOR TAUPE LT:003-20 (P)",
+   "estoque": 0.0,
+   "vista": 89.9,
+   "prazo": 99.9,
+   "oferta": null,
+   "ponta": true
+  },
+  "1006296": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 61X120 TREND COLORS L:0005-21 (G3/B6)",
+   "estoque": 126.87,
+   "vista": 79.9,
+   "prazo": 89.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "18526": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 61X61 TOPAZIO IMPERIAL LT:0005-19 (P)",
+   "estoque": 0.0,
+   "vista": 54.9,
+   "prazo": 59.9,
+   "oferta": null,
+   "ponta": true
+  },
+  "1006295": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 62X121 DETROIT MIX LT:0003-21 (G3/B5)",
+   "estoque": 76.5,
+   "vista": 79.9,
+   "prazo": 89.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "19957": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 62X122 ST CALIZA DECOR LT:002-18 (P)",
+   "estoque": 0.0,
+   "vista": 63.9,
+   "prazo": 69.9,
+   "oferta": null,
+   "ponta": true
+  },
+  "19232": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 62X62 SOHO ACERO  LT:0013-19 (G4)",
+   "estoque": 0.0,
+   "vista": 39.9,
+   "prazo": 43.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "21050": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 82X82 CALACATA  LT:0027-19  (E)",
+   "estoque": 0.0,
+   "vista": 69.9,
+   "prazo": 77.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1006293": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 82X82 DETROIT OCRE LT:2-21 (G3/B6)",
+   "estoque": 80.8,
+   "vista": 79.9,
+   "prazo": 89.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1004233": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 82X82 NAVONA CHIARO LT:0002-20 (G4)",
+   "estoque": 0.0,
+   "vista": 79.9,
+   "prazo": 87.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1004217": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 82X82 SOFT STEEL LT:0002-20 (G3/B6)",
+   "estoque": 173.74,
+   "vista": 87.9,
+   "prazo": 97.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1004235": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 82x82 DETROIT GRAFITE LT:0002-20 (P)",
+   "estoque": 0.0,
+   "vista": 79.9,
+   "prazo": 89.9,
+   "oferta": null,
+   "ponta": true
+  },
+  "1004186": {
+   "fabricante": "DIVERSOS",
+   "produto": "PORCELANATO 82x82 DETROIT OFFWHITE LT:002-20 (P)",
+   "estoque": 0.0,
+   "vista": 79.9,
+   "prazo": 89.9,
+   "oferta": null,
+   "ponta": true
+  }
+ }
+}

@@ -129,7 +129,7 @@ def nome_base(produto):
     n = re.sub(r"\b\d{1,2}[-/]\d{1,2}(?:[-/]\d{2,4})?\b", " ", n)
     n = re.sub(r"/\d+\b", " ", n)
     n = n.replace(")", " ")
-    n = re.sub(r"^(PISO|PORCELANATO|REVESTIMENTO|REVEST\.?)\s*", "", n)
+    n = re.sub(r"^(PISO|PORCELANATO|PORCEL\.?|REVESTIMENTO|REVEST\.?)\s*", "", n)
     n = RE_MEDIDA.sub(" ", n)
     n = re.sub(r"\bMAT\.", "MATTE ", n)
     n = re.sub(r"\b(RET|RT|L:?)\b\.?", " ", n)

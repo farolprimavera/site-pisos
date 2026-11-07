@@ -11,6 +11,14 @@ const Detalhe = {
     return `<dt>PEI / Local de uso</dt><dd>${lu.id} · ${App.esc(lu.nome.toLowerCase())}${ext}</dd>`;
   },
 
+  // Página escondida (só ponta/queima, aberta pelo QR da etiqueta): no lugar do preço.
+  consulte() {
+    return `<div class="consulte">
+      <p class="consulte-tit">Últimas peças</p>
+      <p>Estoque limitado. Consulte o preço e a quantidade disponível com um vendedor.</p>
+    </div>`;
+  },
+
   iniciar() {
     const dlg = document.getElementById("detalhe");
     // clique fora do conteúdo fecha
@@ -85,7 +93,7 @@ const Detalhe = {
   },
 
   abrir(id) {
-    const p = App.piso(id);
+    const p = App.qualquer(id);
     if (!p) return;
     const dlg = document.getElementById("detalhe");
     const lugares = p.onde.map((o) => App.nomeLocal[o] || o);
@@ -144,7 +152,7 @@ const Detalhe = {
         <div class="detalhe-info">
           <p class="vitrine-marca">${App.esc(p.fabricante)} · ${App.esc(p.tipo)}</p>
           <h2>${App.esc(p.nome)}${p.novidade ? ` <span class="selo-novo selo-inline">Novidade</span>` : ""}</h2>
-          ${Vitrine.precos(p)}
+          ${p.oculto ? Detalhe.consulte() : Vitrine.precos(p)}
 
           <h3>Onde usar</h3>
           <ul class="onde">${lugares.map((l) => `<li>${App.esc(l)}</li>`).join("")}</ul>
@@ -161,7 +169,7 @@ const Detalhe = {
             <dt>Código</dt><dd>${App.esc(p.codigos.join(", "))}</dd>
           </dl>
 
-          <h3>Quanto preciso?</h3>
+          ${p.oculto ? "" : `<h3>Quanto preciso?</h3>
           <div class="calc">
             <div class="calc-tabela" role="group" aria-label="Tabela de preço do orçamento">
               <span class="calc-tabela-tit">Preços</span>
@@ -183,13 +191,13 @@ const Detalhe = {
                  </label>`}
             <p id="calc-res" class="calc-res">Informe ${parede ? "largura e altura da parede" : "a área"} para calcular, já com ${PERDA * 100}% de perda.</p>
             <div id="calc-mat"></div>
-          </div>
+          </div>`}
 
           <div class="acoes">
             <p class="totem-vendedor">Gostou? Chame um vendedor para fechar o orçamento.</p>
-            ${WHATSAPP ? `<a class="botao botao-whats" id="det-whats" target="_blank" rel="noopener">Pedir orçamento no WhatsApp</a>` : ""}
-            <button type="button" class="botao botao-sec botao-comparar" data-comparar="${p.id}" aria-pressed="${Comparar.tem(p.id)}">
-              <span class="comparar-ico" aria-hidden="true"></span><span class="comparar-txt">${Comparar.tem(p.id) ? "Comparando" : "Comparar"}</span></button>
+            ${WHATSAPP ? `<a class="botao botao-whats" id="det-whats" target="_blank" rel="noopener">${p.oculto ? "Consultar preço no WhatsApp" : "Pedir orçamento no WhatsApp"}</a>` : ""}
+            ${p.oculto ? "" : `<button type="button" class="botao botao-sec botao-comparar" data-comparar="${p.id}" aria-pressed="${Comparar.tem(p.id)}">
+              <span class="comparar-ico" aria-hidden="true"></span><span class="comparar-txt">${Comparar.tem(p.id) ? "Comparando" : "Comparar"}</span></button>`}
             <button type="button" class="botao botao-sec" id="det-link">Copiar link</button>
           </div>
         </div>
@@ -205,6 +213,7 @@ const Detalhe = {
       if (!w) return;
       const oque = p.tipo === "Revestimento" ? "no revestimento" : "no piso";
       let msg = `Olá! Tenho interesse ${oque} ${p.nome} (${p.fabricante}, ${p.medida}, cód. ${p.codigos[0]}).`;
+      if (p.oculto) msg += " Vi que são as últimas peças: qual o preço e quanto tem disponível?";
       if (m2Pedido) msg += ` Preciso de cerca de ${m2Pedido}.`;
       if (matPedido) msg += ` Materiais: ${matPedido}.`;
       if (m2Pedido) msg += ` Preços ${Materiais.tabela === "prazo" ? "a prazo" : "à vista"}.`;
@@ -257,13 +266,15 @@ const Detalhe = {
       matPedido = Materiais.texto(mat);
       atualizarWhats();
     };
-    dlg.querySelectorAll(".calc-in").forEach((i) => i.addEventListener("input", calcular));
-    dlg.querySelectorAll("[data-tabela]").forEach((b) => b.addEventListener("click", () => {
-      Materiais.tabela = b.dataset.tabela;
+    if (!p.oculto) {   // a página escondida não tem calculadora (não tem preço)
+      dlg.querySelectorAll(".calc-in").forEach((i) => i.addEventListener("input", calcular));
+      dlg.querySelectorAll("[data-tabela]").forEach((b) => b.addEventListener("click", () => {
+        Materiais.tabela = b.dataset.tabela;
+        marcarTabela();
+        calcular();
+      }));
       marcarTabela();
-      calcular();
-    }));
-    marcarTabela();
+    }
 
     dlg.querySelector("#det-link").addEventListener("click", async (ev) => {
       const b = ev.currentTarget;

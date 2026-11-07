@@ -1,5 +1,5 @@
 {
- "data": "27/10/2026",
+ "data": "07/11/2026",
  "precos": {
   "11065": {
    "fabricante": "DIVERSOS",
@@ -31,10 +31,10 @@
   "1011550": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO 40012 RET 40x75 LT: 15/04/25 (G4/B4)",
-   "estoque": 246.0,
+   "estoque": 231.0,
    "vista": 28.9,
    "prazo": 30.9,
-   "oferta": null,
+   "oferta": 26.0,
    "ponta": false
   },
   "1011549": {
@@ -115,13 +115,13 @@
    "estoque": 411.0,
    "vista": 28.9,
    "prazo": 30.9,
-   "oferta": null,
+   "oferta": 23.0,
    "ponta": true
   },
   "1012531": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO 40652 RET 38,5x74,5 LT:18-19/06/26 (G4/B1)",
-   "estoque": 400.0,
+   "estoque": 399.0,
    "vista": 29.9,
    "prazo": 32.9,
    "oferta": null,
@@ -130,7 +130,7 @@
   "1009951": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45403 45x45 (07/02/24) (E2)(P)",
-   "estoque": 10.05,
+   "estoque": 6.03,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,
@@ -166,7 +166,7 @@
   "1011490": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45405 45x45 (27-28/02/25) (G4/B5-A6)",
-   "estoque": 221.1,
+   "estoque": 192.96,
    "vista": 19.9,
    "prazo": 22.9,
    "oferta": null,
@@ -193,7 +193,7 @@
   "1012352": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45414 45X45 LT(19/01/26) (G4/B8)",
-   "estoque": 158.79,
+   "estoque": 132.66,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": null,
@@ -220,7 +220,7 @@
   "1011662": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45416 45x45 LT: (14/07/25) (G3/A1)(E2)",
-   "estoque": 717.57,
+   "estoque": 653.25,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": null,
@@ -229,7 +229,7 @@
   "1012664": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45418 45x45 (06/07/26) (E2)",
-   "estoque": 311.55,
+   "estoque": 299.49,
    "vista": 19.9,
    "prazo": 22.9,
    "oferta": null,
@@ -256,7 +256,7 @@
   "1012657": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45501 45X45 (03/07/26 ) (E2)",
-   "estoque": 444.21,
+   "estoque": 387.93,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -274,7 +274,7 @@
   "1012662": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45502 45x45 (04/10/25) (E2)",
-   "estoque": 317.58,
+   "estoque": 311.55,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": 16.9,
@@ -301,7 +301,7 @@
   "1012661": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45700 45x45 LT: (01/05/26) (E2)",
-   "estoque": 180.9,
+   "estoque": 48.24,
    "vista": 19.9,
    "prazo": 22.9,
    "oferta": null,
@@ -319,7 +319,7 @@
   "1011661": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45801 45x45 LT:(05/02-06/02/25) (G3/A2)",
-   "estoque": 677.37,
+   "estoque": 588.93,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": null,
@@ -328,7 +328,7 @@
   "1011904": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45801 45x45 LT:(16/09/25) (E2)",
-   "estoque": 759.78,
+   "estoque": 643.2,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": 16.9,
@@ -355,7 +355,7 @@
   "1012358": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45805 45x45 LOT(18/10/25) (G4/B8)",
-   "estoque": 176.88,
+   "estoque": 168.84,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": null,
@@ -364,7 +364,7 @@
   "1011192": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45901 45x45 (22-21/04/2024) (E1-E2-C)(P)",
-   "estoque": 550.74,
+   "estoque": 524.61,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -427,7 +427,7 @@
   "1009821": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 501 31x31 (04-07-23) (G4/B6)",
-   "estoque": 64.48,
+   "estoque": 58.24,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": null,
@@ -436,7 +436,7 @@
   "1011760": {
    "fabricante": "DIVERSOS",
    "produto": "PISO 57000 RET 57x57 LT:07/08/25 (E1-G4)",
-   "estoque": 446.2,
+   "estoque": 384.1,
    "vista": 24.9,
    "prazo": 26.9,
    "oferta": null,
@@ -454,7 +454,7 @@
   "1011759": {
    "fabricante": "DIVERSOS",
    "produto": "PISO 57002 RET 57x57 LT:05/08/25 (E1/E2)",
-   "estoque": 48.3,
+   "estoque": 36.8,
    "vista": 24.9,
    "prazo": 26.9,
    "oferta": 19.9,
@@ -463,7 +463,7 @@
   "1012817": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO 701001 70X70 LT: 02/10/26 (E1-C)",
-   "estoque": 329.28,
+   "estoque": 312.13,
    "vista": 46.9,
    "prazo": 49.9,
    "oferta": null,
@@ -490,7 +490,7 @@
   "1012181": {
    "fabricante": "DIVERSOS",
    "produto": "PISO 75004 RET 72,5x72,5 LT:6 (E1-C)",
-   "estoque": 26.2,
+   "estoque": 20.96,
    "vista": 26.9,
    "prazo": 28.9,
    "oferta": 19.9,
@@ -517,7 +517,7 @@
   "1012183": {
    "fabricante": "DIVERSOS",
    "produto": "PISO 75012 RET 72,5x72,5 LT:6 (E1-C)",
-   "estoque": 159.82,
+   "estoque": 81.22,
    "vista": 26.9,
    "prazo": 28.9,
    "oferta": 19.9,
@@ -553,7 +553,7 @@
   "1012669": {
    "fabricante": "ALFAGRES",
    "produto": "PISO APUANO 45x45 (18/05/26) (E1)",
-   "estoque": 438.18,
+   "estoque": 412.05,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": null,
@@ -571,9 +571,9 @@
   "1012816": {
    "fabricante": "CEDASA",
    "produto": "PISO ATHENAS CINZA RUSTICO 75,5X75,5 LT:023 (E2)",
-   "estoque": 0.0,
-   "vista": null,
-   "prazo": null,
+   "estoque": 285.0,
+   "vista": 37.9,
+   "prazo": 39.9,
    "oferta": null,
    "ponta": false
   },
@@ -589,10 +589,10 @@
   "1008320": {
    "fabricante": "ALFAGRES",
    "produto": "PISO AVENTURINA45X45 LT(28-29-31/10/22) (G4/B3-P)",
-   "estoque": 676.41,
+   "estoque": 675.36,
    "vista": 18.9,
    "prazo": 22.9,
-   "oferta": null,
+   "oferta": 17.0,
    "ponta": false
   },
   "1007622": {
@@ -604,10 +604,19 @@
    "oferta": null,
    "ponta": true
   },
+  "1012830": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO BARILOCHE POLIDO 61x116 LT:05/09/26 (E1)",
+   "estoque": 226.4,
+   "vista": 49.9,
+   "prazo": 53.9,
+   "oferta": null,
+   "ponta": false
+  },
   "1009641": {
    "fabricante": "CEDASA",
    "produto": "PISO BELLASTONE POLIDO 74,5X74,5 LT:008 (E1-E2)",
-   "estoque": 1520.7,
+   "estoque": 1516.26,
    "vista": 45.9,
    "prazo": 48.9,
    "oferta": 32.0,
@@ -625,7 +634,7 @@
   "1012321": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO BIANCO SUPREME RET 82X82 LT(12/02/2026) (E1)",
-   "estoque": 59.4,
+   "estoque": 54.0,
    "vista": 46.9,
    "prazo": 49.9,
    "oferta": 39.9,
@@ -634,7 +643,7 @@
   "1012190": {
    "fabricante": "CEDASA",
    "produto": "PISO BLUE BELLE POLIDO 56x113 LT:017 (E1)",
-   "estoque": 230.23,
+   "estoque": 222.64,
    "vista": 50.9,
    "prazo": 53.9,
    "oferta": 45.9,
@@ -706,7 +715,7 @@
   "1010012": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CALACATA GOLD 45x45 (24-25/03/2024) (G4/B8)",
-   "estoque": 757.77,
+   "estoque": 731.64,
    "vista": 22.9,
    "prazo": 24.9,
    "oferta": null,
@@ -733,7 +742,7 @@
   "1012587": {
    "fabricante": "CEDASA",
    "produto": "PISO CALACATA GOLD MAT.RET 75,5X75,5LT:32 (G4/A4)",
-   "estoque": 207.48,
+   "estoque": 202.92,
    "vista": 31.9,
    "prazo": 33.9,
    "oferta": null,
@@ -751,7 +760,7 @@
   "1011552": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CALACATA GRIS 45x45 (23/06/2025)(G4/B8)",
-   "estoque": 291.45,
+   "estoque": 275.37,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": null,
@@ -759,17 +768,17 @@
   },
   "1011696": {
    "fabricante": "ALFAGRES",
-   "produto": "PISO CALACATA GRIS 45x45 (31/07/25)(E)",
-   "estoque": 24.12,
+   "produto": "PISO CALACATA GRIS 45x45 (31/07/25)(P)",
+   "estoque": 0.0,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": 19.9,
-   "ponta": false
+   "ponta": true
   },
   "1011663": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CALACATA GRIS 45x45 04/07/2025 (G3/A2-G4/A8)",
-   "estoque": 293.46,
+   "estoque": 233.16,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": null,
@@ -778,20 +787,20 @@
   "1007629": {
    "fabricante": "CEDASA",
    "produto": "PISO CALACATA ORO POLIDO 56,2X56,2 LT:006 (E)",
-   "estoque": 271.83,
+   "estoque": 262.99,
    "vista": 53.9,
    "prazo": 57.9,
-   "oferta": 39.9,
+   "oferta": 42.9,
    "ponta": false
   },
   "1009327": {
    "fabricante": "ALFAGRES",
-   "produto": "PISO CAPEL BIANCO 15X60 LT:(01/02/23) (E2)",
-   "estoque": 10.71,
+   "produto": "PISO CAPEL BIANCO 15X60 LT:(01/02/23) (P)",
+   "estoque": 0.0,
    "vista": 37.9,
    "prazo": 41.9,
    "oferta": 9.9,
-   "ponta": false
+   "ponta": true
   },
   "1012387": {
    "fabricante": "ALFAGRES",
@@ -859,7 +868,7 @@
   "1006346": {
    "fabricante": "CEDASA",
    "produto": "PISO CIMENTO BRILHO RET 56,9X56,9 LT:011 (G3/A4)",
-   "estoque": 354.12,
+   "estoque": 349.58,
    "vista": 38.9,
    "prazo": 40.9,
    "oferta": null,
@@ -868,10 +877,10 @@
   "1005539": {
    "fabricante": "CEDASA",
    "produto": "PISO CIMENTO BRILHO RET 56X56 LT:007 (G4/B2)",
-   "estoque": 460.81,
+   "estoque": 469.89,
    "vista": 38.9,
    "prazo": 40.9,
-   "oferta": null,
+   "oferta": 31.0,
    "ponta": false
   },
   "1011774": {
@@ -886,10 +895,10 @@
   "1012366": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO CINZA URBANO RT 70X70 LT:25/03/26 (G4/B6/B2)",
-   "estoque": 164.64,
+   "estoque": 174.93,
    "vista": 29.9,
    "prazo": 32.9,
-   "oferta": null,
+   "oferta": 26.0,
    "ponta": false
   },
   "1012590": {
@@ -922,16 +931,25 @@
   "1007843": {
    "fabricante": "CEDASA",
    "produto": "PISO COTTO RET 75,5X75,5 LT:001 (G3/B3)",
-   "estoque": 305.52,
+   "estoque": 285.0,
    "vista": 32.9,
    "prazo": 36.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1012829": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO COTTON POLIDO 61x116 LT:07/09/26 (E1)",
+   "estoque": 147.16,
+   "vista": 49.9,
+   "prazo": 53.9,
    "oferta": null,
    "ponta": false
   },
   "1011193": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CRISTAL 56X56 LT: 26/04/2023 (E1)",
-   "estoque": 240.96,
+   "estoque": 178.21,
    "vista": 22.9,
    "prazo": 27.9,
    "oferta": 19.9,
@@ -1003,7 +1021,7 @@
   "1012655": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1701 58x58 LT:048 (E1)",
-   "estoque": 187.92,
+   "estoque": 176.32,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1083,12 +1101,12 @@
   },
   "1011517": {
    "fabricante": "CEDASA",
-   "produto": "PISO HD 1749 58X58 LT:029 (E)",
-   "estoque": 30.16,
+   "produto": "PISO HD 1749 58X58 LT:029 (P)",
+   "estoque": 0.0,
    "vista": 25.9,
    "prazo": 27.9,
    "oferta": 19.9,
-   "ponta": false
+   "ponta": true
   },
   "1009445": {
    "fabricante": "CEDASA",
@@ -1120,7 +1138,7 @@
   "1006328": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1765 58X58 LT:012 (E)",
-   "estoque": 235.0,
+   "estoque": 218.55,
    "vista": 33.9,
    "prazo": 35.9,
    "oferta": 19.9,
@@ -1129,7 +1147,7 @@
   "1012588": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1769 58x58 LT:043 (G4//A2)",
-   "estoque": 187.92,
+   "estoque": 109.04,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1138,7 +1156,7 @@
   "1012110": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1778 58X58 LT:020 (G4/B8)",
-   "estoque": 85.84,
+   "estoque": 83.52,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1146,12 +1164,12 @@
   },
   "1007263": {
    "fabricante": "CEDASA",
-   "produto": "PISO HD 1791 58,05X58,05 LT:002 (E2)",
-   "estoque": 74.24,
+   "produto": "PISO HD 1791 58,05X58,05 LT:002 (P)",
+   "estoque": 0.0,
    "vista": 26.9,
    "prazo": 28.9,
    "oferta": 16.0,
-   "ponta": false
+   "ponta": true
   },
   "1007602": {
    "fabricante": "CEDASA",
@@ -1201,10 +1219,10 @@
   "1009195": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1826 RET 56,9X56,9 LT:018 (G3/B4-G4)",
-   "estoque": 72.64,
+   "estoque": 56.75,
    "vista": 31.9,
    "prazo": 33.9,
-   "oferta": null,
+   "oferta": 25.0,
    "ponta": false
   },
   "1011477": {
@@ -1228,7 +1246,7 @@
   "1012550": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70012 RET 70X70 LT:27/06/26 (G4/A6/A5/B6)",
-   "estoque": 401.31,
+   "estoque": 373.87,
    "vista": 29.9,
    "prazo": 32.9,
    "oferta": null,
@@ -1264,7 +1282,7 @@
   "1012772": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70072 RET 70X70 LT:09/09/26 (E1)",
-   "estoque": 301.84,
+   "estoque": 298.41,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1282,7 +1300,7 @@
   "1012765": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70082 RET 70X70 LT:11/09/26 (E1)",
-   "estoque": 133.77,
+   "estoque": 126.91,
    "vista": 26.9,
    "prazo": 30.9,
    "oferta": null,
@@ -1317,17 +1335,17 @@
   },
   "1011136": {
    "fabricante": "ROCHAFORTE",
-   "produto": "PISO HD 70092 70X70 LT: 11/12/24 (E2)",
-   "estoque": 10.29,
+   "produto": "PISO HD 70092 70X70 LT: 11/12/24 (P)",
+   "estoque": 0.0,
    "vista": 29.9,
    "prazo": 31.9,
    "oferta": 19.9,
-   "ponta": false
+   "ponta": true
   },
   "1012530": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70092 70X70 LT: 19/06/26 (G4/B1)",
-   "estoque": 264.11,
+   "estoque": 260.68,
    "vista": 29.9,
    "prazo": 31.9,
    "oferta": null,
@@ -1345,7 +1363,7 @@
   "1012764": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70132 70,X70 LT:10/09/26 (E1-C)",
-   "estoque": 487.06,
+   "estoque": 432.18,
    "vista": 29.9,
    "prazo": 31.9,
    "oferta": null,
@@ -1363,7 +1381,7 @@
   "1012822": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70141 RET 70X70 LT: 22/09/26 (C)",
-   "estoque": 246.96,
+   "estoque": 126.91,
    "vista": 31.9,
    "prazo": 33.9,
    "oferta": null,
@@ -1399,7 +1417,7 @@
   "1010260": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70182 70X70 LT:07/08/24 (G3/A3)",
-   "estoque": 548.8,
+   "estoque": 535.08,
    "vista": 29.9,
    "prazo": 32.9,
    "oferta": null,
@@ -1426,7 +1444,7 @@
   "1012774": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70262 RET 70X70 LT:28/08/26 (E1)",
-   "estoque": 209.23,
+   "estoque": 192.08,
    "vista": 39.9,
    "prazo": 42.9,
    "oferta": null,
@@ -1447,6 +1465,24 @@
    "estoque": 6.86,
    "vista": 9.9,
    "prazo": 9.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1012837": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 7035 70X70 LT:21/10/26 (E1)",
+   "estoque": 144.06,
+   "vista": 28.9,
+   "prazo": 29.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1012834": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 7036 70X70 LT:22/10/26 (C)",
+   "estoque": 243.53,
+   "vista": 28.9,
+   "prazo": 29.9,
    "oferta": null,
    "ponta": false
   },
@@ -1480,9 +1516,18 @@
   "1012767": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70372 70X70 LT:26/08/26 (E1)",
-   "estoque": 246.96,
+   "estoque": 243.53,
    "vista": 29.9,
    "prazo": 32.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1012836": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 7038 70X70 LT:19/10/26 (C)",
+   "estoque": 226.38,
+   "vista": 29.9,
+   "prazo": 31.9,
    "oferta": null,
    "ponta": false
   },
@@ -1516,16 +1561,25 @@
   "1011603": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70412 RET 70X70 LT:22/01/2025 (P)",
-   "estoque": 11.76,
+   "estoque": 0.0,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,
    "ponta": true
   },
+  "1012838": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 7042 70X70 LT:19/08/26 (C)",
+   "estoque": 226.38,
+   "vista": 28.9,
+   "prazo": 30.9,
+   "oferta": null,
+   "ponta": false
+  },
   "1012205": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70442 70X70 LT:15/10/25 (E2)",
-   "estoque": 226.38,
+   "estoque": 195.51,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1579,7 +1633,7 @@
   "1012773": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70602 RET 70X70 LT:20/09/2026 (E1)",
-   "estoque": 250.39,
+   "estoque": 246.96,
    "vista": 29.9,
    "prazo": 32.9,
    "oferta": null,
@@ -1597,16 +1651,25 @@
   "1010908": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70622 RET 70X70 LT:28/11/24 (G4/B4)",
-   "estoque": 20.58,
+   "estoque": 3.43,
    "vista": 29.9,
    "prazo": 32.9,
+   "oferta": 19.9,
+   "ponta": false
+  },
+  "1012828": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 70632 RET 70X70 LT: 02/10/26 (C)",
+   "estoque": 216.09,
+   "vista": 31.9,
+   "prazo": 33.9,
    "oferta": null,
    "ponta": false
   },
   "1010907": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70632 RET 70X70 LT:09/10/24 (G3/B3)",
-   "estoque": 99.47,
+   "estoque": 65.17,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1624,7 +1687,7 @@
   "1012823": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70732 RET 70X70 LT:02/10/26 (C)",
-   "estoque": 246.96,
+   "estoque": 243.53,
    "vista": 31.9,
    "prazo": 33.9,
    "oferta": null,
@@ -1642,7 +1705,7 @@
   "1012374": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70752 RET 70X70 LT:03/02/26 (G4/A3)",
-   "estoque": 312.13,
+   "estoque": 294.98,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1696,7 +1759,7 @@
   "1011139": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70892 RET 70X70 LT:18/11/24 (G4/B4)",
-   "estoque": 51.45,
+   "estoque": 20.58,
    "vista": 29.9,
    "prazo": 32.9,
    "oferta": null,
@@ -1711,12 +1774,30 @@
    "oferta": null,
    "ponta": false
   },
+  "1012835": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 7092 70X70 LT:26/10/26 (C)",
+   "estoque": 246.96,
+   "vista": 28.9,
+   "prazo": 30.9,
+   "oferta": null,
+   "ponta": false
+  },
   "1012367": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70922 70X70 LT:12/03/26 (G4/B4)",
-   "estoque": 102.9,
+   "estoque": 96.04,
    "vista": 26.9,
    "prazo": 29.9,
+   "oferta": 21.0,
+   "ponta": false
+  },
+  "1012833": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 7094 RET 70X70 LT:24/10/26 (C)",
+   "estoque": 226.38,
+   "vista": 42.9,
+   "prazo": 46.9,
    "oferta": null,
    "ponta": false
   },
@@ -1732,9 +1813,36 @@
   "1012207": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70952 RET 70X70 LT:15/01/26 (G4/B1)",
-   "estoque": 226.38,
+   "estoque": 212.66,
    "vista": 39.9,
    "prazo": 42.9,
+   "oferta": 35.9,
+   "ponta": false
+  },
+  "1012832": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 70972 RET 70X70 LT:08/10/26 (C)",
+   "estoque": 246.96,
+   "vista": 45.9,
+   "prazo": 49.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1012839": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 7098 70X70 LT:18/09/26 (E1)",
+   "estoque": 202.37,
+   "vista": 28.9,
+   "prazo": 30.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1012831": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PISO HD 70992 RET 70X70 LT:10/10/26 (C)",
+   "estoque": 240.1,
+   "vista": 45.9,
+   "prazo": 49.9,
    "oferta": null,
    "ponta": false
   },
@@ -1759,7 +1867,7 @@
   "1012768": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 710002 RET 70X70 LT:15/07/2024 (E1)",
-   "estoque": 246.96,
+   "estoque": 222.95,
    "vista": 26.9,
    "prazo": 30.9,
    "oferta": null,
@@ -1768,7 +1876,7 @@
   "1012583": {
    "fabricante": "CEDASA",
    "produto": "PISO HD ARIA MATTE RET 75,5X75,5 LT:006 (G4/A2)",
-   "estoque": 269.04,
+   "estoque": 264.48,
    "vista": 33.9,
    "prazo": 36.9,
    "oferta": null,
@@ -1777,7 +1885,7 @@
   "1012671": {
    "fabricante": "ALFAGRES",
    "produto": "PISO HD ARIZON SAND 56X56 LT: 10/05/25 (E2)",
-   "estoque": 321.28,
+   "estoque": 303.71,
    "vista": 22.9,
    "prazo": 27.9,
    "oferta": null,
@@ -1795,7 +1903,7 @@
   "1009236": {
    "fabricante": "ALFAGRES",
    "produto": "PISO HD ARIZONA BROWN56X56L:04/04/2023 (G4/B7-E1)",
-   "estoque": 562.24,
+   "estoque": 559.73,
    "vista": 36.9,
    "prazo": 38.9,
    "oferta": 19.9,
@@ -1813,7 +1921,7 @@
   "1012775": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD DAMASCO RET 82X82 LT:19/09/26 (E1)",
-   "estoque": 259.2,
+   "estoque": 213.3,
    "vista": 46.9,
    "prazo": 49.9,
    "oferta": null,
@@ -1849,7 +1957,7 @@
   "1011168": {
    "fabricante": "CEDASA",
    "produto": "PISO HD NAVONA MATTE RET 75,5X75,5 LT:005 (E2)",
-   "estoque": 180.12,
+   "estoque": 177.84,
    "vista": 33.0,
    "prazo": 36.9,
    "oferta": 29.9,
@@ -1858,7 +1966,7 @@
   "1012124": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD ORO REALLE RET 82X82 LT:16/11/2025 (E2)",
-   "estoque": 72.9,
+   "estoque": 67.5,
    "vista": 46.9,
    "prazo": 49.9,
    "oferta": 37.5,
@@ -1903,7 +2011,7 @@
   "1012343": {
    "fabricante": "ALFAGRES",
    "produto": "PISO KILAUEA 45X45 (25/08/25) (G4/B8)",
-   "estoque": 725.61,
+   "estoque": 671.34,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": 19.9,
@@ -1921,7 +2029,7 @@
   "1012758": {
    "fabricante": "ALFAGRES",
    "produto": "PISO KILAUEA FENDI 45x45 (25/08/26) (E1)",
-   "estoque": 182.91,
+   "estoque": 178.89,
    "vista": 23.9,
    "prazo": 25.9,
    "oferta": null,
@@ -1948,7 +2056,7 @@
   "1011697": {
    "fabricante": "ALFAGRES",
    "produto": "PISO LITHOS 45X45 LT: (31/10/22) (E)",
-   "estoque": 30.15,
+   "estoque": 20.1,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": 19.9,
@@ -1966,7 +2074,7 @@
   "1011701": {
    "fabricante": "ALFAGRES",
    "produto": "PISO LITHOS 45x45 (14-15/06/25) (G4/A7)",
-   "estoque": 572.85,
+   "estoque": 560.79,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": null,
@@ -1993,9 +2101,9 @@
   "1012815": {
    "fabricante": "CEDASA",
    "produto": "PISO LUSTRA POLIDO 56x113 LT:005 (E2)",
-   "estoque": 0.0,
-   "vista": null,
-   "prazo": null,
+   "estoque": 303.6,
+   "vista": 57.9,
+   "prazo": 61.9,
    "oferta": null,
    "ponta": false
   },
@@ -2038,7 +2146,7 @@
   "1012667": {
    "fabricante": "ALFAGRES",
    "produto": "PISO MARMO GREY 45X45 (21/07/26) (E2)",
-   "estoque": 383.91,
+   "estoque": 345.72,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": null,
@@ -2074,7 +2182,7 @@
   "1012798": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO METROPOLE RET 70X70 LT:29/09/2026 (E1)",
-   "estoque": 192.08,
+   "estoque": 185.22,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -2082,20 +2190,20 @@
   },
   "1011892": {
    "fabricante": "ALFAGRES",
-   "produto": "PISO MOCACCINO 45X45 (08-09/08/25)(E2)",
-   "estoque": 10.05,
+   "produto": "PISO MOCACCINO 45X45 (08-09/08/25)(P)",
+   "estoque": 0.0,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,
-   "ponta": false
+   "ponta": true
   },
   "1012658": {
    "fabricante": "ALFAGRES",
    "produto": "PISO MOCACCINO 45X45 (29/04/26) (E2)",
-   "estoque": 297.48,
-   "vista": 18.9,
+   "estoque": 261.3,
+   "vista": 19.9,
    "prazo": 22.9,
-   "oferta": 19.9,
+   "oferta": 18.9,
    "ponta": false
   },
   "1008676": {
@@ -2109,12 +2217,12 @@
   },
   "1011543": {
    "fabricante": "ALFAGRES",
-   "produto": "PISO NATIVE 15X60 LT:(12/03/25) (E2)",
-   "estoque": 13.77,
+   "produto": "PISO NATIVE 15X60 LT:(12/03/25) (P)",
+   "estoque": 0.0,
    "vista": 37.9,
    "prazo": 41.9,
    "oferta": 19.9,
-   "ponta": false
+   "ponta": true
   },
   "1012668": {
    "fabricante": "ALFAGRES",
@@ -2146,7 +2254,7 @@
   "1011903": {
    "fabricante": "ALFAGRES",
    "produto": "PISO NAVONA GRIGIO 45X45 (12/08/2025)(E2)",
-   "estoque": 317.58,
+   "estoque": 160.8,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": 15.0,
@@ -2164,10 +2272,10 @@
   "1012184": {
    "fabricante": "CEDASA",
    "produto": "PISO NERO POLIDO 74,5X74,5 LT:015 (G4/B1)",
-   "estoque": 157.62,
+   "estoque": 148.74,
    "vista": 51.9,
    "prazo": 54.9,
-   "oferta": null,
+   "oferta": 45.0,
    "ponta": false
   },
   "1012194": {
@@ -2209,7 +2317,7 @@
   "1012821": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO ORGANIC BLACK 61x116 LT:12/09/26 (E1)",
-   "estoque": 226.4,
+   "estoque": 217.91,
    "vista": 49.9,
    "prazo": 53.9,
    "oferta": null,
@@ -2245,7 +2353,7 @@
   "1012663": {
    "fabricante": "ALFAGRES",
    "produto": "PISO PENEDO 45x45 LT: (31/05/26) (E2)",
-   "estoque": 381.9,
+   "estoque": 359.79,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -2272,7 +2380,7 @@
   "1012604": {
    "fabricante": "CEDASA",
    "produto": "PISO PIEMONTE POLIDO 74,5X74,5 LT:023 (E1)",
-   "estoque": 195.36,
+   "estoque": 130.98,
    "vista": 45.9,
    "prazo": 48.9,
    "oferta": null,
@@ -2280,12 +2388,12 @@
   },
   "1011538": {
    "fabricante": "ALFAGRES",
-   "produto": "PISO PINUS BEIGE ARBE 15X60 LT:(15/10/17) (E)",
-   "estoque": 35.19,
+   "produto": "PISO PINUS BEIGE ARBE 15X60 LT:(15/10/17) (P)",
+   "estoque": 0.0,
    "vista": 37.9,
    "prazo": 41.9,
-   "oferta": 19.9,
-   "ponta": false
+   "oferta": null,
+   "ponta": true
   },
   "1007621": {
    "fabricante": "CEDASA",
@@ -2308,7 +2416,7 @@
   "1012659": {
    "fabricante": "ALFAGRES",
    "produto": "PISO PULPIS BRONZE 45x45 (16/07/26) (E2)",
-   "estoque": 442.2,
+   "estoque": 408.03,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": null,
@@ -2335,7 +2443,7 @@
   "1012584": {
    "fabricante": "CEDASA",
    "produto": "PISO REALCE CINZA POLIDO 74,5X74,5 LT:023 (E1)",
-   "estoque": 315.24,
+   "estoque": 304.14,
    "vista": 48.9,
    "prazo": 51.9,
    "oferta": null,
@@ -2344,7 +2452,7 @@
   "1006314": {
    "fabricante": "CEDASA",
    "produto": "PISO ROYAL BEGE MATTE 75,5X75,5 LT:005 (G4/B6)",
-   "estoque": 91.2,
+   "estoque": 59.28,
    "vista": 45.9,
    "prazo": 49.9,
    "oferta": null,
@@ -2479,7 +2587,7 @@
   "1012586": {
    "fabricante": "CEDASA",
    "produto": "PISO VIA LACTEA POLIDO 56x113 LT:012 (G4/B2)",
-   "estoque": 194.81,
+   "estoque": 189.75,
    "vista": 51.9,
    "prazo": 55.9,
    "oferta": null,
@@ -2503,6 +2611,24 @@
    "oferta": null,
    "ponta": false
   },
+  "1012840": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PORCELANATO NOBRE CINZA 73X73 LT: 18/10/26 (E1)",
+   "estoque": 170.24,
+   "vista": 49.9,
+   "prazo": 52.9,
+   "oferta": null,
+   "ponta": false
+  },
+  "1012841": {
+   "fabricante": "ROCHAFORTE",
+   "produto": "PORCELANATO ONIX LIGHT 73X73 LT: 29/09/26 (E1)",
+   "estoque": 170.24,
+   "vista": 49.9,
+   "prazo": 52.9,
+   "oferta": null,
+   "ponta": false
+  },
   "1007650": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST AFRESCO TEA 31X60 LT:(14-01-22) (G3/B1)",
@@ -2515,7 +2641,7 @@
   "1012369": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST CALCARIO GRIS 31X60 LT(29/30-03-26)(G4/A7)",
-   "estoque": 172.64,
+   "estoque": 160.16,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": null,
@@ -2533,7 +2659,7 @@
   "1009235": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. CALACATA GOLD 31X60 LT:(26-27/03) (G4/B3)",
-   "estoque": 1044.16,
+   "estoque": 1040.0,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": null,
@@ -2560,7 +2686,7 @@
   "1012351": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. CALCIS BLACK 31X60 LT:(28/10/24) (G4)",
-   "estoque": 143.52,
+   "estoque": 139.36,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": null,
@@ -2587,7 +2713,7 @@
   "1011542": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. CALCIS GREEN 31X60 LT:(28/10/24) (E1)",
-   "estoque": 99.84,
+   "estoque": 97.76,
    "vista": 24.9,
    "prazo": 27.9,
    "oferta": null,
@@ -2596,10 +2722,10 @@
   "1012757": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. CALCIS GRIS 31X60 LT:(17/10/24) (E2)",
-   "estoque": 62.4,
+   "estoque": 58.24,
    "vista": 24.9,
    "prazo": 27.9,
-   "oferta": null,
+   "oferta": 19.9,
    "ponta": false
   },
   "1011540": {
@@ -2631,8 +2757,8 @@
   },
   "1011120": {
    "fabricante": "CEDASA",
-   "produto": "REVEST. EVEREST BIZOTE 32.5X58.1 LT:091 (E2)(P)",
-   "estoque": 47.92,
+   "produto": "REVEST. EVEREST BIZOTE 32.5X58.1 LT:091 (P)",
+   "estoque": 0.0,
    "vista": 26.0,
    "prazo": 29.9,
    "oferta": null,
@@ -2641,19 +2767,19 @@
   "1006356": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. PALAZZO BEIGE 31,4X60,3 LT(18-12) (G4/B5)",
-   "estoque": 601.12,
+   "estoque": 599.04,
    "vista": 30.9,
    "prazo": 33.9,
-   "oferta": null,
+   "oferta": 25.0,
    "ponta": false
   },
   "1007278": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. PALAZZO BEIGE 31X60 LT:(17-01-22) (G3/B2)",
-   "estoque": 484.64,
+   "estoque": 482.56,
    "vista": 30.9,
    "prazo": 33.9,
-   "oferta": null,
+   "oferta": 21.9,
    "ponta": false
   },
   "1007688": {
@@ -2677,7 +2803,7 @@
   "1007279": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST.CALCIS BROWN 31X60 LT:(15-17/12/21)(G3/B1)",
-   "estoque": 191.36,
+   "estoque": 189.28,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": null,
@@ -2695,16 +2821,16 @@
   "1011509": {
    "fabricante": "CEDASA",
    "produto": "REVEST.FILETADO BEGE 39X75.5 LT:010 (G3/A4/G4/B2)",
-   "estoque": 175.1,
+   "estoque": 152.44,
    "vista": 45.9,
    "prazo": 49.9,
-   "oferta": 31.9,
+   "oferta": 39.0,
    "ponta": false
   },
   "1007653": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST.TIMBRE BLUE 31X60 LT:(06-01-22) (G3/B1)",
-   "estoque": 295.39,
+   "estoque": 289.15,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,
@@ -2722,10 +2848,10 @@
   "1006796": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENT CARRARA BRANCO 32,4X58,05LT15 (G4/B6)",
-   "estoque": 73.44,
+   "estoque": 61.2,
    "vista": 29.9,
    "prazo": 31.9,
-   "oferta": null,
+   "oferta": 23.9,
    "ponta": false
   },
   "1005322": {
@@ -2785,7 +2911,7 @@
   "1011200": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO 3001 31X60 LT:(01-10-2024) (E2)",
-   "estoque": 973.44,
+   "estoque": 956.8,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": 19.9,
@@ -2812,7 +2938,7 @@
   "1011748": {
    "fabricante": "DIVERSOS",
    "produto": "REVESTIMENTO 7209 RET 35,5x72,5 LT:4 (E)",
-   "estoque": 803.88,
+   "estoque": 794.64,
    "vista": 26.9,
    "prazo": 28.9,
    "oferta": null,
@@ -2839,10 +2965,10 @@
   "1009630": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO BELIZE RET 39X75.5 LT:007 (G4/B2)",
-   "estoque": 99.76,
+   "estoque": 57.68,
    "vista": 28.9,
    "prazo": 30.9,
-   "oferta": null,
+   "oferta": 23.0,
    "ponta": false
   },
   "1009201": {
@@ -2920,19 +3046,19 @@
   "1006194": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO FILETADO BEGE 39X75.5 LT:004 (G3/B4)",
-   "estoque": 214.24,
+   "estoque": 212.18,
    "vista": 45.9,
    "prazo": 49.9,
-   "oferta": null,
+   "oferta": 41.0,
    "ponta": false
   },
   "1012113": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO FIORELLA 32X58 LT:060(G3-G4/A4)",
-   "estoque": 62.66,
+   "estoque": 60.6,
    "vista": 26.9,
    "prazo": 29.9,
-   "oferta": null,
+   "oferta": 18.9,
    "ponta": false
   },
   "1011481": {
@@ -2947,7 +3073,7 @@
   "1012800": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO HD 2082 32x58 LT:034 (E2)",
-   "estoque": 282.8,
+   "estoque": 262.6,
    "vista": 30.9,
    "prazo": 32.9,
    "oferta": null,
@@ -2983,7 +3109,7 @@
   "1011523": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO ICE POLIDO 38X74,5 LT:013 (E)",
-   "estoque": 138.6,
+   "estoque": 97.02,
    "vista": 49.9,
    "prazo": 54.9,
    "oferta": 34.9,
@@ -3001,16 +3127,16 @@
   "1011472": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO LUXOR BLACK 32X58 LT:031 (G4/B2)",
-   "estoque": 216.14,
+   "estoque": 199.98,
    "vista": 28.9,
    "prazo": 30.9,
-   "oferta": null,
+   "oferta": 26.0,
    "ponta": false
   },
   "1011522": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO LUXOR BLANC 31,5X56,9 RET LT:026(E2)",
-   "estoque": 142.13,
+   "estoque": 123.49,
    "vista": 30.9,
    "prazo": 32.9,
    "oferta": null,
@@ -3028,7 +3154,7 @@
   "1012115": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO LUXOR DECOR 32x58 LT:039 (G4/A8)",
-   "estoque": 193.92,
+   "estoque": 185.84,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -3046,7 +3172,7 @@
   "1011544": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO MARFIL 31X60 LT:(08/10/24)(E)",
-   "estoque": 112.32,
+   "estoque": 91.52,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": 19.9,
@@ -3145,7 +3271,7 @@
   "1011581": {
    "fabricante": "DIVERSOS",
    "produto": "REVESTIMENTO RX 25039 25X110 LT:152 (G3/B5)",
-   "estoque": 120.96,
+   "estoque": 69.12,
    "vista": 36.9,
    "prazo": 39.9,
    "oferta": null,
@@ -3163,7 +3289,7 @@
   "1011579": {
    "fabricante": "DIVERSOS",
    "produto": "REVESTIMENTO RX 25043 25X110 LT:22 (G3/B5)",
-   "estoque": 119.04,
+   "estoque": 117.12,
    "vista": 36.9,
    "prazo": 39.9,
    "oferta": null,
@@ -3190,7 +3316,7 @@
   "1009332": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO TIMBRE BLUE 31X60 LT(05/01/2022)(E2)",
-   "estoque": 555.36,
+   "estoque": 432.64,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,

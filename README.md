@@ -99,6 +99,13 @@ Colunas: **Código | Produto | Observação**. O nome do produto traz lote e med
 - Cada linha traz código, produto, estoque, preço à vista, a prazo e oferta.
 - A data dos preços vem do cabeçalho `Data: dd/mm/aaaa`. Mostrar no site como "Preços atualizados em …".
 - Números no formato brasileiro (`1.234,56`).
+- **Dois PDFs**, os dois na pasta de trabalho (`projeto-pisos/`), tirados do relatório "Tabela de preço":
+  - `pisos.pdf`: Subgrupo **PISOS/REVESTIMENTOS** (Alfagrês, Cedasa, Rochaforte);
+  - `porcelanato.pdf`: Subgrupo **PORCELANATOS**. No sistema a marca deles é DIVERSOS: no site viram a marca
+    **"Porcelanato"** (chave `PORCELANATO|NOME|MEDIDA`, `"porcelanato": true` no pisos.json) e ficam numa **aba
+    própria "Porcelanatos"** ao lado de Pisos e Revestimentos (`App.daSecao` no `js/app.js`; não aparecem nas outras
+    duas abas). Os chips da aba juntam ambientes e paredes onde há porcelanato. Guardado em
+    `ferramentas/precos_porcelanato.json`, então dá para atualizar um PDF sem o outro.
 
 ### 3.3 Agrupamento
 - Um mesmo piso tem **vários lotes/códigos**. Agrupe por uma **chave** `FABRICANTE|NOME BASE|MEDIDA`
@@ -107,9 +114,13 @@ Colunas: **Código | Produto | Observação**. O nome do produto traz lote e med
   Regex do lote: `(?<![A-Z])LT\s*\d+.*$`.
 - **Só entra no site o que tem estoque > 0, foto e ficha** (linha no `fichas.csv`).
 - **Fica fora do site:** lote de **ponta** (`(P)` no fim do nome) e lote em **queima**: preço à vista **ou** oferta
-  igual a um valor de `PRECOS_QUEIMA` no topo do `montar_dados.py` (hoje `[9.90]`; `[]` desliga). Se todos os lotes
-  de um piso estão em queima, o piso some e aparece no `relatorio.txt`. Lotes de ponta e de queima ainda
-  **emprestam a foto** para os outros lotes do mesmo piso (lote novo costuma chegar sem foto).
+  igual a um valor de `PRECOS_QUEIMA` no topo do `montar_dados.py` (hoje `[9.90]`; `[]` desliga). Lotes de ponta e
+  de queima ainda **emprestam a foto** para os outros lotes do mesmo piso (lote novo costuma chegar sem foto).
+- **QR da etiqueta de lote de ponta/queima:** se o piso tem outro lote no site, abre esse lote (o código fica em
+  `outros_codigos`). Se o piso **só** tem ponta/queima com estoque, vira **página escondida** (`"oculto": true`,
+  `PAGINA_ESCONDIDA = True` no `montar_dados.py`): não aparece na lista, na busca, na vitrine nem no Comparar; abre só
+  pelo QR (`#código`). No lugar do preço mostra **"Últimas peças · Consulte o preço com um vendedor"**, sem
+  calculadora, e o WhatsApp vira "Consultar preço". Lista no `relatorio.txt` ("Páginas escondidas").
 - Preço exibido: o do lote com **maior estoque**. Oferta: a **menor oferta** entre os lotes com estoque.
 - "Super oferta": desconto relevante sobre o preço a prazo (vira filtro "Só super ofertas" e selo no card).
 - Retificado: vem do nome (`RET`/`RT`) ou da coluna `retificado` do `fichas.csv`, que manda quando preenchida

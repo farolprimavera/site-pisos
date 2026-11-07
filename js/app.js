@@ -13,7 +13,7 @@ const DIAS_NOVIDADE = 30;
 const App = {
   dados: null,   // catálogo inteiro ({ atualizado, locais, ambientes, pisos })
   estado: {
-    secao: "pisos",    // aba do topo: "pisos" ou "revestimentos"
+    secao: "pisos",    // aba do topo: "pisos", "revestimentos" ou "porcelanatos"
     cat: "",           // chip de ambiente ("sala", "quintal-piscina"...; em revestimentos, "banheiro"...)
     busca: "",
     marca: "",
@@ -47,7 +47,12 @@ const App = {
       p.paredes = p.paredes || [];
       // revestimento = vai na parede (LA ou piso que também é parede); fica na aba Revestimentos
       p.revest = p.paredes.length > 0 || !p.ambientes.length;
+      p.porcelanato = !!p.porcelanato;   // porcelanato tem aba própria (fora de Pisos e de Revestimentos)
     });
+    // Páginas escondidas (piso que só tem lote de ponta ou de queima): fora da lista, da busca, da vitrine e
+    // da comparação; abrem só pelo QR da etiqueta (#código), sem preço ("Consulte um vendedor").
+    App.ocultos = App.dados.pisos.filter((p) => p.oculto);
+    App.dados.pisos = App.dados.pisos.filter((p) => !p.oculto);
     App.dados.paredes = App.dados.paredes || [];
     App.nomeAmbiente = Object.fromEntries((App.dados.ambientes || []).map((a) => [a.id, a.nome]));
     App.nomeParede = Object.fromEntries(App.dados.paredes.map((a) => [a.id, a.nome]));
@@ -93,8 +98,20 @@ const App = {
     } catch (e) {}
   },
 
+  // O produto entra na aba? Porcelanato só na aba Porcelanatos (no chão ou na parede).
+  daSecao(p, secao) {
+    if (secao === "porcelanatos") return p.porcelanato;
+    if (p.porcelanato) return false;
+    return secao === "revestimentos" ? p.revest : p.ambientes.length > 0;
+  },
+
   piso(id) {
     return App.dados.pisos.find((p) => p.id === id);
+  },
+
+  // Igual ao piso(), mas acha também as páginas escondidas (usado só para abrir o detalhe).
+  qualquer(id) {
+    return App.piso(id) || (App.ocultos || []).find((p) => p.id === id);
   },
 
   // Ambiente a mostrar para um piso: o escolhido, se o piso servir para ele; senão o primeiro que serve.
@@ -145,11 +162,14 @@ const App = {
   abrirHash() {
     if (location.hash.startsWith("#comparar=")) return Comparar.doHash(location.hash.slice("#comparar=".length));
     const id = decodeURIComponent(location.hash.slice(1));
-    if (id === "pisos" || id === "revestimentos") return Filtros.secao(id);
-    if (id && App.piso(id)) return Detalhe.abrir(id);
-    // QR code da etiqueta da loja: #<código do sistema> (qualquer lote do piso, até ponta ou lote zerado)
+    if (id === "pisos" || id === "revestimentos" || id === "porcelanatos") return Filtros.secao(id);
+    if (id && App.qualquer(id)) return Detalhe.abrir(id);
+    // QR code da etiqueta da loja: #<código do sistema> (qualquer lote do piso, até ponta ou lote zerado).
+    // Lote de ponta/queima de um piso que tem outro lote no site abre o lote do site; se não tiver,
+    // abre a página escondida (sem preço).
     if (/^\d{4,8}$/.test(id)) {
-      const p = App.dados.pisos.find((x) => x.codigos.includes(id) || (x.outros_codigos || []).includes(id));
+      const p = [...App.dados.pisos, ...(App.ocultos || [])]
+        .find((x) => x.codigos.includes(id) || (x.outros_codigos || []).includes(id));
       if (p) {
         App.trocarHash("#" + encodeURIComponent(p.id));
         Detalhe.abrir(p.id);
