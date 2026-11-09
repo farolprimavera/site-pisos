@@ -133,7 +133,7 @@ def preparar_peca(img_bgr, medida_cm):
     return img_bgr[y0:y0 + h, x0:x0 + w], (cw, ch)
 
 
-def textura_plana(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, seed=7):
+def textura_plana(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, seed=7, rejunte_visivel_mm=0.0):
     """Monta o chão 'visto de cima' (em pixels = cm*ppc) com rejunte e paginação."""
     (x0, y0, x1, y1) = area_cm
     W, H = int((x1 - x0) * ppc), int((y1 - y0) * ppc)
@@ -142,6 +142,11 @@ def textura_plana(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, 
     pw, ph = peca_cm
     g = rejunte_mm / 10.0
     tw, th = max(1, int(round(pw * ppc))), max(1, int(round(ph * ppc)))
+    # rejunte de 1,5 mm some na foto (fica com menos de 1 px): desenha a linha com pelo menos
+    # rejunte_visivel_mm, tirando da borda da peça (a paginação continua com o tamanho real)
+    extra = max(0.0, rejunte_visivel_mm - rejunte_mm) / 10.0
+    if extra:
+        tw, th = max(1, int(round((pw - extra) * ppc))), max(1, int(round((ph - extra) * ppc)))
     base = cv2.resize(peca, (tw, th), interpolation=cv2.INTER_AREA if peca.shape[1] > tw else cv2.INTER_CUBIC).astype(np.float32)
     rot = base[::-1, ::-1]
     rng = np.random.default_rng(seed)
@@ -262,8 +267,33 @@ def renderizar_parede(par, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, layou
     return np.clip(out, 0, 255).astype(np.uint8)
 
 
+def reflexo_chao(foto, mask):
+    """Reflexo dos móveis, da janela e das paredes no chão: espelha a foto na linha onde o chão
+    encontra a parede (topo da máscara em cada coluna), bem desfocado. Fraco perto da câmera."""
+    Hh, Ww = mask.shape
+    chao = mask > 127
+    tem = chao.any(0)
+    xs = np.arange(Ww)
+    topo = chao.argmax(0).astype(np.float32)
+    topo = np.interp(xs, xs[tem], topo[tem]).astype(np.float32) if tem.any() else np.full(Ww, Hh, np.float32)
+    # linha do rodapé suave (um móvel na frente da parede não pode "descer" a linha)
+    k = max(31, Ww // 12) | 1
+    topo = cv2.erode(topo[None], np.ones((1, k), np.uint8))[0]
+    topo = cv2.blur(topo[None], (k, 1))[0]
+    yy = np.arange(Hh, dtype=np.float32)[:, None]
+    map_y = np.clip(2 * topo[None, :] - yy, 0, Hh - 1).astype(np.float32)
+    map_x = np.repeat(xs[None, :].astype(np.float32), Hh, 0)
+    ref = cv2.remap(foto, map_x, map_y, cv2.INTER_LINEAR).astype(np.float32)
+    # desfoque mais na vertical (piso de verdade espalha o reflexo para baixo)
+    ref = cv2.GaussianBlur(ref, (0, 0), sigmaX=Ww / 400, sigmaY=Ww / 120)
+    dist = np.clip((yy - topo[None, :]) / (Hh - topo.min() + 1), 0, 1)
+    fresnel = np.exp(-dist * 3.0)            # forte ao fundo, quase nada no pé da foto
+    return ref, fresnel
+
+
 def renderizar(amb, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, cor_rejunte=None,
-               layout="reto", girar=False, sombra=0.8, largura_saida=None, ss=2, exposicao=0.9):
+               layout="reto", girar=False, sombra=0.8, largura_saida=None, ss=2, exposicao=0.9,
+               rejunte_visivel_mm=0.0, reflexo=0.0):
     foto = ler_foto(pasta_amb, amb["id"])
     mask = cv2.imread(str(Path(pasta_amb) / f"{amb['id']}-mask.png"), cv2.IMREAD_GRAYSCALE)
     Hh, Ww = foto.shape[:2]
@@ -272,7 +302,9 @@ def renderizar(amb, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, cor_rejunte=
         peca = cv2.rotate(peca, cv2.ROTATE_90_CLOCKWISE); cm = (cm[1], cm[0])
     if cor_rejunte is None:
         m = peca.reshape(-1, 3).mean(0)
-        cor_rejunte = np.clip(m * 0.55 + 255 * 0.45, 0, 255) * 0.92        # rejunte claro, no tom da peça
+        # rejunte no tom da peça: claro e fininho (antigo) ou, com rejunte_visivel_mm, um pouco mais
+        # escuro que a peça, para a linha aparecer e mostrar o tamanho da peça (como numa foto de verdade)
+        cor_rejunte = (m * 0.65 if rejunte_visivel_mm else np.clip(m * 0.55 + 255 * 0.45, 0, 255) * 0.92)
     H = homografia(amb)                       # cm -> px
     Hi = np.linalg.inv(H)
     # área do chão em cm (pontos da máscara levados ao plano)
@@ -287,7 +319,8 @@ def renderizar(amb, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, cor_rejunte=
     y0, y1 = max(y0, -800), min(y1, amb["profundidade_cm"] + 2500)
     # resolução do plano: o pixel mais "esticado" da foto pede ~ ppc px/cm
     ppc = amb.get("ppc", 6)
-    plano = textura_plana(peca, cm, (x0, y0, x1, y1), ppc, rejunte_mm, np.array(cor_rejunte, np.float32), layout)
+    plano = textura_plana(peca, cm, (x0, y0, x1, y1), ppc, rejunte_mm, np.array(cor_rejunte, np.float32), layout,
+                          rejunte_visivel_mm=rejunte_visivel_mm)
     # leve desfoque contra cintilação ao longe
     plano = cv2.GaussianBlur(plano, (0, 0), 0.6)
     # plano(px) -> cm -> foto(px), com supersampling
@@ -306,6 +339,10 @@ def renderizar(amb, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, cor_rejunte=
     ref = np.percentile(gb[sel], 60)
     s = np.clip(1 + (gb / ref - 1) * sombra, 0.3, 1.3)[..., None]
     piso = piso * exposicao * np.minimum(s, 1.08) + np.maximum(s - 1.08, 0) * 60
+    if reflexo:
+        ref, fr = reflexo_chao(foto, mask)
+        w = (reflexo * fr)[..., None]
+        piso = piso * (1 - w) + ref * w
     a = alfa[..., None]
     out = foto.astype(np.float32) * (1 - a) + piso * a
     out = np.clip(out, 0, 255).astype(np.uint8)

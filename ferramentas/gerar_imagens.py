@@ -19,8 +19,13 @@ SITE = AQUI.parent
 FOTOS = SITE.parent / "fotos"
 AMB = SITE / "ambientes"
 OUT = SITE / "imagens"
-VERSAO = "6"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)
+VERSAO = "7"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)
 VERSAO_PAREDE = "1"   # o mesmo, só para as paredes (não regera os chãos)
+# Linha do rejunte desenhada com pelo menos 4 mm e um pouco mais escura que a peça: o rejunte real (1,5 mm)
+# some na foto, e é ele que mostra o tamanho da peça. Para voltar ao jeito antigo: 0.
+REJUNTE_VISIVEL_MM = 4.0
+# Brilho/reflexo do chão por acabamento (janela, móveis e paredes refletidos, mais forte ao fundo).
+REFLEXO = {"Polido": 0.55, "Brilhante": 0.4, "Acetinado": 0.15}
 sys.path.insert(0, str(AQUI))
 import render as R
 
@@ -37,7 +42,9 @@ def parametros(p):
     a, b = p["medida_cm"]
     prancha = max(a, b) / min(a, b) >= 3
     return dict(layout="amarracao3" if prancha else "reto",
-                rejunte_mm=1.5 if p["retificado"] else 3.0)
+                rejunte_mm=1.5 if p["retificado"] else 3.0,
+                rejunte_visivel_mm=REJUNTE_VISIVEL_MM,
+                reflexo=REFLEXO.get(p.get("acabamento"), 0.0))
 
 
 def main():

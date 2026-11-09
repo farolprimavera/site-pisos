@@ -436,6 +436,10 @@ GitHub Pages: Settings → Pages → *Deploy from a branch* → `main` / `(root)
 - A máscara do `quintal-piscina` tem retoque à mão (chão ao sol em volta das espreguiçadeiras e debaixo da mesa).
   Rodar o `mascara.py` nele de novo apaga esse retoque.
 - Mudou o `render.py`? Aumente o `VERSAO` do `gerar_imagens.py`: o código do render não entra na assinatura.
+- Rejunte e brilho (`gerar_imagens.py`): `REJUNTE_VISIVEL_MM = 4.0` desenha a linha do rejunte com pelo menos 4 mm,
+  um pouco mais escura que a peça (o de 1,5 mm sumia e não dava para ver o tamanho da peça); `REFLEXO` por acabamento
+  (Polido 0,55, Brilhante 0,4, Acetinado 0,15) espelha a foto na linha do rodapé, bem desfocado e mais forte ao fundo
+  (`reflexo_chao()` no `render.py`): janela e móveis aparecem refletidos no piso polido.
 - Cuidado com a especificidade do CSS: uma regra como `.card .foto img` sobrescreveu a miniatura da peça.
   Use classes próprias (`.peca-mini`).
 - Não suba zips de imagens para o repositório: `*.zip` fica no `.gitignore`.
