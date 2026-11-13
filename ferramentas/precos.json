@@ -1,5 +1,5 @@
 {
- "data": "12/11/2026",
+ "data": "13/11/2026",
  "precos": {
   "11065": {
    "fabricante": "DIVERSOS",
@@ -328,7 +328,7 @@
   "1011904": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45801 45x45 LT:(16/09/25) (E2)",
-   "estoque": 492.45,
+   "estoque": 484.41,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": 16.9,
@@ -364,7 +364,7 @@
   "1011192": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45901 45x45 (22-21/04/2024) (E1-E2-C)(P)",
-   "estoque": 524.61,
+   "estoque": 522.6,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -715,7 +715,7 @@
   "1010334": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CALACATA GOLD 45x45 (08/05/24) (G4/B8)",
-   "estoque": 21.71,
+   "estoque": 17.69,
    "vista": 22.9,
    "prazo": 24.9,
    "oferta": 19.9,
@@ -1048,7 +1048,7 @@
   "1012589": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1729 58X58 LT:038 (G4/A2)",
-   "estoque": 192.56,
+   "estoque": 190.24,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1309,7 +1309,7 @@
   "1012530": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70092 70X70 LT: 19/06/26 (G4/B1)",
-   "estoque": 260.68,
+   "estoque": 240.1,
    "vista": 29.9,
    "prazo": 31.9,
    "oferta": null,
@@ -2137,7 +2137,7 @@
   "1011903": {
    "fabricante": "ALFAGRES",
    "produto": "PISO NAVONA GRIGIO 45X45 (12/08/2025)(E2)",
-   "estoque": 56.28,
+   "estoque": 30.15,
    "vista": 18.9,
    "prazo": 22.9,
    "oferta": 15.0,
@@ -2236,7 +2236,7 @@
   "1012663": {
    "fabricante": "ALFAGRES",
    "produto": "PISO PENEDO 45x45 LT: (31/05/26) (E2)",
-   "estoque": 359.79,
+   "estoque": 351.75,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -2308,7 +2308,7 @@
   "1011664": {
    "fabricante": "ALFAGRES",
    "produto": "PISO PULPIS GRIS 45x45 (05/07/25)(G4/B7)",
-   "estoque": 263.31,
+   "estoque": 235.17,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": null,
@@ -3028,7 +3028,7 @@
   "1011522": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO LUXOR BLANC 31,5X56,9 RET LT:026(E2)",
-   "estoque": 123.49,
+   "estoque": 104.85,
    "vista": 30.9,
    "prazo": 32.9,
    "oferta": null,
@@ -3208,7 +3208,7 @@
   "1009332": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO TIMBRE BLUE 31X60 LT(05/01/2022)(E2)",
-   "estoque": 424.32,
+   "estoque": 416.0,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,
