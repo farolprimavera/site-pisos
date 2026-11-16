@@ -29,9 +29,9 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 SITE = AQUI.parent
-TRABALHO = SITE.parent
 sys.path.insert(0, str(AQUI))
 import comum as C
+TRABALHO = C.pasta_trabalho(SITE)     # David/projeto-pisos (xlsx, PDFs, fotos)
 
 FABRICANTES = {"ALFAGRES": "Alfagrês", "CEDASA": "Cedasa", "ROCHAFORTE": "Rocha", "PORCELANATO": "Porcelanato"}
 # Piso só com lote de ponta/queima (pouquíssimo estoque): página escondida, aberta só pelo QR da etiqueta,

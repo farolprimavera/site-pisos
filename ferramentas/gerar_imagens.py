@@ -16,7 +16,9 @@ import cv2
 
 AQUI = Path(__file__).resolve().parent
 SITE = AQUI.parent
-FOTOS = SITE.parent / "fotos"
+sys.path.insert(0, str(AQUI))
+import comum as C
+FOTOS = C.pasta_trabalho(SITE) / "fotos"   # David/projeto-pisos/fotos
 AMB = SITE / "ambientes"
 OUT = SITE / "imagens"
 VERSAO = "7"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)

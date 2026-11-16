@@ -19,7 +19,9 @@ from pathlib import Path
 
 AQUI = Path(__file__).resolve().parent
 SITE = AQUI.parent
-TRABALHO = SITE.parent
+sys.path.insert(0, str(AQUI))
+import comum as C
+TRABALHO = C.pasta_trabalho(SITE)     # David/projeto-pisos
 PASTA = TRABALHO / "materiais"
 
 # Produtos que o script NÃO oferece mesmo reconhecendo (decisão da loja / dúvida em aberto).

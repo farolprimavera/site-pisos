@@ -408,7 +408,9 @@ reflexo suave só em brilhante/polido; luz tirada só dos pixels de parede, por 
 ## 7. Fluxo de atualização
 
 ```bash
-cd site-pisos/site-pisos
+cd C:\Users\farol.adm\Documents\David\site-pisos     # repositório (desde 16/11/2026 fica direto em David)
+# pisos.xlsx, pisos.pdf, porcelanato.pdf, fotos/ e materiais/ continuam em David\projeto-pisos
+# (os scripts acham sozinhos: comum.pasta_trabalho)
 python3 ferramentas/montar_dados.py     # lê xlsx + PDFs + fichas → dados/pisos.json/.js + relatório
 python3 ferramentas/gerar_imagens.py    # só gera o que é novo
 python3 ferramentas/montar_materiais.py # se mudou preço de argamassa/rejunte/espaçador (pasta materiais/)

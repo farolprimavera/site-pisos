@@ -4,6 +4,16 @@ from pathlib import Path
 import openpyxl, pdfplumber
 
 
+def pasta_trabalho(site):
+    """Pasta com pisos.xlsx, os PDFs de preço, fotos/ e materiais/.
+    Desde 16/11/2026 o repositório fica em David/site-pisos e esses arquivos em David/projeto-pisos;
+    antes o repositório ficava dentro da pasta de trabalho (projeto-pisos/site-pisos)."""
+    for p in (site.parent / "projeto-pisos", site.parent):
+        if (p / "pisos.xlsx").exists() or (p / "fotos").is_dir():
+            return p
+    return site.parent
+
+
 def num_br(s):
     s = str(s).strip().replace("R$", "")
     if "," in s:
