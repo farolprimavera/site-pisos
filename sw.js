@@ -27,7 +27,7 @@
    Com versão nova, o site mostra "Nova versão disponível. Atualizar".
    ========================================================================== */
 
-const VERSAO = "pisos-v12";
+const VERSAO = "pisos-v13";
 const CASCA = `${VERSAO}-casca`;
 const IMAGENS = `${VERSAO}-imagens`;
 const MAX_IMAGENS = 300;
