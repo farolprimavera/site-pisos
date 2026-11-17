@@ -2250,8 +2250,19 @@ body.com-bandeja .ir-topo { bottom: calc(6.5rem + env(safe-area-inset-bottom)); 
 :root[data-totem] #det-link,
 :root[data-totem] #cmp-link,
 :root[data-totem] #det-whats,
-:root[data-totem] #cmp-whats {
+:root[data-totem] #cmp-whats,
+:root[data-totem] .rodape-redes {
   display: none !important;
+}
+
+/* rodapé no totem: o telefone continua como informação, mas não abre o WhatsApp
+   (o toque abriria o app no aparelho da loja) */
+:root[data-totem] .rodape-whats {
+  pointer-events: none;
+}
+
+:root[data-totem] .rodape-whats small {
+  display: none;
 }
 
 /* No totem o WhatsApp tiraria o cliente do site (e quem chega depois encontra o WhatsApp
