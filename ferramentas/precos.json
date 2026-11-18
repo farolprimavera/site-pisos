@@ -1,5 +1,5 @@
 {
- "data": "17/11/2026",
+ "data": "18/11/2026",
  "precos": {
   "11065": {
    "fabricante": "DIVERSOS",
@@ -724,7 +724,7 @@
   "1010012": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CALACATA GOLD 45x45 (24-25/03/2024) (G4/B8)",
-   "estoque": 701.49,
+   "estoque": 687.42,
    "vista": 22.9,
    "prazo": 24.9,
    "oferta": null,
@@ -958,7 +958,7 @@
   "1011193": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CRISTAL 56X56 LT: 26/04/2023 (E1)",
-   "estoque": 178.21,
+   "estoque": 173.19,
    "vista": 22.9,
    "prazo": 27.9,
    "oferta": 19.9,
@@ -1156,7 +1156,7 @@
   "1012588": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1769 58x58 LT:043 (G4//A2)",
-   "estoque": 88.16,
+   "estoque": 39.44,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1768,7 +1768,7 @@
   "1009236": {
    "fabricante": "ALFAGRES",
    "produto": "PISO HD ARIZONA BROWN56X56L:04/04/2023 (G4/B7-E1)",
-   "estoque": 559.73,
+   "estoque": 504.51,
    "vista": 36.9,
    "prazo": 38.9,
    "oferta": 19.9,
@@ -2605,7 +2605,7 @@
   "1011542": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. CALCIS GREEN 31X60 LT:(28/10/24) (E1)",
-   "estoque": 91.52,
+   "estoque": 74.88,
    "vista": 24.9,
    "prazo": 27.9,
    "oferta": 17.0,
@@ -2947,7 +2947,7 @@
   "1011481": {
    "fabricante": "CEDASA",
    "produto": "REVESTIMENTO HD 2023 32x58 LT:036 (G3/B1)",
-   "estoque": 202.0,
+   "estoque": 197.96,
    "vista": 28.9,
    "prazo": 31.9,
    "oferta": null,
@@ -3055,7 +3055,7 @@
   "1011544": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO MARFIL 31X60 LT:(08/10/24)(E)",
-   "estoque": 89.44,
+   "estoque": 60.32,
    "vista": 30.9,
    "prazo": 33.9,
    "oferta": 19.9,
@@ -3199,7 +3199,7 @@
   "1009332": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO TIMBRE BLUE 31X60 LT(05/01/2022)(E2)",
-   "estoque": 372.32,
+   "estoque": 366.08,
    "vista": 9.9,
    "prazo": 9.9,
    "oferta": null,
