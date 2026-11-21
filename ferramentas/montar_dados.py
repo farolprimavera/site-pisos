@@ -79,12 +79,22 @@ def ambientes_do_piso(lu, externo, acabamento, estilo):
     return out
 
 # Mesmo piso cadastrado com nomes diferentes na loja (lote novo com outro nome): junta no mesmo produto do site.
+# Lote com preço próprio que vira um produto separado no site (código do lote -> chave nova).
+# Precisa de ficha e peso na chave nova (fichas.csv / pesos.csv) e da foto <código>.jpg.
+LOTE_SEPARADO = {
+    "1012907": "ROCHAFORTE|BIANCO SUPREME LOTE NOVO|82x82",   # lote 19/09/26 (C), R$ 49,90; o E1 continua R$ 46,90
+}
+
 APELIDOS = {
     "ROCHAFORTE|HD 7092|70x70": "ROCHAFORTE|HD 70922|70x70",   # R7092 (lote de 26/10/26 veio como "HD 7092")
 }
 
 NOMES = {"IMENT CARRARA BRANCO": "Carrara Branco", "380 007": "380.007", "HD ARIZONA BROWN": "Arizon Brown",
-         "HD ARIZON SAND": "Arizon Sand"}
+         "HD ARIZON SAND": "Arizon Sand",
+         # lotes de nov/2026 vieram com "POL" abreviado no nome
+         "MARMO IMPERIAL POL": "Marmo Imperial Polido", "DOMMUS POL": "Dommus Polido",
+         "CREMO DELICATO POL": "Cremo Delicato Polido", "STATUARIO POL": "Statuario Polido",
+         "BIANCO SUPREME LOTE NOVO": "Bianco Supreme (lote novo)"}
 
 
 def nome_exibicao(base):
@@ -193,7 +203,7 @@ def main():
             continue
         l = planilha.get(cod) or {"Produto": pr["produto"]}
         k = C.chave(l["Produto"], pr["fabricante"])
-        k = APELIDOS.get(k, k)
+        k = LOTE_SEPARADO.get(str(cod), APELIDOS.get(k, k))
         g = grupos.setdefault(k, {"lotes": [], "fotos_extra": [], "escondidos": [], "produto": l["Produto"], "obs": None,
                                   "todos": []})
         g["todos"].append(cod)   # todo código do piso (inclusive ponta, queima e lote zerado): QR da etiqueta
