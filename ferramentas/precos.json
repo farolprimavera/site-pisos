@@ -1,5 +1,5 @@
 {
- "data": "21/11/2026",
+ "data": "23/11/2026",
  "precos": {
   "11065": {
    "fabricante": "DIVERSOS",
@@ -121,7 +121,7 @@
   "1012531": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO 40652 RET 38,5x74,5 LT:18-19/06/26 (G4/B1)",
-   "estoque": 399.0,
+   "estoque": 369.0,
    "vista": 29.9,
    "prazo": 32.9,
    "oferta": null,
@@ -166,7 +166,7 @@
   "1011490": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45405 45x45 (27-28/02/25) (G4/B5-A6)",
-   "estoque": 168.84,
+   "estoque": 132.66,
    "vista": 19.9,
    "prazo": 22.9,
    "oferta": null,
@@ -256,7 +256,7 @@
   "1012657": {
    "fabricante": "ALFAGRES",
    "produto": "PISO 45501 45X45 (03/07/26 ) (E2)",
-   "estoque": 399.99,
+   "estoque": 397.98,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -616,7 +616,7 @@
   "1009641": {
    "fabricante": "CEDASA",
    "produto": "PISO BELLASTONE POLIDO 74,5X74,5 LT:008 (E1-E2)",
-   "estoque": 1336.44,
+   "estoque": 1203.24,
    "vista": 45.9,
    "prazo": 48.9,
    "oferta": 32.0,
@@ -958,7 +958,7 @@
   "1012829": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO COTTON POLIDO 61x116 LT:07/09/26 (E1)",
-   "estoque": 147.16,
+   "estoque": 144.33,
    "vista": 49.9,
    "prazo": 53.9,
    "oferta": null,
@@ -976,7 +976,7 @@
   "1011193": {
    "fabricante": "ALFAGRES",
    "produto": "PISO CRISTAL 56X56 LT: 26/04/2023 (E1)",
-   "estoque": 155.62,
+   "estoque": 148.09,
    "vista": 22.9,
    "prazo": 27.9,
    "oferta": 19.9,
@@ -1057,7 +1057,7 @@
   "1012655": {
    "fabricante": "CEDASA",
    "produto": "PISO HD 1701 58x58 LT:048 (E1)",
-   "estoque": 176.32,
+   "estoque": 155.44,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1498,7 +1498,7 @@
   "1012205": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70442 70X70 LT:15/10/25 (E2)",
-   "estoque": 120.05,
+   "estoque": 99.47,
    "vista": 27.9,
    "prazo": 29.9,
    "oferta": null,
@@ -1705,7 +1705,7 @@
   "1012207": {
    "fabricante": "ROCHAFORTE",
    "produto": "PISO HD 70952 RET 70X70 LT:15/01/26 (G4/B1)",
-   "estoque": 198.94,
+   "estoque": 154.35,
    "vista": 39.9,
    "prazo": 42.9,
    "oferta": 35.9,
@@ -1903,7 +1903,7 @@
   "1012343": {
    "fabricante": "ALFAGRES",
    "produto": "PISO KILAUEA 45X45 (25/08/25) (G4/B8)",
-   "estoque": 615.06,
+   "estoque": 609.03,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": 19.9,
@@ -1975,7 +1975,7 @@
   "1012603": {
    "fabricante": "CEDASA",
    "produto": "PISO LIVERPOOL MATTE RET 75,5X75,5 LT:029 (E1)",
-   "estoque": 205.2,
+   "estoque": 180.12,
    "vista": 31.9,
    "prazo": 33.9,
    "oferta": null,
@@ -2011,7 +2011,7 @@
   "1011407": {
    "fabricante": "ALFAGRES",
    "produto": "PISO MAGNOLIA WHITE 45x45 (22/08/24) (G4/B5)",
-   "estoque": 180.9,
+   "estoque": 174.87,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -2146,7 +2146,7 @@
   "1012668": {
    "fabricante": "ALFAGRES",
    "produto": "PISO NAVONA BEIGE 45X45 LT:(11/05/26)(E2)",
-   "estoque": 385.92,
+   "estoque": 389.94,
    "vista": 22.9,
    "prazo": 25.9,
    "oferta": 16.9,
@@ -2272,7 +2272,7 @@
   "1012663": {
    "fabricante": "ALFAGRES",
    "produto": "PISO PENEDO 45x45 LT: (31/05/26) (E2)",
-   "estoque": 329.64,
+   "estoque": 289.44,
    "vista": 20.9,
    "prazo": 22.9,
    "oferta": null,
@@ -2524,7 +2524,7 @@
   "1012586": {
    "fabricante": "CEDASA",
    "produto": "PISO VIA LACTEA POLIDO 56x113 LT:012 (G4/B2)",
-   "estoque": 172.04,
+   "estoque": 166.98,
    "vista": 51.9,
    "prazo": 55.9,
    "oferta": null,
@@ -2650,7 +2650,7 @@
   "1011542": {
    "fabricante": "ALFAGRES",
    "produto": "REVEST. CALCIS GREEN 31X60 LT:(28/10/24) (E1)",
-   "estoque": 72.8,
+   "estoque": 52.0,
    "vista": 24.9,
    "prazo": 27.9,
    "oferta": 17.0,
@@ -2866,7 +2866,7 @@
   "1011748": {
    "fabricante": "DIVERSOS",
    "produto": "REVESTIMENTO 7209 RET 35,5x72,5 LT:4 (E)",
-   "estoque": 794.64,
+   "estoque": 769.23,
    "vista": 26.9,
    "prazo": 28.9,
    "oferta": null,
@@ -3271,7 +3271,7 @@
   "1012759": {
    "fabricante": "ALFAGRES",
    "produto": "REVESTIMENTO VERSACE 31X60 LT:(03/10/24) (E1)",
-   "estoque": 74.88,
+   "estoque": 49.92,
    "vista": 24.9,
    "prazo": 26.9,
    "oferta": 19.9,
