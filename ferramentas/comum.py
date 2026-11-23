@@ -156,7 +156,9 @@ def chave(produto, fabricante):
 def caixa(obs):
     obs = str(obs or "")
     m2 = re.search(r"(\d+[.,]?\d*)\s*m\s*[2²]", obs, re.I)
-    pc = re.search(r"(\d+)\s*(?:p[çc]s|pe[çc]as|unid)", obs, re.I) or re.search(r"pe[çc]as\s*(\d+)", obs, re.I)
+    # (?<![m\d,.]) evita pegar o "2" de "m2 Peças 10 unid" como quantidade de peças ("ou11 pçs" continua valendo)
+    pc = re.search(r"(?<![mM\d,.])(\d+)\s*(?:p[çc]s|pe[çc]as|unid)", obs, re.I) \
+        or re.search(r"pe[çc]as[^\d]{0,12}(\d+)", obs, re.I)
     return (num_br(m2.group(1)) if m2 else None), (int(pc.group(1)) if pc else None)
 
 

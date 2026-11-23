@@ -190,6 +190,10 @@ def main():
     arq_pesos = AQUI / "pesos.csv"
     pesos = {r["chave"]: C.num_br(r["peso_kg"]) for r in csv.DictReader(open(arq_pesos, encoding="utf-8"), delimiter=";")
              if (r.get("peso_kg") or "").strip()} if arq_pesos.exists() else {}
+    # m² e peças por caixa quando a Observação da planilha não traz (lote novo que ainda não está no pisos.xlsx)
+    arq_caixas = AQUI / "caixas.csv"
+    caixas = {r["chave"]: (C.num_br(r["m2"]), int(r["pecas"]))
+              for r in csv.DictReader(open(arq_caixas, encoding="utf-8"), delimiter=";")} if arq_caixas.exists() else {}
     precos, data_precos = carregar_precos()
     precos.update(carregar_porcelanatos())
     planilha = {str(l["Código"]).strip(): l for l in C.ler_planilha(TRABALHO / "pisos.xlsx")}
@@ -223,7 +227,7 @@ def main():
         g["lotes"].append(dict(codigo=cod, estoque=pr["estoque"], vista=pr["vista"], prazo=pr["prazo"],
                                oferta=pr["oferta"], foto=(fotos / f"{cod}.jpg").exists()))
 
-    itens, sem_ficha, sem_foto, supostos, revest_no_chao = [], [], [], [], []
+    itens, sem_ficha, sem_foto, supostos, revest_no_chao, sem_caixa = [], [], [], [], [], []
     so_queima, escondidos = [], []
     for k, g in grupos.items():
         lotes, oculto = g["lotes"], False
@@ -254,6 +258,10 @@ def main():
         principal = max(com_preco, key=lambda x: (x["estoque"] or 0)) if com_preco else None
         m = C.medida(g["produto"])
         m2, pcs = C.caixa(g["obs"])
+        if k in caixas:
+            m2, pcs = m2 or caixas[k][0], pcs or caixas[k][1]
+        if not (m2 and pcs) and not oculto:
+            sem_caixa.append(k)
         lu = f["local_uso"]
         # a loja cadastra revestimento como "REVEST..."; se a ficha disser que vai no chão, algo está errado
         if str(g["produto"]).upper().startswith("REVEST") and lu != "LA":
@@ -336,6 +344,8 @@ def main():
            f"Entraram no site agora, com selo Novidade por 30 dias ({len(estrearam)}): " + ", ".join(estrearam),
            f"Fora do site por falta de foto ({len(sem_foto)}): " + ", ".join(sem_foto),
            f"Fora do site por falta de ficha técnica em fichas.csv ({len(sem_ficha)}): " + ", ".join(sem_ficha),
+           f"Sem m²/peças por caixa (a calculadora não funciona; põe no caixas.csv) ({len(sem_caixa)}): "
+           + ", ".join(sem_caixa),
            f"Local de uso SUPOSTO, conferir ({len(supostos)}): " + ", ".join(supostos),
            f"Só com lote em queima (R$ {', '.join(f'{q:.2f}'.replace('.', ',') for q in PRECOS_QUEIMA)}), fora da lista "
            f"(com estoque, viram página escondida) ({len(so_queima)}): " + ", ".join(sorted(so_queima)),
