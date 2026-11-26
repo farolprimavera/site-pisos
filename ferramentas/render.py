@@ -133,7 +133,33 @@ def preparar_peca(img_bgr, medida_cm):
     return img_bgr[y0:y0 + h, x0:x0 + w], (cw, ch)
 
 
-def textura_plana(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, seed=7, rejunte_visivel_mm=0.0):
+def variacoes_da_peca(pecas, tw, th, girar180=True, girar90=False):
+    """Todas as peças que podem ir no chão/parede: cada face da fabricante, girada 180° (e 90°/270° nas
+    quadradas de desenho sem direção). Sortear entre elas tira a repetição do mesmo desenho."""
+    out = []
+    for p in pecas:
+        b = cv2.resize(p, (tw, th), interpolation=cv2.INTER_AREA if p.shape[1] > tw else cv2.INTER_CUBIC).astype(np.float32)
+        out.append(b)
+        if girar180:
+            out.append(b[::-1, ::-1])
+        if girar90 and tw == th:
+            out += [np.rot90(b).copy(), np.rot90(b, 3).copy()]
+    return out
+
+
+def faces_na_orientacao(faces, medida_cm, cm):
+    """Prepara as faces como a peça principal: mesma proporção e deitadas/em pé do mesmo jeito."""
+    prontas = []
+    for f in faces or []:
+        fp, fcm = preparar_peca(f, medida_cm)
+        if (fcm[0] >= fcm[1]) != (cm[0] >= cm[1]):
+            fp = cv2.rotate(fp, cv2.ROTATE_90_CLOCKWISE)
+        prontas.append(fp)
+    return prontas
+
+
+def textura_plana(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, seed=7, rejunte_visivel_mm=0.0,
+                  faces=None, girar90=False):
     """Monta o chão 'visto de cima' (em pixels = cm*ppc) com rejunte e paginação."""
     (x0, y0, x1, y1) = area_cm
     W, H = int((x1 - x0) * ppc), int((y1 - y0) * ppc)
@@ -147,8 +173,7 @@ def textura_plana(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, 
     extra = max(0.0, rejunte_visivel_mm - rejunte_mm) / 10.0
     if extra:
         tw, th = max(1, int(round((pw - extra) * ppc))), max(1, int(round((ph - extra) * ppc)))
-    base = cv2.resize(peca, (tw, th), interpolation=cv2.INTER_AREA if peca.shape[1] > tw else cv2.INTER_CUBIC).astype(np.float32)
-    rot = base[::-1, ::-1]
+    variacoes = variacoes_da_peca(faces or [peca], tw, th, girar90=girar90)
     rng = np.random.default_rng(seed)
     passo_x, passo_y = pw + g, ph + g
     j0 = math.floor(y0 / passo_y) - 1
@@ -161,8 +186,7 @@ def textura_plana(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, 
             cx = (i + desl) * passo_x + g / 2
             cy = j * passo_y + g / 2
             px, py = int(round((cx - x0) * ppc)), int(round((cy - y0) * ppc))
-            t = rot if rng.random() < 0.5 else base
-            t = t * (0.975 + 0.05 * rng.random())
+            t = variacoes[rng.integers(len(variacoes))] * (0.975 + 0.05 * rng.random())
             # recorte na área
             ax0, ay0 = max(px, 0), max(py, 0)
             ax1, ay1 = min(px + tw, W), min(py + th, H)
@@ -188,7 +212,7 @@ def parametros_parede(p):
                 brilho=p["acabamento"] in ("Brilhante", "Polido"))
 
 
-def textura_parede(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, girar, seed=7):
+def textura_parede(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout, girar, seed=7, faces=None):
     """Parede vista de frente (y em cm sobe a partir do chão; a linha 0 da imagem é o topo).
     A 1ª fiada começa inteira no chão e as colunas são centralizadas na largura da parede."""
     xmin, xmax, L, ytop = area_cm
@@ -198,8 +222,7 @@ def textura_parede(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout,
     pw, ph = peca_cm
     g = rejunte_mm / 10.0
     tw, th = max(1, int(round(pw * ppc))), max(1, int(round(ph * ppc)))
-    base = cv2.resize(peca, (tw, th), interpolation=cv2.INTER_AREA if peca.shape[1] > tw else cv2.INTER_CUBIC).astype(np.float32)
-    rot = base[::-1, ::-1]
+    variacoes = variacoes_da_peca(faces or [peca], tw, th, girar180=girar)
     rng = np.random.default_rng(seed)
     px_, py_ = pw + g, ph + g
     for j in range(int(ytop / py_) + 2):
@@ -208,8 +231,7 @@ def textura_parede(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout,
         for i in range(math.floor((xmin - L / 2) / px_ - desl) - 1, math.ceil((xmax - L / 2) / px_ - desl) + 1):
             x_esq = L / 2 + (i + desl) * px_ - pw / 2          # i = 0 é a peça do meio da parede
             c0, r0 = int(round((x_esq - xmin) * ppc)), int(round((ytop - y_bot - ph) * ppc))
-            t = rot if girar and rng.random() < 0.5 else base
-            t = t * (0.975 + 0.05 * rng.random())
+            t = variacoes[rng.integers(len(variacoes))] * (0.975 + 0.05 * rng.random())
             ax0, ay0, ax1, ay1 = max(c0, 0), max(r0, 0), min(c0 + tw, W), min(r0 + th, H)
             if ax1 > ax0 and ay1 > ay0:
                 out[ay0:ay1, ax0:ax1] = t[ay0 - r0:ay1 - r0, ax0 - c0:ax1 - c0]
@@ -217,7 +239,7 @@ def textura_parede(peca, peca_cm, area_cm, ppc, rejunte_mm, cor_rejunte, layout,
 
 
 def renderizar_parede(par, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, layout="reto", girar=False,
-                      brilho=False, sombra=0.5, ss=2):
+                      brilho=False, sombra=0.5, ss=2, faces=None):
     """Aplica um revestimento na parede descrita em ambientes/paredes.json."""
     foto = ler_foto(pasta_amb, par["ambiente"])
     mask = cv2.imread(str(Path(pasta_amb) / f"{par['id']}-mask.png"), cv2.IMREAD_GRAYSCALE)
@@ -230,7 +252,7 @@ def renderizar_parede(par, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, layou
     ppc = par.get("ppc", 6)
     xmin, xmax, ytop = -30, L + 30, A + 30
     plano = textura_parede(peca, cm, (xmin, xmax, L, ytop), ppc, rejunte_mm, cor_rejunte.astype(np.float32),
-                           layout, girar)
+                           layout, girar, faces=faces_na_orientacao(faces, medida_cm, cm))
     plano = cv2.GaussianBlur(plano, (0, 0), 0.6)
     # plano(px) -> cm (y sobe) -> foto(px), com supersampling
     T = np.array([[1 / ppc, 0, xmin], [0, -1 / ppc, ytop], [0, 0, 1]])
@@ -293,7 +315,9 @@ def reflexo_chao(foto, mask):
 
 def renderizar(amb, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, cor_rejunte=None,
                layout="reto", girar=False, sombra=0.8, largura_saida=None, ss=2, exposicao=0.9,
-               rejunte_visivel_mm=0.0, reflexo=0.0):
+               rejunte_visivel_mm=0.0, reflexo=0.0, faces=None, girar90=False):
+    """faces: as faces da fabricante (fotos BGR), sorteadas peça a peça; girar90: quadradas de desenho
+    sem direção também giram 90°/270° (além dos 180°)."""
     foto = ler_foto(pasta_amb, amb["id"])
     mask = cv2.imread(str(Path(pasta_amb) / f"{amb['id']}-mask.png"), cv2.IMREAD_GRAYSCALE)
     Hh, Ww = foto.shape[:2]
@@ -320,7 +344,8 @@ def renderizar(amb, pasta_amb, peca_bgr, medida_cm, rejunte_mm=2.0, cor_rejunte=
     # resolução do plano: o pixel mais "esticado" da foto pede ~ ppc px/cm
     ppc = amb.get("ppc", 6)
     plano = textura_plana(peca, cm, (x0, y0, x1, y1), ppc, rejunte_mm, np.array(cor_rejunte, np.float32), layout,
-                          rejunte_visivel_mm=rejunte_visivel_mm)
+                          rejunte_visivel_mm=rejunte_visivel_mm, faces=faces_na_orientacao(faces, medida_cm, cm),
+                          girar90=girar90)
     # leve desfoque contra cintilação ao longe
     plano = cv2.GaussianBlur(plano, (0, 0), 0.6)
     # plano(px) -> cm -> foto(px), com supersampling

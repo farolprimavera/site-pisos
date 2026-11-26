@@ -19,13 +19,17 @@ SITE = AQUI.parent
 sys.path.insert(0, str(AQUI))
 import comum as C
 FOTOS = C.pasta_trabalho(SITE) / "fotos"   # David/projeto-pisos/fotos
+FACES = C.pasta_trabalho(SITE) / "faces"   # David/projeto-pisos/faces/<código>-1.jpg, -2.jpg... (da fabricante)
 AMB = SITE / "ambientes"
 OUT = SITE / "imagens"
-VERSAO = "7"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)
-VERSAO_PAREDE = "1"   # o mesmo, só para as paredes (não regera os chãos)
-# Linha do rejunte desenhada com pelo menos 4 mm e um pouco mais escura que a peça: o rejunte real (1,5 mm)
-# some na foto, e é ele que mostra o tamanho da peça. Para voltar ao jeito antigo: 0.
-REJUNTE_VISIVEL_MM = 4.0
+VERSAO = "8"          # mude para forçar regerar tudo (ex.: depois de mexer no render.py)
+VERSAO_PAREDE = "2"   # o mesmo, só para as paredes (não regera os chãos)
+# Linha do rejunte desenhada com pelo menos 2,5 mm e um pouco mais escura que a peça: o rejunte real (1,5 mm)
+# some na foto, e é ele que mostra o tamanho da peça. Era 4 mm até 26/11/2026 (ficava marcado demais).
+# Para voltar ao jeito antigo: 0.
+REJUNTE_VISIVEL_MM = 2.5
+# Quadradas desses estilos também giram 90°/270° no chão; madeira e decorado têm direção, só giram 180°.
+GIRA_90 = {"Mármore", "Pedra", "Cimento", "Liso"}
 # Brilho/reflexo do chão por acabamento (janela, móveis e paredes refletidos, mais forte ao fundo).
 REFLEXO = {"Polido": 0.55, "Brilhante": 0.4, "Acetinado": 0.15}
 sys.path.insert(0, str(AQUI))
@@ -46,7 +50,23 @@ def parametros(p):
     return dict(layout="amarracao3" if prancha else "reto",
                 rejunte_mm=1.5 if p["retificado"] else 3.0,
                 rejunte_visivel_mm=REJUNTE_VISIVEL_MM,
-                reflexo=REFLEXO.get(p.get("acabamento"), 0.0))
+                reflexo=REFLEXO.get(p.get("acabamento"), 0.0),
+                girar90=abs(a - b) < 1 and p.get("estilo") in GIRA_90)
+
+
+def numero_da_face(arq):
+    try:
+        return int(arq.stem.rsplit("-", 1)[1])
+    except (IndexError, ValueError):
+        return 999
+
+
+def faces_do_piso(codigo):
+    """Faces da fabricante (projeto-pisos/faces/<código>-N.jpg). Só valem com 2 ou mais."""
+    arqs = sorted(FACES.glob(f"{codigo}-*.jpg"), key=numero_da_face)
+    imgs = [(a, cv2.imread(str(a))) for a in arqs]
+    imgs = [(a, i) for a, i in imgs if i is not None]
+    return imgs if len(imgs) >= 2 else []
 
 
 def main():
@@ -68,7 +88,10 @@ def main():
         img = cv2.imread(str(foto))
         if img is None:
             print("  sem foto:", p["id"]); continue
-        h_foto = hashlib.md5(foto.read_bytes()).hexdigest()
+        faces = faces_do_piso(p["foto"])
+        # a assinatura muda se a foto ou qualquer face mudar (face nova regera os ambientes do piso)
+        h_foto = hashlib.md5(foto.read_bytes() + b"".join(a.read_bytes() for a, _ in faces)).hexdigest()
+        faces = [i for _, i in faces] or None
         # peça
         chave = f"pecas/{p['id']}"; validos.add(chave)
         assin = f"{VERSAO}|{h_foto}|{p['medida_cm']}"
@@ -83,7 +106,7 @@ def main():
             assin = f"{VERSAO}|{h_foto}|{p['medida_cm']}|{par}|{assin_amb[a]}"
             if ctrl.get(chave) == assin and (OUT / f"{chave}.webp").exists():
                 continue
-            out = R.renderizar(ambientes[a], AMB, img, p["medida_cm"], **par)
+            out = R.renderizar(ambientes[a], AMB, img, p["medida_cm"], faces=faces, **par)
             salvar_webp(out, OUT / f"{chave}.webp", 1280, 80)
             salvar_webp(out, OUT / a / "mini" / f"{p['id']}.webp", 520, 76)
             ctrl[chave] = assin
@@ -96,7 +119,7 @@ def main():
             assin = f"{VERSAO_PAREDE}|{h_foto}|{p['medida_cm']}|{par_p}|{assin_par[a]}"
             if ctrl.get(chave) == assin and (OUT / f"{chave}.webp").exists():
                 continue
-            out = R.renderizar_parede(par, AMB, img, p["medida_cm"], **par_p)
+            out = R.renderizar_parede(par, AMB, img, p["medida_cm"], faces=faces, **par_p)
             salvar_webp(out, OUT / f"{chave}.webp", 1280, 80)
             x0, y0, x1, y1 = par["recorte"]                # miniatura: só em volta da parede
             salvar_webp(out[y0:y1, x0:x1], OUT / a / "parede" / "mini" / f"{p['id']}.webp", 520, 76)
