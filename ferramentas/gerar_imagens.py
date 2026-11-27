@@ -9,6 +9,9 @@ Gera as imagens do site a partir de dados/pisos.json:
 Só gera o que falta ou mudou (guarda uma "impressão digital" em imagens/controle.json).
 Rodar depois do montar_dados.py:   python3 ferramentas/gerar_imagens.py
 Para refazer tudo:                  python3 ferramentas/gerar_imagens.py --tudo
+
+O painel integrador usa este mesmo arquivo para o piso novo (imagens_do_piso): a conta das imagens
+é uma só, aqui. Piso que só o painel conhece (sem foto em projeto-pisos/fotos) fica como está.
 """
 import hashlib, json, sys
 from pathlib import Path
@@ -36,12 +39,23 @@ sys.path.insert(0, str(AQUI))
 import render as R
 
 
-def salvar_webp(img, caminho, largura, q=80):
-    caminho.parent.mkdir(parents=True, exist_ok=True)
+def em_webp(img, largura, q=80):
     h, w = img.shape[:2]
     if w != largura:
         img = cv2.resize(img, (largura, int(round(h * largura / w))), interpolation=cv2.INTER_AREA)
-    cv2.imwrite(str(caminho), img, [cv2.IMWRITE_WEBP_QUALITY, q])
+    ok, buf = cv2.imencode(".webp", img, [cv2.IMWRITE_WEBP_QUALITY, q])
+    if not ok:
+        raise RuntimeError("não consegui gerar o .webp")
+    return buf.tobytes()
+
+
+def gravar(imagens, pasta=None):
+    """Grava {caminho dentro de imagens/: bytes} na pasta de imagens do site."""
+    pasta = pasta or OUT
+    for rel, conteudo in imagens.items():
+        caminho = pasta / rel
+        caminho.parent.mkdir(parents=True, exist_ok=True)
+        caminho.write_bytes(conteudo)
 
 
 def parametros(p):
@@ -69,14 +83,62 @@ def faces_do_piso(codigo):
     return imgs if len(imgs) >= 2 else []
 
 
+def carregar(amb=None):
+    """Os ambientes de chão e as paredes (por ambiente) da pasta ambientes/."""
+    amb = amb or AMB
+    paredes = json.loads((amb / "paredes.json").read_text(encoding="utf-8"))
+    return R.carregar_ambientes(amb), {par["ambiente"]: par for par in paredes.values()}
+
+
+def imagem_da_peca(p, img):
+    peca, _ = R.preparar_peca(img, p["medida_cm"])
+    return {f"pecas/{p['id']}.webp": em_webp(peca, min(600, peca.shape[1]), 82)}
+
+
+def imagens_do_chao(p, img, faces, a, ambiente, amb=None):
+    out = R.renderizar(ambiente, amb or AMB, img, p["medida_cm"], faces=faces, **parametros(p))
+    return {f"{a}/{p['id']}.webp": em_webp(out, 1280, 80), f"{a}/mini/{p['id']}.webp": em_webp(out, 520, 76)}
+
+
+def imagens_da_parede(p, img, faces, a, par, amb=None):
+    out = R.renderizar_parede(par, amb or AMB, img, p["medida_cm"], faces=faces, **R.parametros_parede(p))
+    x0, y0, x1, y1 = par["recorte"]                # miniatura: só em volta da parede
+    return {f"{a}/parede/{p['id']}.webp": em_webp(out, 1280, 80),
+            f"{a}/parede/mini/{p['id']}.webp": em_webp(out[y0:y1, x0:x1], 520, 76)}
+
+
+def imagens_do_piso(p, img, faces, ambientes, paredes, amb=None):
+    """Todas as imagens de um piso (o piso como está no pisos.json; faces: lista de imagens ou None)."""
+    imagens = imagem_da_peca(p, img)
+    for a in p["ambientes"]:
+        imagens.update(imagens_do_chao(p, img, faces, a, ambientes[a], amb))
+    for a in p.get("paredes", []):
+        imagens.update(imagens_da_parede(p, img, faces, a, paredes[a], amb))
+    return imagens
+
+
+def imagens_do_piso_em_bytes(p, foto, faces):
+    """Para o painel: a foto e as faces em bytes (JPG ou PNG); devolve {caminho em imagens/: .webp}."""
+    import numpy as np
+
+    def ler(conteudo):
+        return cv2.imdecode(np.frombuffer(conteudo, np.uint8), cv2.IMREAD_COLOR)
+
+    img = ler(foto)
+    if img is None:
+        raise ValueError("a foto da peça não abriu")
+    faces = [i for i in map(ler, faces) if i is not None]
+    ambientes, paredes = carregar()
+    return imagens_do_piso(p, img, faces if len(faces) >= 2 else None, ambientes, paredes)
+
+
 def main():
     tudo = "--tudo" in sys.argv
     dados = json.loads((SITE / "dados" / "pisos.json").read_text(encoding="utf-8"))
-    ambientes = R.carregar_ambientes(AMB)
+    ambientes, paredes = carregar()
     # muda a assinatura se a foto, a máscara ou a perspectiva do ambiente mudar
     assin_amb = {a: hashlib.md5(R.arquivo_foto(AMB, a).read_bytes() + (AMB / f"{a}-mask.png").read_bytes()
                                 + json.dumps(v, sort_keys=True).encode()).hexdigest() for a, v in ambientes.items()}
-    paredes = {par["ambiente"]: par for par in json.loads((AMB / "paredes.json").read_text(encoding="utf-8")).values()}
     assin_par = {a: hashlib.md5(R.arquivo_foto(AMB, a).read_bytes() + (AMB / f"{par['id']}-mask.png").read_bytes()
                                 + json.dumps(par, sort_keys=True).encode()).hexdigest() for a, par in paredes.items()}
     ctrl_arq = OUT / "controle.json"
@@ -87,6 +149,8 @@ def main():
         foto = FOTOS / f"{p['foto']}.jpg"
         img = cv2.imread(str(foto))
         if img is None:
+            # piso novo que entrou pelo painel (a foto ficou no servidor): as imagens dele ficam como estão
+            validos.update(k for k in ctrl if k.split("/")[-1] == p["id"])
             print("  sem foto:", p["id"]); continue
         faces = faces_do_piso(p["foto"])
         # a assinatura muda se a foto ou qualquer face mudar (face nova regera os ambientes do piso)
@@ -96,8 +160,7 @@ def main():
         chave = f"pecas/{p['id']}"; validos.add(chave)
         assin = f"{VERSAO}|{h_foto}|{p['medida_cm']}"
         if ctrl.get(chave) != assin or not (OUT / f"{chave}.webp").exists():
-            peca, _ = R.preparar_peca(img, p["medida_cm"])
-            salvar_webp(peca, OUT / f"{chave}.webp", min(600, peca.shape[1]), 82)
+            gravar(imagem_da_peca(p, img))
             ctrl[chave] = assin
         # ambientes
         par = parametros(p)
@@ -106,9 +169,7 @@ def main():
             assin = f"{VERSAO}|{h_foto}|{p['medida_cm']}|{par}|{assin_amb[a]}"
             if ctrl.get(chave) == assin and (OUT / f"{chave}.webp").exists():
                 continue
-            out = R.renderizar(ambientes[a], AMB, img, p["medida_cm"], faces=faces, **par)
-            salvar_webp(out, OUT / f"{chave}.webp", 1280, 80)
-            salvar_webp(out, OUT / a / "mini" / f"{p['id']}.webp", 520, 76)
+            gravar(imagens_do_chao(p, img, faces, a, ambientes[a]))
             ctrl[chave] = assin
             feitos += 1
         # paredes (revestimentos e pisos que também vão na parede)
@@ -119,10 +180,7 @@ def main():
             assin = f"{VERSAO_PAREDE}|{h_foto}|{p['medida_cm']}|{par_p}|{assin_par[a]}"
             if ctrl.get(chave) == assin and (OUT / f"{chave}.webp").exists():
                 continue
-            out = R.renderizar_parede(par, AMB, img, p["medida_cm"], faces=faces, **par_p)
-            salvar_webp(out, OUT / f"{chave}.webp", 1280, 80)
-            x0, y0, x1, y1 = par["recorte"]                # miniatura: só em volta da parede
-            salvar_webp(out[y0:y1, x0:x1], OUT / a / "parede" / "mini" / f"{p['id']}.webp", 520, 76)
+            gravar(imagens_da_parede(p, img, faces, a, par))
             ctrl[chave] = assin
             feitos += 1
         print(f"\r  {i + 1}/{len(dados['pisos'])}  ({feitos} imagens novas)", end="", flush=True)
